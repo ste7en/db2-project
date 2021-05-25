@@ -11,7 +11,7 @@ public class TestServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/plain");
 		PrintWriter out = response.getWriter();
-		out.println("Ciao fai fotografia");
+		out.println("Ciao mondo!");
 		out.close();
 	}
 }
