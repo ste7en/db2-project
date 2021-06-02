@@ -17,6 +17,7 @@ public class ProductOfTheDay implements Serializable {
 
 	@Id
 	@Temporal(TemporalType.DATE)
+	@Column(name="date")
 	private Date date;
 
 	@Column(name="product_of_the_day")
@@ -41,4 +42,33 @@ public class ProductOfTheDay implements Serializable {
 		this.productOfTheDay = productOfTheDay;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + productOfTheDay;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductOfTheDay other = (ProductOfTheDay) obj;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (productOfTheDay != other.productOfTheDay)
+			return false;
+		return true;
+	}
+
+	
 }

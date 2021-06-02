@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+
 import javax.persistence.*;
 
 
@@ -15,22 +17,21 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="`product-id`")
+	@Column(name="product-id")
 	private int product_id;
 
+	@Column(name="description")
 	private String description;
 
-	private int id;
-
 	@Lob
+	@Column(name="image")
 	private byte[] image;
 
+	@Column(name="name")
 	private String name;
 
-
+	@Column(name="price")
 	private float price;
-
-	private int unitcost;
 
 	public Product() {
 	}
@@ -49,14 +50,6 @@ public class Product implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public byte[] getImage() {
@@ -83,12 +76,46 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public int getUnitcost() {
-		return this.unitcost;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + Arrays.hashCode(image);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + Float.floatToIntBits(price);
+		result = prime * result + product_id;
+		return result;
 	}
 
-	public void setUnitcost(int unitcost) {
-		this.unitcost = unitcost;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (!Arrays.equals(image, other.image))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
+			return false;
+		if (product_id != other.product_id)
+			return false;
+		return true;
 	}
+	
+	
 
 }
