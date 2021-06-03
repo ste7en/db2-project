@@ -20,10 +20,13 @@ public class StatisticalAnswer implements Serializable {
 	@JoinColumn(name="`questionnaire-date`", nullable=false, insertable=false, updatable=false)
 	private ProductOfTheDay productOfTheDay;
 	
+	@Column(name="age")
 	private int age;
 	
+	@Column(name="sex")
 	private String sex;
 	
+	@Column(name="experience")
 	private String experience;
 
 	/**

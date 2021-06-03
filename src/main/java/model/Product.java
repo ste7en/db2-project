@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.Arrays;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
@@ -86,8 +85,6 @@ public class Product implements Serializable {
 		this.productOfTheDays = productOfTheDays;
 	}
 	
-	
-
 	public ProductOfTheDay addProductOfTheDay(ProductOfTheDay productOfTheDay) {
 		getProductOfTheDays().add(productOfTheDay);
 		productOfTheDay.setProduct(this);
