@@ -10,7 +10,6 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="user")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,10 +22,8 @@ public class User implements Serializable {
 
 	private byte admin;
 
-	@Column(name="Alter_priv")
 	private String alter_priv;
 
-	@Column(name="Alter_routine_priv")
 	private String alter_routine_priv;
 
 	@Lob
@@ -35,57 +32,40 @@ public class User implements Serializable {
 
 	private byte blocked;
 
-	@Column(name="Create_priv")
 	private String create_priv;
 
-	@Column(name="Create_role_priv")
 	private String create_role_priv;
 
-	@Column(name="Create_routine_priv")
 	private String create_routine_priv;
 
-	@Column(name="Create_tablespace_priv")
 	private String create_tablespace_priv;
 
-	@Column(name="Create_tmp_table_priv")
 	private String create_tmp_table_priv;
 
-	@Column(name="Create_user_priv")
 	private String create_user_priv;
 
-	@Column(name="Create_view_priv")
 	private String create_view_priv;
 
-	@Column(name="Delete_priv")
 	private String delete_priv;
 
-	@Column(name="Drop_priv")
 	private String drop_priv;
 
-	@Column(name="Drop_role_priv")
 	private String drop_role_priv;
 
 	private String email;
 
-	@Column(name="Event_priv")
 	private String event_priv;
 
-	@Column(name="Execute_priv")
 	private String execute_priv;
 
-	@Column(name="File_priv")
 	private String file_priv;
 
-	@Column(name="Grant_priv")
 	private String grant_priv;
 
-	@Column(name="Index_priv")
 	private String index_priv;
 
-	@Column(name="Insert_priv")
 	private String insert_priv;
 
-	@Column(name="Lock_tables_priv")
 	private String lock_tables_priv;
 
 	@Column(name="max_connections")
@@ -111,42 +91,30 @@ public class User implements Serializable {
 	@Column(name="password_lifetime")
 	private int passwordLifetime;
 
-	@Column(name="Password_require_current")
 	private String password_require_current;
 
-	@Column(name="Password_reuse_history")
 	private int password_reuse_history;
 
-	@Column(name="Password_reuse_time")
 	private int password_reuse_time;
 
 	private String plugin;
 
-	@Column(name="Process_priv")
 	private String process_priv;
 
-	@Column(name="References_priv")
 	private String references_priv;
 
-	@Column(name="Reload_priv")
 	private String reload_priv;
 
-	@Column(name="Repl_client_priv")
 	private String repl_client_priv;
 
-	@Column(name="Repl_slave_priv")
 	private String repl_slave_priv;
 
-	@Column(name="Select_priv")
 	private String select_priv;
 
-	@Column(name="Show_db_priv")
 	private String show_db_priv;
 
-	@Column(name="Show_view_priv")
 	private String show_view_priv;
 
-	@Column(name="Shutdown_priv")
 	private String shutdown_priv;
 
 	@Lob
@@ -156,16 +124,12 @@ public class User implements Serializable {
 	@Column(name="ssl_type")
 	private String sslType;
 
-	@Column(name="Super_priv")
 	private String super_priv;
 
-	@Column(name="Trigger_priv")
 	private String trigger_priv;
 
-	@Column(name="Update_priv")
 	private String update_priv;
 
-	@Column(name="User_attributes")
 	private Object user_attributes;
 
 	@Column(name="`user-id`")
@@ -180,7 +144,15 @@ public class User implements Serializable {
 	@Lob
 	@Column(name="x509_subject")
 	private byte[] x509Subject;
-
+	
+	@ElementCollection
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user"))
+	@MapKeyJoinColumn(name = "product")
+	
+	@Column(name = "text")
+	private Map<Product, Integer> products;
+	
+	
 	public User() {
 	}
 

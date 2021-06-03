@@ -17,7 +17,13 @@ public class MarketingQuestion implements Serializable {
 	@EmbeddedId
 	private MarketingQuestionPK id;
 
+	@Column(length=45)
 	private String text;
+
+	//bi-directional many-to-one association to ProductOfTheDay
+	@ManyToOne
+	@JoinColumn(name="`questionnaire-date`", nullable=false, insertable=false, updatable=false)
+	private ProductOfTheDay productOfTheDay;
 
 	public MarketingQuestion() {
 	}
@@ -36,6 +42,14 @@ public class MarketingQuestion implements Serializable {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public ProductOfTheDay getProductOfTheDay() {
+		return this.productOfTheDay;
+	}
+
+	public void setProductOfTheDay(ProductOfTheDay productOfTheDay) {
+		this.productOfTheDay = productOfTheDay;
 	}
 
 }

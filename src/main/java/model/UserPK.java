@@ -12,10 +12,8 @@ public class UserPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="Host")
 	private String host;
 
-	@Column(name="User")
 	private String user;
 
 	public UserPK() {

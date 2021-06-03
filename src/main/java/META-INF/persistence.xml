@@ -4,9 +4,16 @@
 		<class>model.MarketingQuestion</class>
 		<class>model.MarketingQuestionPK</class>
 		<class>model.OffensiveWord</class>
-		<class>model.Product</class>
 		<class>model.ProductOfTheDay</class>
 		<class>model.User</class>
 		<class>model.UserPK</class>
+		<class>model.Leaderboard</class>
+		<class>model.LeaderboardPK</class>
+		<class>model.Log</class>
+		<class>model.LogPK</class>
+		<class>model.Review</class>
+		<class>model.ReviewPK</class>
+		<class>model.StatisticalAnswer</class>
+		<class>model.StatisticalAnswerPK</class>
 	</persistence-unit>
 </persistence>

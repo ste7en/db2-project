@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -9,7 +10,6 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="product")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -18,20 +18,25 @@ public class Product implements Serializable {
 	@Column(name="`product-id`")
 	private int product_id;
 
-	private String description;
-
-	private int id;
-
 	@Lob
 	private byte[] image;
 
 	private String name;
 
-
 	private float price;
 
-	private int unitcost;
-
+	//bi-directional many-to-one association to ProductOfTheDay
+	@OneToMany(mappedBy="product")
+	private List<ProductOfTheDay> productOfTheDays;
+	
+	@Elementcollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product"))
+	@MapKeyJoinColumn(name = "user")
+	
+	@Column(name = "text")
+	private Map<User, Integer> users;
+	
+	
 	public Product() {
 	}
 
@@ -41,22 +46,6 @@ public class Product implements Serializable {
 
 	public void setProduct_id(int product_id) {
 		this.product_id = product_id;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public byte[] getImage() {
@@ -83,12 +72,26 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	public int getUnitcost() {
-		return this.unitcost;
+	public List<ProductOfTheDay> getProductOfTheDays() {
+		return this.productOfTheDays;
 	}
 
-	public void setUnitcost(int unitcost) {
-		this.unitcost = unitcost;
+	public void setProductOfTheDays(List<ProductOfTheDay> productOfTheDays) {
+		this.productOfTheDays = productOfTheDays;
+	}
+
+	public ProductOfTheDay addProductOfTheDay(ProductOfTheDay productOfTheDay) {
+		getProductOfTheDays().add(productOfTheDay);
+		productOfTheDay.setProduct(this);
+
+		return productOfTheDay;
+	}
+
+	public ProductOfTheDay removeProductOfTheDay(ProductOfTheDay productOfTheDay) {
+		getProductOfTheDays().remove(productOfTheDay);
+		productOfTheDay.setProduct(null);
+
+		return productOfTheDay;
 	}
 
 }
