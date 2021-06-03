@@ -72,6 +72,7 @@ public class ProductOfTheDay implements Serializable {
 	}
 	
 	@ManyToOne
+	@JoinColumn(name="product_of_the_day")
 	private Product product;
 	
 	public void setProduct(Product p) {

@@ -22,9 +22,6 @@ public class Product implements Serializable {
 	@Column(name="product-id")
 	private int product_id;
 
-	@Column(name="description")
-	private String description;
-
 	@Lob
 	@Column(name="image")
 	private byte[] image;
@@ -40,8 +37,8 @@ public class Product implements Serializable {
 	private List<ProductOfTheDay> productOfTheDays;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product"))
-	@MapKeyJoinColumn(name = "user")
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product-id"))
+	@MapKeyJoinColumn(name = "user-id")
 	
 	@Column(name = "text")
 	private Map<User, Integer> users;
@@ -55,14 +52,6 @@ public class Product implements Serializable {
 
 	public void setProduct_id(int product_id) {
 		this.product_id = product_id;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public byte[] getImage() {

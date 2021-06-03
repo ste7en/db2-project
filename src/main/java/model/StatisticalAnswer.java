@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
+@Table(name="statistical_answer")
 @NamedQuery(name="StatisticalAnswer.findAll", query="SELECT sa FROM StatisticalAnswer sa")
 public class StatisticalAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +13,7 @@ public class StatisticalAnswer implements Serializable {
 	//Statistical_answer(user-id, questionnaire-date, age, sex, experience) 
 	@Id
 	
-	@Column(name="user_id")
+	@Column(name="user-id")
 	private int userId;
 	
 	@ManyToOne

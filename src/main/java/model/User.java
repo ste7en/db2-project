@@ -38,8 +38,8 @@ public class User implements Serializable {
 	private String username;
 
 	@ElementCollection
-	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user"))
-	@MapKeyJoinColumn(name = "product")
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user-id"))
+	@MapKeyJoinColumn(name = "product-id")
 	
 	@Column(name = "text")
 	private Map<Product, Integer> products;
