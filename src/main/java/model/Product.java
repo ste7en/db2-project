@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -11,7 +12,6 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="product")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -33,6 +33,17 @@ public class Product implements Serializable {
 	@Column(name="price")
 	private float price;
 
+	//bi-directional many-to-one association to ProductOfTheDay
+	@OneToMany(mappedBy="product")
+	private List<ProductOfTheDay> productOfTheDays;
+	
+	@Elementcollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product"))
+	@MapKeyJoinColumn(name = "user")
+	
+	@Column(name = "text")
+	private Map<User, Integer> users;
+	
 	public Product() {
 	}
 
@@ -50,6 +61,14 @@ public class Product implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public byte[] getImage() {
@@ -76,46 +95,28 @@ public class Product implements Serializable {
 		this.price = price;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + Arrays.hashCode(image);
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + Float.floatToIntBits(price);
-		result = prime * result + product_id;
-		return result;
+	public List<ProductOfTheDay> getProductOfTheDays() {
+		return this.productOfTheDays;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Product other = (Product) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (!Arrays.equals(image, other.image))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
-			return false;
-		if (product_id != other.product_id)
-			return false;
-		return true;
+	public void setProductOfTheDays(List<ProductOfTheDay> productOfTheDays) {
+		this.productOfTheDays = productOfTheDays;
 	}
 	
 	
+
+	public ProductOfTheDay addProductOfTheDay(ProductOfTheDay productOfTheDay) {
+		getProductOfTheDays().add(productOfTheDay);
+		productOfTheDay.setProduct(this);
+
+		return productOfTheDay;
+	}
+
+	public ProductOfTheDay removeProductOfTheDay(ProductOfTheDay productOfTheDay) {
+		getProductOfTheDays().remove(productOfTheDay);
+		productOfTheDay.setProduct(null);
+
+		return productOfTheDay;
+	}
 
 }

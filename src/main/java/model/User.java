@@ -9,7 +9,6 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="user")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 
@@ -37,6 +36,13 @@ public class User implements Serializable {
 	@Column(name="username")
 	private String username;
 
+	@ElementCollection
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user"))
+	@MapKeyJoinColumn(name = "product")
+	
+	@Column(name = "text")
+	private Map<Product, Integer> products;
+	
 	public User() {
 	}
 

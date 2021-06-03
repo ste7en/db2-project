@@ -4,8 +4,11 @@
 		<class>model.Leaderboard</class>
 		<class>model.Log</class>
 		<class>model.OffensiveWord</class>
-		<class>model.Product</class>
 		<class>model.ProductOfTheDay</class>
 		<class>model.User</class>
+		<class>model.Leaderboard</class>
+		<class>model.Log</class>
+		<class>model.Review</class>
+		<class>model.StatisticalAnswer</class>
 	</persistence-unit>
 </persistence>
