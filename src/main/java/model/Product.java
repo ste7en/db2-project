@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -12,6 +13,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="product")
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +39,7 @@ public class Product implements Serializable {
 	@OneToMany(mappedBy="product")
 	private List<ProductOfTheDay> productOfTheDays;
 	
-	@Elementcollection(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product"))
 	@MapKeyJoinColumn(name = "user")
 	
@@ -61,14 +63,6 @@ public class Product implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public byte[] getImage() {

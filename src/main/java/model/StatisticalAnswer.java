@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 
+import javax.persistence.*;
+
 @Entity
 @NamedQuery(name="StatisticalAnswer.findAll", query="SELECT sa FROM StatisticalAnswer sa")
 public class StatisticalAnswer implements Serializable {

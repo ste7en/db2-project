@@ -41,6 +41,7 @@ public class ProductOfTheDay implements Serializable {
 	public void setProductOfTheDay(int productOfTheDay) {
 		this.productOfTheDay = productOfTheDay;
 	}
+	
 
 	@Override
 	public int hashCode() {
@@ -69,6 +70,15 @@ public class ProductOfTheDay implements Serializable {
 			return false;
 		return true;
 	}
-
 	
+	@ManyToOne
+	private Product product;
+	
+	public void setProduct(Product p) {
+		this.product=p;
+	}
+	
+	public Product getProduct() {
+		return this.product;
+	}
 }

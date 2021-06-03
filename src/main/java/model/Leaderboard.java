@@ -6,7 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table(name="product")
+@Table(name="leaderboard")
 @NamedQuery(name="Leaderboard.findAll", query="SELECT l FROM Leaderboard L")
 public class Leaderboard implements Serializable {
 	private static final long serialVersionUID = 1L;
