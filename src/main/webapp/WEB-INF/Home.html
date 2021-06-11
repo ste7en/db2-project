@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+
+
+	<h1>Welcome to the Home Page</h1>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	<section>
+		<div align="left">
+			<p>Product Of the Day</p>
+			<ul th:unless="${#lists.isEmpty()}">
+				<!--TODO--> 
+			</ul>
+		</div>
+	</section>
+
+	<div class="button">
+		<p>Answer to the Questionnaire</p>
+		<form action="#" th:action="@{/Questionnaire}" method="POST">
+				<input type="submit" name="Questionnaire" value="Questionnaire">
+		</form>
+	</div>
+</body>
+</html>
