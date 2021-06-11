@@ -16,6 +16,9 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import model.User;
+import services.UserService;
+
 //TODO: import entities services and exceptions
 
 import javax.persistence.NonUniqueResultException;
@@ -63,7 +66,7 @@ public class CheckLogin extends HttpServlet {
 		try {
 			// query db to authenticate for user
 			user = usrService.checkCredentials(usrn, pwd);
-		} catch (CredentialsException | NonUniqueResultException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
 			return;

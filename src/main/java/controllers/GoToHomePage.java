@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -15,6 +16,11 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import model.Product;
+import model.ProductOfTheDay;
+import services.ProductOfTheDayService;
+import services.ProductService;
+
 /**
  * Servlet implementation class GoToHomePage
  */
@@ -28,6 +34,7 @@ public class GoToHomePage extends HttpServlet {
 	private ProductOfTheDayService potdService;
 	@EJB(name = "db2-project.src.main.java.services/ProductService")
 	private ProductService pService;
+	private Date d;
 
 	public GoToHomePage() {
 		super();
@@ -41,6 +48,7 @@ public class GoToHomePage extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
+		d=new Date();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,7 +56,8 @@ public class GoToHomePage extends HttpServlet {
 
 		int userId = (int) request.getSession().getAttribute("userId");
 		
-		//ProductOfTheDay productOtd = potdService.findProductByDate()
+		ProductOfTheDay productOtd = potdService.findProductByDate(d);
+		Product product= (Product) pService.getReviews(productOtd.getProduct());
 		
 		
 		// If the user is not logged in (not present in session) redirect to the login

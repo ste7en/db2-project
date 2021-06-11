@@ -40,7 +40,12 @@ public class Product implements Serializable {
 	@MapKeyJoinColumn(name = "user-id")
 	
 	@Column(name = "text")
-	private Map<User, Integer> users;
+	private Map<User, String> reviews;
+	
+	public Map<User,String> getReviews(){
+		return this.reviews;
+	}
+	
 	
 	public Product() {
 	}
