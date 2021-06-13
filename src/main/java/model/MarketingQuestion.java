@@ -20,6 +20,7 @@ public class MarketingQuestion implements Serializable {
 	@Column(name="number")
 	private int number;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name="questionnaire-date")
 	private Date questionnaire_date;
 	
