@@ -1,3 +1,6 @@
+//A DELETION page for ERASING the questionnaire data and the related responses and points of all users who filled in the questionnaire. 
+//Deletion should be possible only for a date preceding the current date.
+
 package controllers;
 
 import java.io.IOException;
@@ -18,25 +21,30 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import model.User;
+import model.StatisticalAnswer;
 import model.MarketingQuestion;
+import services.UserService;
+import services.StatisticalAnswerService;
 import services.MarketingQuestionnaireService;
-import services.ProductOfTheDayService;
 
 /**
- * Servlet implementation class GoMarketingQuestionnaire
+ * Servlet implementation class GoToDeletionPage
  */
 
-
-@WebServlet("/GotoMarketingQuestionnaire")
-public class GoToMarketingQuestionnaire extends HttpServlet {
+@WebServlet("/GoToDeletionPage")
+public class GoToDeletionPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
 	private MarketingQuestionnaireService mqService;
-	private ProductOfTheDayService pService;
+	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
+	private StatisticalAnswerService saService;
 
-	public GoToMarketingQuestionnaire() {
+	public GoToDeletionPage() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {
@@ -46,31 +54,34 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
+		Date date = new Date();  
+		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// If the user is not logged in (not present in session) redirect to the login
+		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
+		if (session.isNew() || session.getAttribute("admin") == null) {
 			response.sendRedirect(loginpath);
 			return;
 		}
+	
 		
-		Date d= new Date();
-		List<MarketingQuestion> marketingQuestions = mqService.findByDate(d);
-		
-		// Redirect to the Home page and add missions to the parameters	
-		String path = "/WEB-INF/Marketing.html";
+		// If the user is not logged in (not present in session) redirect to the login
+		String path = "/WEB-INF/DeletionPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("marketing questions", marketingQuestions);
 		templateEngine.process(path, ctx, response.getWriter());
-		
+
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+	
 	public void destroy() {}
 
 }

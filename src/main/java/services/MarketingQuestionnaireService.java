@@ -51,5 +51,5 @@ public class MarketingQuestionnaireService {
 		return query.getResultList();
 	}
 	
-
+	public void destroy() {}
 }
