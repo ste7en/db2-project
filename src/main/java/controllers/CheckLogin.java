@@ -27,7 +27,7 @@ import services.UserService;
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	@EJB(name = "db2-project.src.main.java.services/UserService")
+	@EJB(name = "java.services/UserService")
 	private UserService usrService;
 
 	public CheckLogin() {
