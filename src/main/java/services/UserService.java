@@ -3,19 +3,21 @@ package services;
 import java.util.Collection;
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import model.User;
 
+@Stateless
 public class UserService {
+	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public UserService(EntityManager em) {
-		this.em=em;
-	}
+	public UserService() { }
 	
 	public User registration(int user_id, String email, String password, String username, byte admin) {
 		User u= new User();
@@ -24,7 +26,7 @@ public class UserService {
 		u.setPassword(password);
 		User presente= findUserByUsername(username);
 		if(presente!=null) { 
-			throw new RuntimeException("Username già esistente, sceglierne un altro");
+			throw new RuntimeException("Username giï¿½ esistente, sceglierne un altro");
 		}
 		u.setUsername(username);
 		u.setAdmin(admin);
