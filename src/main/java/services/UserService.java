@@ -61,7 +61,7 @@ public class UserService {
 			uList = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, usrn).setParameter(2, pwd)
 					.getResultList();
 		} catch (PersistenceException e) {
-			throw new RuntimeException("Could not verify credentals");
+			throw new RuntimeException("Could not verify credentals: " + e.getMessage());
 		}
 		if (uList.isEmpty())
 			return null;
