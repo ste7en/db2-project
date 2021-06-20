@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -19,14 +18,11 @@ public class User implements Serializable {
 	@Column(name="`user-id`")
 	private int user_id;
 
-	@Column(name="account_locked")
-	private String accountLocked;
-
 	@Column(name="admin")
-	private byte admin;
+	private Boolean admin;
 	
 	@Column(name="blocked")
-	private byte blocked;
+	private Boolean blocked;
 	
 	@Column(name="email")
 	private String email;
@@ -55,27 +51,19 @@ public class User implements Serializable {
 		this.user_id = id;
 	}
 
-	public String getAccountLocked() {
-		return this.accountLocked;
-	}
-
-	public void setAccountLocked(String accountLocked) {
-		this.accountLocked = accountLocked;
-	}
-
-	public byte getAdmin() {
+	public Boolean getAdmin() {
 		return this.admin;
 	}
 
-	public void setAdmin(byte admin) {
+	public void setAdmin(Boolean admin) {
 		this.admin = admin;
 	}
 
-	public byte getBlocked() {
+	public Boolean getBlocked() {
 		return this.blocked;
 	}
 
-	public void setBlocked(byte blocked) {
+	public void setBlocked(Boolean blocked) {
 		this.blocked = blocked;
 	}
 
@@ -107,9 +95,8 @@ public class User implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((accountLocked == null) ? 0 : accountLocked.hashCode());
-		result = prime * result + admin;
-		result = prime * result + blocked;
+		result = prime * result + admin.hashCode();
+		result = prime * result + blocked.hashCode();
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + user_id;
@@ -126,11 +113,6 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (accountLocked == null) {
-			if (other.accountLocked != null)
-				return false;
-		} else if (!accountLocked.equals(other.accountLocked))
-			return false;
 		if (admin != other.admin)
 			return false;
 		if (blocked != other.blocked)

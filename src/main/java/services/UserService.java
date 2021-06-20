@@ -19,7 +19,7 @@ public class UserService {
 	
 	public UserService() { }
 	
-	public User registration(int user_id, String email, String password, String username, byte admin) {
+	public User registration(int user_id, String email, String password, String username, Boolean admin) {
 		User u= new User();
 		u.setId(user_id);
 		u.setEmail(email);
@@ -30,7 +30,7 @@ public class UserService {
 		}
 		u.setUsername(username);
 		u.setAdmin(admin);
-		u.setBlocked(Byte.parseByte("0"));
+		u.setBlocked(false);
 		em.persist(u);
 		return u;
 	}
@@ -51,14 +51,15 @@ public class UserService {
 	}
 	
 	public Collection<User> findAllUsers(){
-		TypedQuery query= em.createQuery("SELECT u from USER u", User.class);
+		TypedQuery<User> query= em.createQuery("SELECT u from USER u", User.class);
 		return query.getResultList();
 	}
 	
-	public User checkCredentials(String usrn, String pwd) throws  NonUniqueResultException {
+	public User checkCredentials(String usrn, String pwd) throws NonUniqueResultException {
 		List<User> uList = null;
 		try {
-			uList = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, usrn).setParameter(2, pwd)
+			uList = em.createNamedQuery("User.checkCredentials", User.class)
+					.setParameter(1, usrn).setParameter(2, pwd)
 					.getResultList();
 		} catch (PersistenceException e) {
 			throw new RuntimeException("Could not verify credentals: " + e.getMessage());
