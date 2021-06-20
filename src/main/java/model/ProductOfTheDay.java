@@ -20,9 +20,6 @@ public class ProductOfTheDay implements Serializable {
 	@Column(name="date")
 	private Date date;
 
-	@Column(name="product_of_the_day")
-	private int productOfTheDay;
-
 	public ProductOfTheDay() {
 	}
 
@@ -32,23 +29,14 @@ public class ProductOfTheDay implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public int getProductOfTheDay() {
-		return this.productOfTheDay;
-	}
-
-	public void setProductOfTheDay(int productOfTheDay) {
-		this.productOfTheDay = productOfTheDay;
-	}
-	
+	}	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + productOfTheDay;
+		result = prime * result + this.product.getProduct_id();
 		return result;
 	}
 
@@ -66,7 +54,7 @@ public class ProductOfTheDay implements Serializable {
 				return false;
 		} else if (!date.equals(other.date))
 			return false;
-		if (productOfTheDay != other.productOfTheDay)
+		if (this.product != other.product)
 			return false;
 		return true;
 	}
