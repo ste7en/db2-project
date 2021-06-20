@@ -16,9 +16,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.persistence.NonUniqueResultException;
-import javax.naming.*;
-
 import model.User;
 import services.UserService;
 
