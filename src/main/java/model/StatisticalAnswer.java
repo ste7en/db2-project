@@ -17,7 +17,7 @@ public class StatisticalAnswer implements Serializable {
 	private int userId;
 	
 	@ManyToOne
-	@JoinColumn(name="`questionnaire-date`", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="`questionnaire_date`", nullable=false, insertable=false, updatable=false)
 	private ProductOfTheDay productOfTheDay;
 	
 	@Column(name="age")

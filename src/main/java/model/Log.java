@@ -15,8 +15,7 @@ public class Log implements Serializable {
 	@Column(name="timestamp")
 	private Timestamp timestamp;
 	
-
-	@Column(name="user-id")
+	@Column(name="user_id")
 	private int user_id;
 	
 	@Column(name="event")

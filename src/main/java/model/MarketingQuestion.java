@@ -21,7 +21,6 @@ public class MarketingQuestion implements Serializable {
 	private int number;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="questionnaire-date")
 	private Date questionnaire_date;
 	
 	@Column(length=45)
@@ -29,7 +28,7 @@ public class MarketingQuestion implements Serializable {
 
 	//bi-directional many-to-one association to ProductOfTheDay
 	@ManyToOne
-	@JoinColumn(name="`questionnaire-date`", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="`questionnaire_date`", nullable=false, insertable=false, updatable=false)
 	private ProductOfTheDay productOfTheDay;
 
 	public MarketingQuestion() {

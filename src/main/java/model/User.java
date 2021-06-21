@@ -16,7 +16,6 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="`user-id`")
 	private int user_id;
 
 	@Column(name="admin")
@@ -35,8 +34,8 @@ public class User implements Serializable {
 	private String username;
 
 	@ElementCollection
-	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user-id"))
-	@MapKeyJoinColumn(name = "product-id")
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user_id"))
+	@MapKeyJoinColumn(name = "product_id")
 	
 	@Column(name = "text")
 	private Map<Product, Integer> products;

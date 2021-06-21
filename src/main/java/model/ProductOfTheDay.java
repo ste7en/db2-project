@@ -20,8 +20,7 @@ public class ProductOfTheDay implements Serializable {
 	@Column(name="date")
 	private Date date;
 
-	public ProductOfTheDay() {
-	}
+	public ProductOfTheDay() {}
 
 	public Date getDate() {
 		return this.date;
@@ -60,7 +59,7 @@ public class ProductOfTheDay implements Serializable {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name="product_of_the_day")
+	@JoinColumn(name="product_of_the_day", referencedColumnName = "product_id")
 	private Product product;
 	
 	public void setProduct(Product p) {

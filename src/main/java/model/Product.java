@@ -17,7 +17,6 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="product-id")
 	private int product_id;
 
 	@Lob
@@ -31,13 +30,12 @@ public class Product implements Serializable {
 	private float price;
 
 	//bi-directional many-to-one association to ProductOfTheDay
-	@OneToMany(mappedBy="product")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
 	private List<ProductOfTheDay> productOfTheDays;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product-id"))
-	@MapKeyJoinColumn(name = "user-id")
-	
+	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product_id"))
+	@MapKeyJoinColumn(name = "user_id")
 	@Column(name = "text")
 	private Map<User, String> reviews;
 	
@@ -45,9 +43,7 @@ public class Product implements Serializable {
 		return this.reviews;
 	}
 	
-	
-	public Product() {
-	}
+	public Product() {}
 
 	public int getProduct_id() {
 		return this.product_id;

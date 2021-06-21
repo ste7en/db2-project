@@ -16,7 +16,6 @@ public class Leaderboard implements Serializable {
 	private int user;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="questionnaire-date")
 	private Date questionnaire_date;
 
 	@Column(name="points")
