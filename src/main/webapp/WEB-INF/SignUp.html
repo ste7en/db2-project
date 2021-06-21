@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+	<title>Sign Up</title>
+	<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body class="center">
+	  <div class="rectangle">
+	  <div>
+  		<h1 class ="heading">Sign up form</h1>
+  		
+		<form action="registration" method="post">
+		 Username: <input class="formLabel" type="text" name="username" placeholder="Username" th:value="${regform.getUsername()}" size="20" required autofocus/>
+			<div th:unless="${!regform.containsError('username')}">
+		   		<p class="error" th:each="err : ${regform.getError('username')}" th:text="${errorMsg}"></p>
+		   </div>
+		 
+	  	Email: <input class="formLabel" type="text" name="email" placeholder="Email" th:value="${regform.getEmail()}" size="20" required>
+		  	<div th:unless="${!regform.containsError('email')}">
+		   		<p class="error" th:each="err : ${regform.getError('email')}" th:text="${errorMsg}"></p>
+		   </div>
+    	
+		  Password: <input class="formLabel" type="password" name="pwd" placeholder="Password" value="" size="20" required>
+		  <div th:unless="${!regform.containsError('password')}">
+		   		<p class="error" th:each="err : ${regform.getError('password')}" th:text="${errorMsg}"></p>
+		  </div>
+		
+		  <button class="formControls" type="submit" name="method" value="Save">Submit</button>
+		</form>
+		</div>
+	  </div>
+</body>
+</html>
