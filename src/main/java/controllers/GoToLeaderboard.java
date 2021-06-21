@@ -22,18 +22,18 @@ import model.Leaderboard;
 import services.LeaderboardService;
 
 /**
- * Servlet implementation class GoToLeaderBoardPage
+ * Servlet implementation class GoToLeaderBoard
  */
 
-@WebServlet("/GoToLeaderBoardPage")
-public class GoToLeaderBoardPage extends HttpServlet {
+@WebServlet("/GoToLeaderboard")
+public class GoToLeaderboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/LeaderboardService")
 	private LeaderboardService lService;
 
-	public GoToLeaderBoardPage() {
+	public GoToLeaderboard() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
