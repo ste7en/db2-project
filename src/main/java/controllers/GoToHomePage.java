@@ -18,6 +18,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.Product;
 import model.ProductOfTheDay;
+import model.User;
 import services.ProductOfTheDayService;
 import services.ProductService;
 
@@ -54,7 +55,7 @@ public class GoToHomePage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		int userId = (int) request.getSession().getAttribute("userId");
+		User userId = (User) request.getSession().getAttribute("session-user");
 		
 		ProductOfTheDay productOtd = potdService.findProductByDate(d);
 		Product product= (Product) pService.getReviews(productOtd.getProduct());
