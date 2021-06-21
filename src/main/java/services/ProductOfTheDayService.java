@@ -1,16 +1,17 @@
 package services;
 
-import java.util.Collection;
 import java.util.Date;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
+import javax.persistence.PersistenceContext;
 import model.Product;
 import model.ProductOfTheDay;
 
+@Stateless
 public class ProductOfTheDayService {
-protected EntityManager em;
+	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
+	protected EntityManager em;
 	
 	public ProductOfTheDayService(EntityManager em) {
 		this.em=em;
