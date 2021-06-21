@@ -3,12 +3,16 @@ package services;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import model.User;
 import model.Product;
 
+@Stateless
 public class ProductService {
+	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
 	public ProductService(EntityManager em) {
@@ -36,7 +40,7 @@ public class ProductService {
 	}
 	
 	public Collection<Product> findAllProducts(){
-		TypedQuery query=em.createQuery("SELECT p FROM Product p", Product.class);
+		TypedQuery<Product> query=em.createQuery("SELECT p FROM Product p", Product.class);
 		return query.getResultList();
 	}
 	
