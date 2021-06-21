@@ -39,7 +39,8 @@ public class GoToHomePage extends HttpServlet {
 
 	public GoToHomePage() {
 		super();
-		// TODO Auto-generated constructor stub
+		// After auto-generated constructor stub
+		this.d = new Date();
 	}
 
 	public void init() throws ServletException {
@@ -49,7 +50,6 @@ public class GoToHomePage extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		d=new Date();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
