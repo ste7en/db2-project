@@ -15,9 +15,7 @@ public class ProductService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public ProductService(EntityManager em) {
-		this.em=em;
-	}
+	public ProductService() {}
 	
 	public Product createProduct(int product_id, byte[] image, String name, float price) {
 		Product p=new Product();

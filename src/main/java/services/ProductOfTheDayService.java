@@ -13,9 +13,7 @@ public class ProductOfTheDayService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public ProductOfTheDayService(EntityManager em) {
-		this.em=em;
-	}
+	public ProductOfTheDayService() {}
 	
 	public ProductOfTheDay createProductOfTheDay(Product p, Date d) {
 		ProductOfTheDay pofd=new ProductOfTheDay();
