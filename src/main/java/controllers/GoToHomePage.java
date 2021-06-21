@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -59,6 +60,14 @@ public class GoToHomePage extends HttpServlet {
 		Product productOfTheDay;
 		Map<User, String> reviews;
 		
+		// If the user is not logged in (not present in session) redirect to the login
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		HttpSession session = request.getSession();
+		if (session.isNew() || session.getAttribute("session-user") == null) {
+			response.sendRedirect(loginpath);
+			return;
+		}
+		
 		userId = (User) request.getSession().getAttribute("session-user");
 		
 		ProductOfTheDay productOtd = potdService.findProductByDate(d);
@@ -75,11 +84,6 @@ public class GoToHomePage extends HttpServlet {
 		
 		templateEngine.process(path, ctx, response.getWriter());
 
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }
