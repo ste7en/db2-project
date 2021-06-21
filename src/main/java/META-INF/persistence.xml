@@ -9,5 +9,9 @@
 		<class>model.Leaderboard</class>
 		<class>model.MarketingQuestion</class>
 		<class>model.Product</class>
+
+		<properties>
+			<property name="eclipselink.Logging.level" value="FINE" />
+		</properties>
 	</persistence-unit>
 </persistence>
