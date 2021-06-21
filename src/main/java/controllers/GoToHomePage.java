@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -54,12 +55,15 @@ public class GoToHomePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		User userId = (User) request.getSession().getAttribute("session-user");
+		User userId;
+		Product productOfTheDay;
+		Map<User, String> reviews;
+		
+		userId = (User) request.getSession().getAttribute("session-user");
 		
 		ProductOfTheDay productOtd = potdService.findProductByDate(d);
-		Product product= (Product) pService.getReviews(productOtd.getProduct());
-		
+		productOfTheDay = (Product) productOtd.getProduct();
+		reviews = productOfTheDay.getReviews();
 		
 		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/Home.html";
@@ -67,7 +71,7 @@ public class GoToHomePage extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("product of the day", productOtd);
-		ctx.setVariable("product", product);
+		ctx.setVariable("product", productOfTheDay);
 		
 		templateEngine.process(path, ctx, response.getWriter());
 
