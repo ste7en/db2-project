@@ -1,33 +1,53 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>Home</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
-</head>
-<body>
-
-
-	<h1>Welcome to the Home Page</h1>
-	<div align="right">
-		<a th:href="@{/Logout}">Logout</a>
-	</div>
-	<section>
-		<div align="left">
-			<p>Product Of the Day</p>
-			<ul th:unless="${#lists.isEmpty()}">
-				<!--TODO--> 
-			</ul>
-		</div>
-	</section>
-
-	<div class="button">
-		<p>Answer to the Questionnaire</p>
-		<form action="#" th:action="@{/Questionnaire}" method="POST">
-				<input type="submit" name="Questionnaire" value="Questionnaire">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Home</title>
+	</head>
+	<body>
+        <div>
+            <div align="right">
+                <a href="/Logout}">Logout</a>
+            </div>
+		<h1>Gamified Marketing Application</h1>
+            <h3>Product of the day:</h3>    <!--unless there is no product of today-->
+		<img width="150px" th:src="@{'data:image/jpg;base64,' + ${product.getImage()}}" />
+		<p>Name of the product: </p><h4 th:text="${product.name}"></h4>
+		<p>Questionnaire: </p>
+		<form action="#" th:action="@{/GoToMarketingQuestionnaire}" method="POST">
+		<!-- if submitted answers == null then you can fill out the questionnaire otherwise you have already fill out the questionnaire for today-->
+			<input type="submit" value="Fill out the questionnaire of today's product">
 		</form>
-	</div>
-</body>
+    </div>
+	<div>
+		<h3>Leaderboard:</h3>
+		<form th:action="@{/GoToLeaderboard}" method="POST">
+			<input type="submit" value="Check your points" id="leaderboard" name="leaderboard">
+		</form>
+	</div>		
+		<h3>Reviews of the product wrote by our users:</h3>
+		<table  th:each="review : ${product.getReviews}">
+			<thead>
+				<tr>
+					<th>Username</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="r : ${review}">
+					<td th:text="${r.getUser()}"></td>
+				</tr>
+			</tbody>
+		</table><br><br>
+        <div>
+			<div th:if="${log.isAdmin}">
+				<p><b>Admin Dashboard</b></p>
+				<ul>
+				<li><a href="/GoToCreationPage">Create a new Questionnaire</a></li>
+				<li><a href="/GoToDeletionPage">Delete a past Questionnaire</a></li>
+				<li><a href="/GoToInspectionPage">Inspection Page</a></li>
+				</ul>
+			</div>			
+		</div>
+	</body>
 </html>
