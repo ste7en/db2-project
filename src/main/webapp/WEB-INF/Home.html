@@ -12,10 +12,10 @@
             </div>
 		<h1>Gamified Marketing Application</h1>
             <h3>Product of the day:</h3>    <!--unless there is no product of today-->
-		<img width="150px" th:src="@{'data:image/jpg;base64,' + ${product.getImage()}}" />
+		<img width="150px" th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
 		<p>Name of the product: </p><h4 th:text="${product.name}"></h4>
 		<p>Questionnaire: </p>
-		<form action="#" th:action="@{/GoToMarketingQuestionnaire}" method="POST">
+		<form action="#" th:action="@{/GoToMarketingQuestionnaire}" method="GET">
 		<!-- if submitted answers == null then you can fill out the questionnaire otherwise you have already fill out the questionnaire for today-->
 			<input type="submit" value="Fill out the questionnaire of today's product">
 		</form>
@@ -31,16 +31,18 @@
 			<thead>
 				<tr>
 					<th>Username</th>
+					<th>Testo</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="r : ${review}">
-					<td th:text="${r.getUser()}"></td>
+					<td th:text="${r.getKey().getUsername()}"></td>
+					<td th:text="${r.getValue()}"></td>
 				</tr>
 			</tbody>
-		</table><br><br>
+		</table>
         <div>
-			<div th:if="${log.isAdmin}">
+			<div th:if="${user.getAdmin}">
 				<p><b>Admin Dashboard</b></p>
 				<ul>
 				<li><a href="/GoToCreationPage">Create a new Questionnaire</a></li>
