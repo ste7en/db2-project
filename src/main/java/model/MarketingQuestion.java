@@ -17,7 +17,7 @@ public class MarketingQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="number")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int number;
 	
 	@Temporal(TemporalType.DATE)

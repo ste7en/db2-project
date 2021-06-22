@@ -12,7 +12,7 @@ public class Log implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="timestamp")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Timestamp timestamp;
 	
 	@Column(name="user_id")

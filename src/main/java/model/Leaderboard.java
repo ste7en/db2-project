@@ -12,7 +12,6 @@ public class Leaderboard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="user")
 	private int user;
 	
 	@Temporal(TemporalType.DATE)

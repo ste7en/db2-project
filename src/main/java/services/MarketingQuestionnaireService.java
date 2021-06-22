@@ -1,16 +1,21 @@
 package services;
 
 import java.util.Collection;
+
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import model.MarketingQuestion;
 import model.ProductOfTheDay;
 
+@Stateless
 public class MarketingQuestionnaireService {
+	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
 	public MarketingQuestionnaireService(EntityManager em) {

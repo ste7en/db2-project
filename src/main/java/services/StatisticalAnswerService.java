@@ -2,14 +2,17 @@ package services;
 
 import java.util.Collection;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import model.StatisticalAnswer;
 
+@Stateless
 public class StatisticalAnswerService {
-	
-protected EntityManager em;
+	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
+	protected EntityManager em;
 	
 	public StatisticalAnswerService(EntityManager em) {
 		this.em=em;

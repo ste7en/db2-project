@@ -15,7 +15,6 @@ public class OffensiveWord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="word")
 	private String word;
 
 	@Column(name="occurrence")

@@ -19,17 +19,16 @@ public class UserService {
 	
 	public UserService() { }
 	
-	public User registration(int user_id, String email, String password, String username, Boolean admin) {
+	public User registration( String email, String password, String username) {
 		User u= new User();
-		u.setId(user_id);
 		u.setEmail(email);
 		u.setPassword(password);
 		User presente= findUserByUsername(username);
 		if(presente!=null) { 
-			throw new RuntimeException("Username giï¿½ esistente, sceglierne un altro");
+			throw new RuntimeException("Username già esistente, sceglierne un altro");
 		}
 		u.setUsername(username);
-		u.setAdmin(admin);
+		u.setAdmin(false);
 		u.setBlocked(false);
 		em.persist(u);
 		return u;

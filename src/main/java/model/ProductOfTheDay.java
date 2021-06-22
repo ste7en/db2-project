@@ -17,7 +17,6 @@ public class ProductOfTheDay implements Serializable {
 
 	@Id
 	@Temporal(TemporalType.DATE)
-	@Column(name="date")
 	private Date date;
 
 	public ProductOfTheDay() {}

@@ -12,8 +12,6 @@ public class StatisticalAnswer implements Serializable {
 
 	//Statistical_answer(user-id, questionnaire-date, age, sex, experience) 
 	@Id
-	
-	@Column(name="user-id")
 	private int userId;
 	
 	@ManyToOne
@@ -71,7 +69,13 @@ public class StatisticalAnswer implements Serializable {
 		this.experience = experience;
 	}
 	
+	public int getUserId() {
+		return this.userId;
+	}
 	
+	public void setUserId(int userId) {
+		this.userId=userId;
+	}
 	
 	
 }
