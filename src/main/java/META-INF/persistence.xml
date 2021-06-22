@@ -9,6 +9,8 @@
 		<class>model.Leaderboard</class>
 		<class>model.MarketingQuestion</class>
 		<class>model.Product</class>
+		<class>model.MarketingAnswer</class>
+		<class>model.MarketingAnswerID</class>
 		<class>model.MarketingQuestionID</class>
 
 		<properties>
