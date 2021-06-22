@@ -34,6 +34,18 @@ public class UserService {
 		return u;
 	}
 	
+	public boolean isAdmin(User u) {
+		if(findUser(u.getId())==null) {
+			throw new RuntimeException("Utente non esistente,riprovare");
+		}
+		else {
+			if(u.getAdmin()) {
+				return true;
+			}
+			return false;
+		}
+	}
+	
 	public void removeUser(int user_id) {
 		User u= findUser(user_id);
 		if(u!=null) {

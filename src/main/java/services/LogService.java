@@ -1,19 +1,16 @@
 package services;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import model.Log;
 
-@Stateless
 public class LogService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public LogService(EntityManager em) {
-		this.em=em;
-	}
+	public LogService() {}
+	
 	
 	public Log createLog(int user_id, String event) {
 		Log l= new Log();

@@ -18,8 +18,7 @@ public class MarketingQuestionnaireService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public MarketingQuestionnaireService(EntityManager em) {
-		this.em=em;
+	public MarketingQuestionnaireService() {
 	}
 	
 	public MarketingQuestion createMarketingQuestion(int number, Date questionnaire_date, String text, ProductOfTheDay p) {

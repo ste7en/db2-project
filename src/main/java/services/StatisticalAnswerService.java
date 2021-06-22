@@ -14,8 +14,7 @@ public class StatisticalAnswerService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public StatisticalAnswerService(EntityManager em) {
-		this.em=em;
+	public StatisticalAnswerService() {
 	}
 	
 	public StatisticalAnswer createStatisticalAnswer(int user_id, int age, String sex, String experience) {

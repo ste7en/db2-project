@@ -13,8 +13,7 @@ public class LeaderboardService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public LeaderboardService(EntityManager em) {
-		this.em=em;
+	public LeaderboardService() {
 	}
 	
 	public Leaderboard createLeaderboard(int user, Date questionnaire_date) {

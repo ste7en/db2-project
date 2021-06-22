@@ -11,8 +11,7 @@ public class OffensiveWordService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public OffensiveWordService(EntityManager em) {
-		this.em=em;
+	public OffensiveWordService() {
 	}
 	
 	public OffensiveWord createOffensiveWord(String word, int occurrence) {
