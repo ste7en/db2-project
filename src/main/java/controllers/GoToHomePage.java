@@ -56,7 +56,7 @@ public class GoToHomePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		User userId;
+		User user;
 		Product productOfTheDay;
 		Map<User, String> reviews;
 		
@@ -68,7 +68,7 @@ public class GoToHomePage extends HttpServlet {
 			return;
 		}
 		
-		userId = (User) request.getSession().getAttribute("session-user");
+		user = (User) request.getSession().getAttribute("session-user");
 		
 		ProductOfTheDay productOtd = potdService.findProductByDate(d);
 		productOfTheDay = (Product) productOtd.getProduct();
@@ -79,7 +79,7 @@ public class GoToHomePage extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		ctx.setVariable("product of the day", productOtd);
+		ctx.setVariable("user", user);
 		ctx.setVariable("product", productOfTheDay);
 		
 		templateEngine.process(path, ctx, response.getWriter());
