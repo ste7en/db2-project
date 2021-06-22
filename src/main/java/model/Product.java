@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 
 
 /**
@@ -54,8 +55,8 @@ public class Product implements Serializable {
 		this.product_id = product_id;
 	}
 
-	public byte[] getImage() {
-		return this.image;
+	public String getImage() {
+		return Base64.getMimeEncoder().encodeToString(image);
 	}
 
 	public void setImage(byte[] image) {
