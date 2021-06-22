@@ -47,11 +47,11 @@ public class MarketingQuestionnaireService {
 	}
 	
 	public List<MarketingQuestion> findByDate(Date d) {
-		return (em.createQuery("SELECT mq from marketing_question mq WHERE mq.date=d", MarketingQuestion.class)).getResultList();
+		return (em.createQuery("SELECT mq from MarketingQuestion mq WHERE mq.questionnaire_date=?1", MarketingQuestion.class).setParameter(1, d)).getResultList();
 	}
 	
 	public Collection<MarketingQuestion> findAllMarketingQuestions(){
-		TypedQuery query= em.createQuery("SELECT mq from MARKETINGQUESTION mq", MarketingQuestion.class);
+		TypedQuery query= em.createQuery("SELECT mq from MarketingQuestion mq", MarketingQuestion.class);
 		return query.getResultList();
 	}
 	
