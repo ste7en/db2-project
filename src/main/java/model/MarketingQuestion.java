@@ -16,12 +16,8 @@ import javax.persistence.*;
 public class MarketingQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int number;
-	
-	@Temporal(TemporalType.DATE)
-	private Date questionnaire_date;
+	@EmbeddedId
+	private MarketingQuestionID identifier;
 	
 	@Column(length=45)
 	private String text;
@@ -43,11 +39,7 @@ public class MarketingQuestion implements Serializable {
 	}
 	
 	public Date getQuestionnaireDate() {
-		return this.questionnaire_date;
-	}
-	
-	public void setQuestionnaireDate(Date questionnaire_date) {
-		this.questionnaire_date=questionnaire_date;
+		return this.identifier.getQuestionnaireDate();
 	}
 
 	public ProductOfTheDay getProductOfTheDay() {
@@ -59,20 +51,16 @@ public class MarketingQuestion implements Serializable {
 	}
 	
 	public int getNumber() {
-		return this.number;
-	}
-	
-	public void setNumber(int number) {
-		this.number=number;
+		return this.identifier.getNumber();
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + number;
+		result = prime * result + this.getNumber();
 		result = prime * result + ((productOfTheDay == null) ? 0 : productOfTheDay.hashCode());
-		result = prime * result + ((questionnaire_date == null) ? 0 : questionnaire_date.hashCode());
+		result = prime * result + ((this.getQuestionnaireDate() == null) ? 0 : this.getQuestionnaireDate().hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
 		return result;
 	}
@@ -86,17 +74,17 @@ public class MarketingQuestion implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MarketingQuestion other = (MarketingQuestion) obj;
-		if (number != other.number)
+		if (this.getNumber() != other.getNumber())
 			return false;
 		if (productOfTheDay == null) {
 			if (other.productOfTheDay != null)
 				return false;
 		} else if (!productOfTheDay.equals(other.productOfTheDay))
 			return false;
-		if (questionnaire_date == null) {
-			if (other.questionnaire_date != null)
+		if (this.getQuestionnaireDate() == null) {
+			if (other.getQuestionnaireDate() != null)
 				return false;
-		} else if (!questionnaire_date.equals(other.questionnaire_date))
+		} else if (!this.getQuestionnaireDate().equals(other.getQuestionnaireDate()))
 			return false;
 		if (text == null) {
 			if (other.text != null)
