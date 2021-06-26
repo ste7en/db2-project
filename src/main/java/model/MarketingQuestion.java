@@ -29,6 +29,10 @@ public class MarketingQuestion implements Serializable {
 
 	public MarketingQuestion() {
 	}
+	
+	public MarketingQuestionID getId() {
+		return this.identifier;
+	}
 
 	public String getText() {
 		return this.text;
