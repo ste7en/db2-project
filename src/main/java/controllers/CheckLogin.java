@@ -79,6 +79,7 @@ public class CheckLogin extends HttpServlet {
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
 			request.getSession().setAttribute("session-user", user);
+			request.getSession().setAttribute("admin", user.getAdmin());
 			path = getServletContext().getContextPath() + "/GoToHomePage";
 			response.sendRedirect(path);
 		}
