@@ -8,25 +8,20 @@ import javax.persistence.*;
 @Embeddable
 public class MarketingAnswerID implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Column(name="user_id")
-	private User user;
-	
-	@AttributeOverrides({
-		@AttributeOverride(name="number", column=@Column(name="questionnaire_number"))
-	})
+
+	private int user_id;
 	private MarketingQuestionID question;
 	
 	public MarketingAnswerID() {}
 
-	public MarketingAnswerID(User user, MarketingQuestionID question) {
+	public MarketingAnswerID(int user, MarketingQuestionID question) {
 		super();
-		this.user = user;
+		this.user_id = user;
 		this.question = question;
 	}
 
-	public User getUser() {
-		return user;
+	public int getUserId() {
+		return user_id;
 	}
 
 	public MarketingQuestionID getQuestion() {
@@ -35,7 +30,7 @@ public class MarketingAnswerID implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(question, user);
+		return Objects.hash(question, user_id);
 	}
 
 	@Override
@@ -47,7 +42,7 @@ public class MarketingAnswerID implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MarketingAnswerID other = (MarketingAnswerID) obj;
-		return Objects.equals(question, other.question) && Objects.equals(user, other.user);
+		return Objects.equals(question, other.question) && Objects.equals(user_id, other.getUserId());
 	}
 	
 	
