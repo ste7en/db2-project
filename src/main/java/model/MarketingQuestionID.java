@@ -12,6 +12,7 @@ public class MarketingQuestionID implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int number;
+	@Temporal(TemporalType.DATE)
 	private Date questionnaire_date;
 	
 	public MarketingQuestionID() {}
