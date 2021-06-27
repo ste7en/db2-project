@@ -10,37 +10,46 @@
             <div align="right">
                 <a href="Logout">Logout</a>
             </div>
-		<h1>Gamified Marketing Application</h1>
-            <h3>Product of the day:</h3>    <!--unless there is no product of today-->
-		<img width="150px" th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
-		<p>Name of the product: </p><h4 th:text="${product.name}"></h4>
-		<p>Questionnaire: </p>
-		<form action="#" th:action="@{/GoToMarketingQuestionnaire}" method="GET">
-		<!-- if submitted answers == null then you can fill out the questionnaire otherwise you have already fill out the questionnaire for today-->
-			<input type="submit" value="Fill out the questionnaire of today's product">
-		</form>
-    </div>
-	<div>
-		<h3>Leaderboard:</h3>
-		<form th:action="@{/GoToLeaderboard}" method="POST">
-			<input type="submit" value="Check your points" id="leaderboard" name="leaderboard">
-		</form>
-	</div>		
-		<h3>Reviews of the product wrote by our users:</h3>
-		<table  th:each="review : ${product.getReviews}">
-			<thead>
-				<tr>
-					<th>Username</th>
-					<th>Testo</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="r : ${review}">
-					<td th:text="${r.getKey().getUsername()}"></td>
-					<td th:text="${r.getValue()}"></td>
-				</tr>
-			</tbody>
-		</table>
+			<h1>Gamified Marketing Application</h1>
+			<!-- Product of the day -->
+			<div th:if="${product}">
+				<h3>Product of the day:</h3>    <!--unless there is no product of today-->
+				<img width="150px" th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
+				<p>Name of the product: </p><h4 th:text="${product.name}"></h4>
+				<p>Questionnaire: </p>
+				<form action="#" th:action="@{/GoToMarketingQuestionnaire}" method="GET">
+				<!-- if submitted answers == null then you can fill out the questionnaire otherwise you have already fill out the questionnaire for today-->
+					<input type="submit" value="Fill out the questionnaire of today's product">
+				</form>
+			</div>
+			<h3 th:unless="${product}">There is no product of the day! See you tomorrow :)</h3>
+	    </div>
+		<!-- Leaderboard -->
+		<div>
+			<h3>Leaderboard:</h3>
+			<form th:action="@{/GoToLeaderboard}" method="POST">
+				<input type="submit" value="Check your points" id="leaderboard" name="leaderboard">
+			</form>
+		</div>
+		<!-- Product reviews -->	
+		<div th:if="${product}">
+			<h3>Reviews of the product wrote by our users:</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Username</th>
+						<th>Testo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="r : ${reviews}">
+						<td th:text="${r.getKey().getUsername()}"></td>
+						<td th:text="${r.getValue()}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- Admin panel -->
         <div>
 			<div th:if="${user.getAdmin}">
 				<p><b>Admin Dashboard</b></p>

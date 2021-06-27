@@ -57,30 +57,32 @@ public class GoToHomePage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User user;
-		Product productOfTheDay;
-		Map<User, String> reviews;
+		Product productOfTheDay = null;
+		Map<User, String> reviews = null;
 		
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("session-user") == null) {
+		user = (User) session.getAttribute("session-user");
+		
+		if (session.isNew() || user == null) {
 			response.sendRedirect(loginpath);
 			return;
+		}		
+		
+		ProductOfTheDay potd = potdService.findProductByDate(d);
+		if (potd != null) {
+			productOfTheDay = potd.getProduct();
+			reviews = productOfTheDay.getReviews();
 		}
 		
-		user = (User) request.getSession().getAttribute("session-user");
-		
-		ProductOfTheDay productOtd = potdService.findProductByDate(d);
-		productOfTheDay = (Product) productOtd.getProduct();
-		reviews = productOfTheDay.getReviews();
-		
-		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/Home.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("user", user);
 		ctx.setVariable("product", productOfTheDay);
+		ctx.setVariable("reviews", reviews);
 		
 		templateEngine.process(path, ctx, response.getWriter());
 
