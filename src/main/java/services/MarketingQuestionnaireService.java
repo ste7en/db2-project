@@ -1,7 +1,5 @@
 package services;
 
-import java.util.Collection;
-
 import java.util.Date;
 import java.util.List;
 
@@ -22,11 +20,7 @@ public class MarketingQuestionnaireService {
 	}
 	
 	public MarketingQuestion createMarketingQuestion(int number, Date questionnaire_date, String text, ProductOfTheDay p) {
-		MarketingQuestion mq= new MarketingQuestion();
-		mq.setProductOfTheDay(p);
-		mq.setNumber(number);
-		mq.setQuestionnaireDate(questionnaire_date);
-		mq.setText(text);
+		MarketingQuestion mq = new MarketingQuestion(p, number, text);
 		em.persist(mq);
 		return mq;
 	}
@@ -50,8 +44,8 @@ public class MarketingQuestionnaireService {
 		return (em.createQuery("SELECT mq from MarketingQuestion mq WHERE mq.questionnaire_date=?1", MarketingQuestion.class).setParameter(1, d)).getResultList();
 	}
 	
-	public Collection<MarketingQuestion> findAllMarketingQuestions(){
-		TypedQuery query= em.createQuery("SELECT mq from MarketingQuestion mq", MarketingQuestion.class);
+	public List<MarketingQuestion> findAllMarketingQuestions(){
+		TypedQuery<MarketingQuestion> query= em.createQuery("SELECT mq from MarketingQuestion mq", MarketingQuestion.class);
 		return query.getResultList();
 	}
 	

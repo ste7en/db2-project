@@ -27,7 +27,11 @@ public class MarketingQuestion implements Serializable {
 	@JoinColumn(name="`questionnaire_date`", nullable=false, insertable=false, updatable=false)
 	private ProductOfTheDay productOfTheDay;
 
-	public MarketingQuestion() {
+	public MarketingQuestion() {}
+	
+	public MarketingQuestion(ProductOfTheDay p, int number, String question) {
+		this.identifier = new MarketingQuestionID(number, p.getDate());
+		this.text = question;
 	}
 	
 	public MarketingQuestionID getId() {
