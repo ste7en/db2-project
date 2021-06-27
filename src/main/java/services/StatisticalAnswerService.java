@@ -1,6 +1,7 @@
 package services;
 
-import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -8,21 +9,18 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import model.StatisticalAnswer;
+import model.User;
 
 @Stateless
 public class StatisticalAnswerService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public StatisticalAnswerService() {
-	}
+	public StatisticalAnswerService() {}
 	
-	public StatisticalAnswer createStatisticalAnswer(int user_id, int age, String sex, String experience) {
-		StatisticalAnswer sa= new StatisticalAnswer();
-		sa.setUserId(user_id);
-		sa.setAge(age);
-		sa.setSex(sex);
-		sa.setExperience(experience);
+	public StatisticalAnswer createStatisticalAnswer(int user_id, Date d, int age, char sex, int experience) {
+		User u = new UserService().findUser(user_id);
+		StatisticalAnswer sa = new StatisticalAnswer(u, d, age, sex, experience);
 		em.persist(sa);
 		return sa;
 	}
@@ -37,9 +35,19 @@ public class StatisticalAnswerService {
 			em.remove(sa);
 	}
 	
-	public Collection<StatisticalAnswer> findAllStatisticalAnswers(){
-		TypedQuery query=em.createQuery("SELECT sa FROM StatisticalAnswer sa", StatisticalAnswer.class);
+	public List<StatisticalAnswer> findAllStatisticalAnswers(){
+		TypedQuery<StatisticalAnswer> query = em.createNamedQuery("StatisticalAnswer.findAll", StatisticalAnswer.class);
 		return query.getResultList();
+	}
+	
+	public List<StatisticalAnswer> findByDate(Date d) {
+		TypedQuery<StatisticalAnswer> query = em.createNamedQuery("StatisticalAnswer.findByDate", StatisticalAnswer.class).setParameter(1, d);
+		return query.getResultList();
+	}
+	
+	public StatisticalAnswer findByUserAndDate(User u, Date d) {
+		TypedQuery<StatisticalAnswer> query = em.createNamedQuery("StatisticalAnswer.findByUserAndDate", StatisticalAnswer.class).setParameter(1, d).setParameter(2, u);
+		return query.getSingleResult();
 	}
 
 }
