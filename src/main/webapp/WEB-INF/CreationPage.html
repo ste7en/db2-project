@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<script>
+		var counter = 1;
+		function addQuestion(type) {	
+			//Create an input type dynamically.
+			var element = document.createElement("input");
+			element.type = "text";
+			element.setAttribute("required", true);
+			element.setAttribute("name", ++counter);
+			element.style.display = "block";
+			var question = document.getElementById("question");
+			//Append the element in page (in span).
+			question.appendChild(element);
+		}
+</script>
+	<title>CreationPage</title>
+</head>
+<body>
+		<h1>Set a new product of the day</h1>
+		<form th:action="@{/GoToCreationPage}" method="POST">
+			<p>
+			<label>Select a product:</label>
+			<select name="product_id" id="product_id">
+				<option th:each="p : ${products}" th:value="${p.getProduct_id()}" th:text="${p.getName()}"></option>
+			</select>
+			</p>
+			<p>
+				<label>Select a questionnaire date:</label>
+				<input type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
+			</p>
+			<p>Insert a new marketing question for the product</p>
+			<label>Write a question:</label>
+			
+			<input type="button" value="Add Question" onclick="addQuestion()"/>
+			<span id="question">
+				<input type="text" name=1 required />
+			</span>
+			<input type="submit" value="Create" name="Create Questionnaire">
+		</form>
+</body>
+</html>	
+		

@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateless;
@@ -37,7 +38,7 @@ public class ProductService {
 			em.remove(p);
 	}
 	
-	public Collection<Product> findAllProducts(){
+	public List<Product> findAllProducts(){
 		TypedQuery<Product> query=em.createQuery("SELECT p FROM Product p", Product.class);
 		return query.getResultList();
 	}
