@@ -6,7 +6,9 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -24,7 +26,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.User;
 import model.StatisticalAnswer;
+import model.MarketingAnswer;
 import model.MarketingQuestion;
+import services.MarketingAnswerService;
 import services.MarketingQuestionnaireService;
 import services.StatisticalAnswerService;
 
@@ -41,6 +45,7 @@ public class GoToInspectionPage extends HttpServlet {
 	private MarketingQuestionnaireService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
 	private StatisticalAnswerService saService;
+	private MarketingAnswerService maService;
 	
 	public GoToInspectionPage() {
 		super();
@@ -67,23 +72,35 @@ public class GoToInspectionPage extends HttpServlet {
 			return;
 		}
 		
-//		List<StatisticalAnswer> statisticalAnswers = new ArrayList<>();
-//		try {
-//		//	statisticalAnswers = saService.findAllStatisticalAnswers();
-//		} catch (Exception e) {
-//			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
-//			return;
-//		}
+		//to modify to show answers sorted by users
+		List<StatisticalAnswer> statisticalAnswers = new ArrayList<>();
+		try {
+			statisticalAnswers = saService.findAllStatisticalAnswers();
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+			return;
+		}
 		
-		//TODO List of MarketingQuestionnare answers
+		List<MarketingAnswer> marketingAnswers= new ArrayList<>();
+		try {
+			marketingAnswers = maService.findAllMarketingAnswers();
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
+			return;
+		}
+		
+		//to add list of users who submitted the questionnaire & list of users who cancelled the questionnaire
+		
+		
+		
 		
 		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/InspectionPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		//ctx.setVariable("statisticalAnswers", statisticalAnswers);
-		//ctx.setVariable("marketingAnswers", marketingAnswers)
+		ctx.setVariable("statisticalAnswers", statisticalAnswers);
+		ctx.setVariable("marketingAnswers", marketingAnswers);
 		
 		templateEngine.process(path, ctx, response.getWriter());
 
