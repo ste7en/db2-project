@@ -4,8 +4,12 @@
 package controllers;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -16,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -26,6 +31,7 @@ import model.StatisticalAnswer;
 import model.MarketingQuestion;
 import services.UserService;
 import services.StatisticalAnswerService;
+import services.LeaderboardService;
 import services.MarketingQuestionnaireService;
 
 /**
@@ -41,6 +47,9 @@ public class GoToDeletionPage extends HttpServlet {
 	private MarketingQuestionnaireService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
 	private StatisticalAnswerService saService;
+	private MarketingQuestionnaireService mqs;
+	private UserService us;
+	private LeaderboardService ls;
 
 	public GoToDeletionPage() {
 		super();
@@ -67,7 +76,6 @@ public class GoToDeletionPage extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-	
 		
 		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/DeletionPage.html";
@@ -79,7 +87,41 @@ public class GoToDeletionPage extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		String date_of_questionnaire=null;
+		
+		
+		try {
+			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("date_of_questionnaire"));
+			if ( date_of_questionnaire==null|| date_of_questionnaire.isEmpty()) {
+				throw new Exception("Missing or empty questionnaire to delete value");
+			}
+		} catch (Exception e) {
+			// for debugging only e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing questionnaire to delete value");
+			return;
+		}
+		
+		//deletion of questionnaire data
+		DateFormat format=new SimpleDateFormat("MMMM d, yyyy", Locale.ITALIAN);
+		Date date_to_insert=null;
+		try {
+			date_to_insert = format.parse(date_of_questionnaire);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Date date= new Date();
+		if(date_to_insert.after(date)) {
+			throw new RuntimeException("You cannot delete a questionnaire that has the current date or higher");
+		}
+		
+		List<MarketingQuestion> questionnaire= mqs.findByDate(date_to_insert);
+		if(questionnaire!=null) {
+			for(MarketingQuestion mq : questionnaire) {
+				questionnaire.remove(mq);
+			}
+		}	
 	}
 	
 	public void destroy() {}
