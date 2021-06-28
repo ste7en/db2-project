@@ -10,15 +10,16 @@ import java.util.Map;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
-@NamedQuery(name="User.checkCredentials", query="SELECT u FROM User u WHERE u.username = ?1 and u.password = ?2")
+	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
+	@NamedQuery(name="User.checkCredentials", query="SELECT u FROM User u WHERE u.username = ?1 and u.password = ?2"),
+	@NamedQuery(name="User.checkByUserAndEmail", query="SELECT count(u) FROM User as u WHERE u.username = ?1 or u.email = ?2")	
 })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int user_id;
 
 	@Column(name="admin")
@@ -43,7 +44,14 @@ public class User implements Serializable {
 	@Column(name = "text")
 	private Map<Product, Integer> products;
 	
-	public User() {
+	public User() {}
+	
+	public User(String username, String email, String password) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.admin = false;
+		this.blocked = false;
 	}
 
 	public int getId() {

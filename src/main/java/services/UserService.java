@@ -19,17 +19,9 @@ public class UserService {
 	
 	public UserService() { }
 	
-	public User registration( String email, String password, String username) {
-		User u= new User();
-		u.setEmail(email);
-		u.setPassword(password);
-		User presente= findUserByUsername(username);
-		if(presente!=null) { 
-			throw new RuntimeException("Username già esistente, sceglierne un altro");
-		}
-		u.setUsername(username);
-		u.setAdmin(false);
-		u.setBlocked(false);
+	public User registration(String username, String email, String password) {		
+		User u = new User(username, email, password);
+		
 		em.persist(u);
 		return u;
 	}
@@ -47,7 +39,7 @@ public class UserService {
 	}
 	
 	public void removeUser(int user_id) {
-		User u= findUser(user_id);
+		User u = findUser(user_id);
 		if(u!=null) {
 			em.remove(u);
 		}
@@ -64,6 +56,14 @@ public class UserService {
 	public Collection<User> findAllUsers(){
 		TypedQuery<User> query= em.createQuery("SELECT u from USER u", User.class);
 		return query.getResultList();
+	}
+	
+	public Boolean checkByUserAndEmail(String username, String email) {
+		return em.createNamedQuery("User.checkByUserAndEmail", Long.class)
+			.setParameter(1, username)
+			.setParameter(2, email)
+			.getSingleResult()
+			.intValue() != 0;
 	}
 	
 	public User checkCredentials(String usrn, String pwd) throws NonUniqueResultException {

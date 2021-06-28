@@ -16,9 +16,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.persistence.NonUniqueResultException;
-import javax.naming.*;
-
 import model.User;
 import services.UserService;
 
@@ -46,6 +43,16 @@ public class SignUp extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
+		String path = "/WEB-INF/SignUp.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
+		
+		templateEngine.process(path, ctx, resp.getWriter());
+	}
+	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// obtain and escape params
@@ -57,23 +64,23 @@ public class SignUp extends HttpServlet {
 			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
 			email = StringEscapeUtils.escapeJava(request.getParameter("email"));
+			
 			if (usrn == null || pwd == null || email == null || usrn.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
 			}
-
+			
+			if (usrService.checkByUserAndEmail(usrn, email))
+				throw new Exception("User already exists.");
+			else {
+				User user = usrService.registration(usrn, email, pwd);
+				request.getSession().setAttribute("session-user", user);
+				String path = getServletContext().getContextPath() + "/GoToHomePage";
+				response.sendRedirect(path);
+			}
+				
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
-		
-		User user = usrService.registration(usrn, pwd, email);
-		request.getSession().setAttribute("user", user);
-		String path = getServletContext().getContextPath() + "/GoToHomePage";
-		response.sendRedirect(path);
-
-	}
-
-	public void destroy() {
 	}
 }
