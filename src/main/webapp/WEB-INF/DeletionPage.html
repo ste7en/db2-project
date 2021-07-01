@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	</head>
+	<title>DeletionPage</title>
+<body>
+	<label>Select a questionnaire date to delete :</label>
+	<form th:action="@{/GoToDeletionPage}" method="POST">
+		<input type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
+		<input type="submit" value="Delete" name="Delete Questionnaire">
+	</form>
+</body>
+</html>
