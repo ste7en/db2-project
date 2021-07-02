@@ -6,45 +6,36 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
+@IdClass(LeaderboardID.class)
 @Table(name="leaderboard")
 @NamedQuery(name="Leaderboard.findAll", query="SELECT l FROM Leaderboard L")
 public class Leaderboard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int user;
+	@ManyToOne
+	@JoinColumn(name = "user")
+	private User user;
 	
+	@Id
 	@Temporal(TemporalType.DATE)
 	private Date questionnaire_date;
 
 	@Column(name="points")
 	private int points;
 
-	public Leaderboard() {
-	}
+	public Leaderboard() {}
 
-	public int getUser() {
+	public User getUser() {
 		return user;
-	}
-
-	public void setUser(int user) {
-		this.user = user;
 	}
 
 	public Date getQuestionnaire_date() {
 		return questionnaire_date;
 	}
 
-	public void setQuestionnaire_date(Date questionnaire_date) {
-		this.questionnaire_date = questionnaire_date;
-	}
-
 	public int getPoints() {
 		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
 	}
 
 	@Override
@@ -53,7 +44,7 @@ public class Leaderboard implements Serializable {
 		int result = 1;
 		result = prime * result + points;
 		result = prime * result + ((questionnaire_date == null) ? 0 : questionnaire_date.hashCode());
-		result = prime * result + user;
+		result = prime * result + user.getId();
 		return result;
 	}
 
