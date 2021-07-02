@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,25 +14,16 @@ public class LeaderboardService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
 	
-	public LeaderboardService() {
-	}
-	
-	public Leaderboard createLeaderboard(int user, Date questionnaire_date) {
-		Leaderboard l= new Leaderboard();
-		l.setUser(user);
-		l.setQuestionnaire_date(questionnaire_date);
-		l.setPoints(0);
-		em.persist(l);
-		return l;
-	}
+	public LeaderboardService() {}
 	
 	public Leaderboard findLeaderboardByUser(int user) {
 		return em.find(Leaderboard.class, user);
 	}
 	
-	
-	
-	
-	
+	public List<Leaderboard> findLeaderboardsByDate(Date d) {		
+		return em.createNamedQuery("Leaderboard.findLeaderboardsByDate", Leaderboard.class)
+				.setParameter(1, d)
+				.getResultList();
+	}
 
 }
