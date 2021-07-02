@@ -47,7 +47,6 @@ public class GoToDeletionPage extends HttpServlet {
 	private MarketingQuestionnaireService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
 	private StatisticalAnswerService saService;
-	private MarketingQuestionnaireService mqs;
 	private UserService us;
 	private LeaderboardService ls;
 
@@ -91,7 +90,7 @@ public class GoToDeletionPage extends HttpServlet {
 		
 		
 		try {
-			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("date_of_questionnaire"));
+			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
 			if ( date_of_questionnaire==null|| date_of_questionnaire.isEmpty()) {
 				throw new Exception("Missing or empty questionnaire to delete value");
 			}
@@ -102,7 +101,7 @@ public class GoToDeletionPage extends HttpServlet {
 		}
 		
 		//deletion of questionnaire data
-		DateFormat format=new SimpleDateFormat("MMMM d, yyyy", Locale.ITALIAN);
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
 		Date date_to_insert=null;
 		try {
 			date_to_insert = format.parse(date_of_questionnaire);
@@ -116,7 +115,7 @@ public class GoToDeletionPage extends HttpServlet {
 			throw new RuntimeException("You cannot delete a questionnaire that has the current date or higher");
 		}
 		
-		List<MarketingQuestion> questionnaire= mqs.findByDate(date_to_insert);
+		List<MarketingQuestion> questionnaire= mqService.findByDate(date_to_insert);
 		if(questionnaire!=null) {
 			for(MarketingQuestion mq : questionnaire) {
 				questionnaire.remove(mq);
