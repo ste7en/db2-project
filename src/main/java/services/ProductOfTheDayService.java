@@ -27,20 +27,9 @@ public class ProductOfTheDayService {
 		return em.find(ProductOfTheDay.class, d);
 	}
 	
-	public ProductOfTheDay findProductByProduct(Product p) {
-		return em.find(ProductOfTheDay.class, p);
-	}
-
-	public void removeProductOfTheDay(Product p) {
-		ProductOfTheDay pofd= findProductByProduct(p);
-		if(pofd!=null)
-			em.remove(pofd);
-	}
-	
 	public void removeProductOfTheDay(Date d) {
 		ProductOfTheDay pofd= findProductByDate(d);
 		if(pofd!=null)
 			em.remove(pofd);
 	}
-
 }
