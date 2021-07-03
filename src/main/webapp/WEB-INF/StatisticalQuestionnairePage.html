@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>StatisticalQuestionnaire</title>
+	</head>
+	<body>
+		<h1>Gamified Marketing Application</h1>
+		<h3>Statistical Questionnaire</h3>
+		
+<form th:action="@{/SubmitStatisticalAnswer}" method="POST">	
+			<table>
+				<thead>
+					<tr>
+						<th>Question</th>
+						<th>Answer</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					<th><label for="m">Male</label><input type="radio" name="gender" id="male"></th>
+    
+				    <th><label for="f">Female</label><input type="radio" name="gender" id="female"></th>
+				    </tr>
+					
+					<tr>
+					<th><label>Age</label><input type="number" name="age" size="3"><th>
+					</tr>
+					
+					<tr>
+					<th><select name="experience">
+				        <option selected disabled>Experience level</option>
+				        <option>Low</option>
+				        <option>Medium</option>
+				        <option>High</option>
+			    	</select></th>
+			    	</tr>
+				</tbody>
+			</table>
+			
+			<input type="submit" th:value="Send" id="Send" name="Submit">
+		</form>
+	</body>
+</html>
