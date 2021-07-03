@@ -10,9 +10,9 @@
 		
 		<form th:action="@{/SubmitStatisticalAnswer}" method="POST">	
 			<div>
-				<label for="f"></label><input type="radio" name="gender" id="f" value="F">
+				<label for="f"></label><input type="radio" value="F" name="gender" id="f" >
 				
-				<label for="m"></label><input type="radio" name="gender" id="m" value="M"><br><br>
+				<label for="m"></label><input type="radio" value="M" name="gender" id="m" ><br><br>
 		  
 				<label>Age</label><input type="number" name="age" size="3"><br><br>
 				<select name="experience">
@@ -29,6 +29,9 @@
 		</form>
 		<form th:action="@{/GoToMarketingQuestionnaire}" method="GET">
  			<input type="button" value="Previous" name="Back">
+		</form>
+		<form th:action="@{/GoToHomePage}" method="POST">	
+			<input type="submit" value="Back Home" id="Back" name="Back">
 		</form>
 	</body>
 </html>
