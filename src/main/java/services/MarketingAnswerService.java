@@ -46,7 +46,9 @@ public class MarketingAnswerService {
 		TypedQuery<MarketingAnswer> query= em.createNamedQuery("MarketingAnswer.findByDate", MarketingAnswer.class)
 				.setParameter(1, d);
 		return query.getResultList();
-		}
+	}
 	
-
+	public boolean checkIfExists(User u, Date d) {
+		return !findByUserAndDate(u, d).isEmpty();
+	}
 }
