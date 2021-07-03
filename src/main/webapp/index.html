@@ -1,21 +1,23 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<link href="CSS-STYLE/index.css" rel="stylesheet" type="text/css">
-<meta charset="ISO-8859-1">
-</head>
-<div class="body"></div>
-		<div class="grad"></div>
-		<div class="header">
-			<div>Gamified<span> Marketing</span> Application</div>
-			</div>
-		<br><div class="login">
-		<form action="CheckLogin" method="POST">
-		<input type="text" name="username" placeholder="username" required> <br>
-		 <input type="password" name="pwd" placeholder="password" required><br>
-		<input type="submit" value="login">
-		<p th:text=" ${errorMsg}"></p>
-	</form>
-	Don't have an account? <a href=SignUp>Sign up!</a>
+	<head>
+		<link href="CSS-STYLE/index.css" rel="stylesheet" type="text/css">
+		<meta charset="ISO-8859-1">
+		<title>Index</title>
+	</head>
+		<div class="body"></div>
+				<div class="grad"></div>
+				<div class="header">
+					<div>Gamified<span> Marketing</span> Application</div>
+					</div>
+				<br><div class="login">
+				<form action="CheckLogin" method="POST">
+				<input type="text" name="username" placeholder="username" required> <br>
+				 <input type="password" name="pwd" placeholder="password" required><br>
+				<input type="submit" value="login">
+				<p th:text=" ${errorMsg}"></p>
+			</form>
+			Don't have an account? <a href=SignUp>Sign up!</a>
 
 </body>
 </html>

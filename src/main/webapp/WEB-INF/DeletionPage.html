@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="ISO-8859-1">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>DeletionPage</title>
 	</head>
-	<title>DeletionPage</title>
-<body>
-	<label>Select a questionnaire date to delete :</label>
-	<form th:action="@{/GoToDeletionPage}" method="POST">
-		<input type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
-		<input type="submit" value="Delete" name="Delete Questionnaire">
-	</form>
-</body>
+	
+	<body>
+		<h1>Gamified Marketing Application</h1>
+		<h3>Delete a Questionnaire</h3>
+		<label>Select a questionnaire date to delete :</label>
+		<form th:action="@{/GoToDeletionPage}" method="POST">
+			<input type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
+			<input type="submit" value="Delete" name="Delete Questionnaire">
+		</form>
+		<form th:action="@{/GoToHomePage}" method="POST">	
+					<input type="submit" value="Back Home" id="Back" name="Back">
+		</form>
+	</body>
 </html>
