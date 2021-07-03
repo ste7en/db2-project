@@ -27,7 +27,7 @@ public class MarketingQuestion implements Serializable {
 
 	//bi-directional many-to-one association to ProductOfTheDay
 	@ManyToOne
-	@JoinColumn(name="`questionnaire_date`", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="questionnaire_date", nullable=false, insertable=false, updatable=false)
 	private ProductOfTheDay productOfTheDay;
 
 	public MarketingQuestion() {}

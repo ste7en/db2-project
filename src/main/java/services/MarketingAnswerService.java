@@ -26,7 +26,7 @@ public class MarketingAnswerService {
 	}
 	
 	public void saveMarketingAnswers(List<MarketingAnswer> answers) {
-		for (MarketingAnswer answer : answers) {
+		for (MarketingAnswer answer : answers) {					
 			em.persist(answer);
 		}
 	}

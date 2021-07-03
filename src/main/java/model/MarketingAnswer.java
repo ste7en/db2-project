@@ -38,6 +38,7 @@ public class MarketingAnswer implements Serializable {
 		this.id = new MarketingAnswerID(user.getId(), questionID);
 		this.user = user;
 		this.answer = answer;
+		this.question = question;
 	}
 
 	public String getAnswer() {
