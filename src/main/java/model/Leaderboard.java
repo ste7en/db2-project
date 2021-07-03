@@ -8,7 +8,11 @@ import javax.persistence.*;
 @Entity
 @IdClass(LeaderboardID.class)
 @Table(name="leaderboard")
-@NamedQuery(name="Leaderboard.findAll", query="SELECT l FROM Leaderboard L")
+@NamedQueries ({ @NamedQuery(name="Leaderboard.findAll", query="SELECT l FROM Leaderboard L"),
+				@NamedQuery(name="Leaderboard.totalScore", query="SELECT sum(l.points) FROM Leaderboard l WHERE l.user = ?1"),
+				@NamedQuery(name="Leaderboard.findLeaderboardsByDate", query="SELECT l FROM Leaderboard l WHERE l.questionnaire_date = ?1 ORDER BY l.points DESC")
+})
+
 public class Leaderboard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +27,7 @@ public class Leaderboard implements Serializable {
 
 	@Column(name="points")
 	private int points;
-
+	
 	public Leaderboard() {}
 
 	public User getUser() {

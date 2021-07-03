@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,12 +46,14 @@ public class GoToLeaderboard extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		Date date = new Date();  
+		
 		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		Date date = new Date();  
 		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
@@ -59,19 +62,21 @@ public class GoToLeaderboard extends HttpServlet {
 			return;
 		}
 	
-//		List<Leaderboard> leaderboards = new ArrayList<>();
-//		try {
-//			leaderboards = lService.getLeaderboards();
-//		} catch (Exception e) {
-//			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
-//			return;
-//		}
-//		
+		List<Leaderboard> leaderboards = new ArrayList<>();
+		try {
+			leaderboards = lService.findLeaderboardsByDate(date);
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing Leaderbord for this day!");
+			return;
+		}
+		
+		
 		// If the user is not logged in (not present in session) redirect to the login
-		String path = "/WEB-INF/DeletionPage.html";
+		String path = "/WEB-INF/LeaderBoard.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-//		ctx.setVariable("leaderboards", leaderboards);
+		ctx.setVariable("leaderboards", leaderboards);
+		ctx.setVariable("leaderboardService", lService);
 		templateEngine.process(path, ctx, response.getWriter());
 
 	}

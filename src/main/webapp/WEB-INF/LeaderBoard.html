@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>LeaderBoard</title>
+<body>
+	<h3>Check your points!</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Scores</th>
+				<th>Total Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="l : ${leaderboards}">
+					<td th:text="${l.getUser().getUsername()}"></td>
+					<td th:text="${l.getPoints()}"></td>
+					<td th:text="${leaderboardService.totalScore(l.getUser())}"></td>
+				</tr>
+		</tbody>
+	</table>
+</body>
+
+</head>
+</html>

@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import model.Leaderboard;
+import model.User;
 
 @Stateless
 public class LeaderboardService {
@@ -24,6 +25,12 @@ public class LeaderboardService {
 		return em.createNamedQuery("Leaderboard.findLeaderboardsByDate", Leaderboard.class)
 				.setParameter(1, d)
 				.getResultList();
+	}
+	
+	public int totalScore(User u){
+		return em.createNamedQuery("Leaderboard.totalScore", Integer.class)
+				.setParameter(1, u)
+				.getSingleResult();
 	}
 
 }
