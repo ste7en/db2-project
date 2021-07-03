@@ -1,9 +1,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,13 +15,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import model.User;
-import model.StatisticalAnswer;
-import model.MarketingQuestion;
-import model.Leaderboard;
-import services.UserService;
-import services.StatisticalAnswerService;
-import services.MarketingQuestionService;
 import services.LeaderboardService;
 
 /**

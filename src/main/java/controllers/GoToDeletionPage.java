@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.ejb.EJB;
@@ -26,12 +25,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import model.User;
-import model.StatisticalAnswer;
-import model.MarketingQuestion;
-import services.UserService;
 import services.StatisticalAnswerService;
-import services.LeaderboardService;
 import services.MarketingQuestionService;
 import services.ProductOfTheDayService;
 

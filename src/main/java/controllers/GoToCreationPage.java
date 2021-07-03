@@ -9,8 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -92,12 +90,8 @@ public class GoToCreationPage extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<Product> products;
 		Product p = ps.findProduct(Integer.parseInt(request.getParameter("product_id")));
 		String date_of_p=null;
-		String text=null;
-		String number=null;
-		
 		try {
 			date_of_p = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
 			if ( date_of_p==null || date_of_p.isEmpty()) {
