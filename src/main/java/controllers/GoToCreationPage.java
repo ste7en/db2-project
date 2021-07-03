@@ -48,7 +48,6 @@ public class GoToCreationPage extends HttpServlet {
 
 	public GoToCreationPage() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {
@@ -62,12 +61,11 @@ public class GoToCreationPage extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		
+			throws ServletException, IOException {		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || !(boolean)(session.getAttribute("admin"))) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}
@@ -109,7 +107,7 @@ public class GoToCreationPage extends HttpServlet {
 		try {
 			date_to_insert = format.parse(date_of_p);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			// Auto-generated catch block
 			e.printStackTrace();
 		}
 		ProductOfTheDay poftd=null;

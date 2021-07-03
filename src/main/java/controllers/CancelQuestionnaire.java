@@ -31,7 +31,6 @@ public class CancelQuestionnaire extends HttpServlet {
 
 	public CancelQuestionnaire() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {

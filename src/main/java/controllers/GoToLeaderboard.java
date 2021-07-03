@@ -36,7 +36,6 @@ public class GoToLeaderboard extends HttpServlet {
 
 	public GoToLeaderboard() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {

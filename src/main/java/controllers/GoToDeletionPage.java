@@ -48,7 +48,6 @@ public class GoToDeletionPage extends HttpServlet {
 	
 	public GoToDeletionPage() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {
@@ -62,20 +61,19 @@ public class GoToDeletionPage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("admin") == null) {
+		// If the user is not logged in (not present in session) redirect to the login
+		if (session.isNew() || !(boolean)session.getAttribute("admin")) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}
 		
-		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/DeletionPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		templateEngine.process(path, ctx, response.getWriter());
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -100,7 +98,7 @@ public class GoToDeletionPage extends HttpServlet {
 		try {
 			date_to_insert = format.parse(date_of_questionnaire);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			// Auto-generated catch block
 			e.printStackTrace();
 		}
 		

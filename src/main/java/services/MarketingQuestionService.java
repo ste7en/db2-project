@@ -42,6 +42,4 @@ public class MarketingQuestionService {
 	public List<MarketingQuestion> findAllMarketingQuestions(){
 		return em.createNamedQuery("MarketingQuestion.findAll", MarketingQuestion.class).getResultList();
 	}
-	
-	public void destroy() {}
 }

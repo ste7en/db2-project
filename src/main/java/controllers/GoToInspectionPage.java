@@ -74,7 +74,8 @@ public class GoToInspectionPage extends HttpServlet {
 			throws ServletException, IOException {		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("admin") == null || (boolean)session.getAttribute("admin") == false) {
+		if (session.isNew() || !(boolean)session.getAttribute("admin")) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}	
@@ -113,7 +114,7 @@ public class GoToInspectionPage extends HttpServlet {
 		try {
 			date_to_insert = format.parse(date_of_questionnaire);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			// Auto-generated catch block
 			e.printStackTrace();
 		}
 		
