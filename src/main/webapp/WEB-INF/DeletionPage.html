@@ -10,7 +10,7 @@
 		<h3>Delete a Questionnaire</h3>
 		<label>Select a questionnaire date to delete :</label>
 		<form th:action="@{/GoToDeletionPage}" method="POST">
-			<input type="date" th:min="${today}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
+			<input type="date" th:max="${minDate}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
 			<input type="submit" value="Delete" name="Delete Questionnaire" >
 		</form>
 		<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>

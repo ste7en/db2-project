@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -44,10 +43,15 @@ public class GoToDeletionPage extends HttpServlet {
 	private StatisticalAnswerService saService;
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
 	private ProductOfTheDayService pofdService;
-	
+	private DateFormat dateFormat;
+	private String yesterday;
 	
 	public GoToDeletionPage() {
 		super();
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, -1);
+		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		this.yesterday = this.dateFormat.format(date.getTime());
 	}
 
 	public void init() throws ServletException {
@@ -73,6 +77,7 @@ public class GoToDeletionPage extends HttpServlet {
 		String path = "/WEB-INF/DeletionPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("minDate", yesterday);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
@@ -93,10 +98,9 @@ public class GoToDeletionPage extends HttpServlet {
 		}
 		
 		//deletion of questionnaire data
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
 		Date date_to_insert = null;
 		try {
-			date_to_insert = format.parse(date_of_questionnaire);
+			date_to_insert = dateFormat.parse(date_of_questionnaire);
 		} catch (ParseException e) {
 			// Auto-generated catch block
 			e.printStackTrace();
