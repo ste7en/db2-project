@@ -48,11 +48,17 @@ public class GoToInspectionPage extends HttpServlet {
 	private MarketingQuestionService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
 	private StatisticalAnswerService saService;
+	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
 	private MarketingAnswerService maService;
+	DateFormat dateFormat;
+	Date date;
+	String today;
 	
 	public GoToInspectionPage() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		this.date = new Date();
+		this.today = dateFormat.format(date);
 	}
 
 	public void init() throws ServletException {
@@ -62,12 +68,26 @@ public class GoToInspectionPage extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html"); 
-		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws ServletException, IOException {		
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		HttpSession session = request.getSession();
+		if (session.isNew() || session.getAttribute("admin") == null || (boolean)session.getAttribute("admin") == false) {
+			response.sendRedirect(loginpath);
+			return;
+		}	
 		
+		String path = "/WEB-INF/InspectionPage.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("today", today);
+		templateEngine.process(path, ctx, response.getWriter());
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String date_of_questionnaire=null;
 		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
@@ -102,7 +122,6 @@ public class GoToInspectionPage extends HttpServlet {
 			throw new RuntimeException("You cannot show data for a not yet created questionnaire");
 		}
 		
-		
 		//to modify to show answers sorted by users
 		List<StatisticalAnswer> statisticalAnswers = new ArrayList<>();
 		try {
@@ -120,29 +139,15 @@ public class GoToInspectionPage extends HttpServlet {
 			return;
 		}
 		
-		//to add list of users who submitted the questionnaire & list of users who cancelled the questionnaire
-		
-		
-		
-		
-		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/InspectionPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("statisticalAnswers", statisticalAnswers);
 		ctx.setVariable("marketingAnswers", marketingAnswers);
-		
+		ctx.setVariable("today", today);
+
 		templateEngine.process(path, ctx, response.getWriter());
-
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-	
-	public void destroy() {}
-
 
 }

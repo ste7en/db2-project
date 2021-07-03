@@ -48,9 +48,8 @@ public class GoToDeletionPage extends HttpServlet {
 	private MarketingQuestionService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
 	private StatisticalAnswerService saService;
-	private UserService us;
-	private LeaderboardService ls;
-	private ProductOfTheDayService ps;
+	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
+	private ProductOfTheDayService pofdService;
 	
 	
 	public GoToDeletionPage() {
@@ -64,9 +63,7 @@ public class GoToDeletionPage extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-		Date date = new Date();  
-		
+		templateResolver.setSuffix(".html");		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -90,7 +87,7 @@ public class GoToDeletionPage extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String date_of_questionnaire=null;
-		
+		ServletContext servletContext = getServletContext();
 		
 		try {
 			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
@@ -104,8 +101,8 @@ public class GoToDeletionPage extends HttpServlet {
 		}
 		
 		//deletion of questionnaire data
-		DateFormat format=new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-		Date date_to_insert=null;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+		Date date_to_insert = null;
 		try {
 			date_to_insert = format.parse(date_of_questionnaire);
 		} catch (ParseException e) {
@@ -118,10 +115,8 @@ public class GoToDeletionPage extends HttpServlet {
 			throw new RuntimeException("You cannot delete a questionnaire that has the current date or higher");
 		}
 		
-		ps.removeProductOfTheDay(date_to_insert);
-
+		pofdService.removeProductOfTheDay(date_to_insert);
+		String path = servletContext.getContextPath() + "/GoToDeletionPage";
+		response.sendRedirect(path);
 	}
-	
-	public void destroy() {}
-
 }

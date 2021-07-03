@@ -42,8 +42,5 @@ public class ProductOfTheDayService {
 		if(pofd!=null)
 			em.remove(pofd);
 	}
-	
-	
-	
 
 }

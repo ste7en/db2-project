@@ -3,15 +3,21 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>InspectionPage</title>
+	</head>
+	<body>
+		<h1>Gamified Marketing Application</h1>
+		<h3>Inspection Page</h3>
 		<form th:action="@{/GoToInspectionPage}" method="POST">
-		<label>Select a questionnaire date:</label>
-				<input type="date" th:min="${today}" name="questionnaireDate" th:value="${date_of_questionnaire}"  placeholder="yyyy-mm-dd" required>
-				<input type="submit" value="Show" name="Show questionnaire data">
+			<label>Select a questionnaire date:</label>
+			<input type="date" th:max="${today}" name="questionnaireDate" th:value="${date_of_questionnaire}"  placeholder="yyyy-mm-dd" required>
+			<input type="submit" value="Show" name="Show questionnaire data">
 		</form>
+		<br>
+		<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
 		
-		<h2>Statistical Answers</h2>
+		<h3>Statistical Answers</h3>
 		<div th:if="${statisticalAnswers}">
-			<h3>Statistical answers given by our users:</h3>
+			<h4>Statistical answers given by our users:</h4>
 			<table>
 				<thead>
 					<tr>
@@ -23,7 +29,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="s: ${statisticalAnswers}">
-						<td th:text="${s.getKey().getUser().getUsername()}"></td>
+						<td th:text="${s.getUser().getUsername()}"></td>
 						<td th:text="${s.getSex()}"></td>
 						<td th:text="${s.getAge()}"></td>
 						<td th:text="${s.getExperience()}"></td>
@@ -32,26 +38,25 @@
 			</table>
 		</div>
 		
-		<h2>Marketing Answers</h2>
+		<h3>Marketing Answers</h3>
 		<div th:if="${marketingAnswers}">
-			<h3>Statistical answers given by our users:</h3>
+			<h4>Statistical answers given by our users:</h4>
 			<table>
 				<thead>
 					<tr>
 						<th>Username</th>
+						<th>Question Number</th>
 						<th>Marketing Answer</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="m: ${marketingAnswers}">
-						<td th:text="${s.getKey().getUser().getUsername()}"></td>
-						<td th:text="${s.getAnswer()}"></td>
+						<td th:text="${m.getUser().getUsername()}"></td>
+						<td th:text="${m.getQuestion().getNumber()}"></td>
+						<td th:text="${m.getAnswer()}"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-	</head>
-<body>
-
-</body>
+	</body>
 </html>

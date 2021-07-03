@@ -13,8 +13,6 @@
 			<input type="date" th:min="${today}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
 			<input type="submit" value="Delete" name="Delete Questionnaire" >
 		</form>
-		<form th:action="@{/GoToHomePage}" method="POST">	
-					<input type="submit" value="Back Home" id="Back" name="Back">
-		</form>
+		<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
 	</body>
 </html>

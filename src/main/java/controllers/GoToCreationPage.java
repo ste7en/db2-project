@@ -129,8 +129,7 @@ public class GoToCreationPage extends HttpServlet {
 			if (question == null) break;
 			mqs.createMarketingQuestion(i, date_to_insert, question, poftd);
 		}
+		response.sendRedirect(getServletContext().getContextPath() + "/GoToCreationPage");
 	}
 	
-	public void destroy() {}
-
 }

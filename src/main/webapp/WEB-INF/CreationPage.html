@@ -36,14 +36,15 @@
 				<label>Write a question:</label>
 				
 				<input type="button" value="Add Question" onclick="addQuestion()"/>
+				<br>
 				<span id="question">
 					<input type="text" name=1 required />
 				</span>
+				<br>
 				<input type="submit" value="Create" name="Create Questionnaire">
 			</form>
-			<form th:action="@{/GoToHomePage}" method="POST">	
-				<input type="submit" value="Back Home" id="Back" name="Back">
-			</form>
+			<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
+
 	</body>
 </html>	
 		
