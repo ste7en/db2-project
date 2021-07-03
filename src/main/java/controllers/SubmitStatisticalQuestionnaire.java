@@ -71,11 +71,15 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 			throw new ServletException("The user submitted a statistical questionnaire before the marketing questionnaire.");
 		}
 		
-		Integer age = Integer.parseInt(request.getParameter("age"));
-		String sex = request.getParameter("gender");
-		Integer experience = Integer.parseInt(request.getParameter("experience"));
+		Integer age = null;
+		Character sex = null;
+		Integer experience = null;
 		
-		StatisticalAnswer statisticalAnswer = new StatisticalAnswer(user, sessionDate, age, sex.charAt(0), experience);
+		try { age = Integer.parseInt(request.getParameter("age")); } catch (Exception e) {}
+		try { sex = request.getParameter("gender").charAt(0); } catch (Exception e) {}
+		try { experience = Integer.parseInt(request.getParameter("experience")); } catch (Exception e) {}
+		
+		StatisticalAnswer statisticalAnswer = new StatisticalAnswer(user, sessionDate, age, sex, experience);
 		
 		maService.saveMarketingAnswers(answers);
 		saService.saveStatisticalAnswer(statisticalAnswer);

@@ -27,17 +27,17 @@ public class StatisticalAnswer implements Serializable {
 	private Date questionnaire_date;
 	
 	@Column(name="age")
-	private int age;
+	private Integer age;
 	
 	@Column(name="sex")
-	private char sex;
+	private Character sex;
 	
 	@Column(name="experience")
-	private int experience;
+	private Integer experience;
 	
 	public StatisticalAnswer() {}
 	
-	public StatisticalAnswer(User u, Date d, int age, char sex, int experience) {
+	public StatisticalAnswer(User u, Date d, Integer age, Character sex, Integer experience) {
 		this.user = u;
 		this.questionnaire_date = d;
 		this.age = age;
@@ -45,15 +45,15 @@ public class StatisticalAnswer implements Serializable {
 		this.experience = experience;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public char getSex() {
+	public Character getSex() {
 		return sex;
 	}
 
-	public int getExperience() {
+	public Integer getExperience() {
 		return experience;
 	}
 
