@@ -21,6 +21,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import model.Product;
 import model.ProductOfTheDay;
 import model.User;
+import services.MarketingAnswerService;
 import services.ProductOfTheDayService;
 import services.ProductService;
 
@@ -37,6 +38,8 @@ public class GoToHomePage extends HttpServlet {
 	private ProductOfTheDayService potdService;
 	@EJB(name = "db2-project.src.main.java.services/ProductService")
 	private ProductService pService;
+	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
+	private MarketingAnswerService maService;
 
 	public GoToHomePage() {
 		super();
@@ -90,6 +93,7 @@ public class GoToHomePage extends HttpServlet {
 		ctx.setVariable("user", user);
 		ctx.setVariable("product", productOfTheDay);
 		ctx.setVariable("reviews", reviews);
+		ctx.setVariable("userHasAlreadyFilled", maService.checkIfExists(user, sessionDate));
 		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
