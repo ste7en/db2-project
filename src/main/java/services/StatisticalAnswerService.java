@@ -25,6 +25,10 @@ public class StatisticalAnswerService {
 		return sa;
 	}
 	
+	public void saveStatisticalAnswer(StatisticalAnswer answer) {
+		em.persist(answer);
+	}
+	
 	public StatisticalAnswer findStatisticalAnswer(int user_id) {
 		return em.find(StatisticalAnswer.class, user_id);
 	}

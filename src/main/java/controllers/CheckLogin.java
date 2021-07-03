@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -9,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
 import org.thymeleaf.TemplateEngine;
@@ -45,6 +48,8 @@ public class CheckLogin extends HttpServlet {
 		// obtain and escape params
 		String usrn = null;
 		String pwd = null;
+		Date sessionDate = new Date();
+		HttpSession session = request.getSession();
 		try {
 			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
@@ -71,16 +76,17 @@ public class CheckLogin extends HttpServlet {
 		// show login page with error message
 
 		String path;
+		ServletContext servletContext = getServletContext();
 		if (user == null) {
-			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", "Incorrect username or password");
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
-			request.getSession().setAttribute("session-user", user);
-			request.getSession().setAttribute("admin", user.getAdmin());
-			path = getServletContext().getContextPath() + "/GoToHomePage";
+			session.setAttribute("session-user", user);
+			session.setAttribute("admin", user.getAdmin());
+			session.setAttribute("session-date", sessionDate);
+			path = servletContext.getContextPath() + "/GoToHomePage";
 			response.sendRedirect(path);
 		}
 

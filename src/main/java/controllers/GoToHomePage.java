@@ -37,12 +37,9 @@ public class GoToHomePage extends HttpServlet {
 	private ProductOfTheDayService potdService;
 	@EJB(name = "db2-project.src.main.java.services/ProductService")
 	private ProductService pService;
-	private Date d;
 
 	public GoToHomePage() {
 		super();
-		// After auto-generated constructor stub
-		this.d = new Date();
 	}
 
 	public void init() throws ServletException {
@@ -54,9 +51,11 @@ public class GoToHomePage extends HttpServlet {
 		templateResolver.setSuffix(".html");
 	}
 
+	@SuppressWarnings("deprecation")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		User user;
+		Date sessionDate;
 		Product productOfTheDay = null;
 		Map<User, String> reviews = null;
 		
@@ -64,13 +63,21 @@ public class GoToHomePage extends HttpServlet {
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		user = (User) session.getAttribute("session-user");
+		sessionDate = (Date) session.getAttribute("session-date");
 		
 		if (session.isNew() || user == null) {
 			response.sendRedirect(loginpath);
 			return;
-		}		
+		}
 		
-		ProductOfTheDay potd = potdService.findProductByDate(d);
+		// If the user returns to the home page after logging in a check on the session 
+		// date is performed to set it to the new date in case of the get is performed a day after
+		if (sessionDate.getDay() != new Date().getDay()) {
+			sessionDate = new Date();
+			session.setAttribute("session-date", sessionDate);
+		}
+		
+		ProductOfTheDay potd = potdService.findProductByDate(sessionDate);
 		if (potd != null) {
 			productOfTheDay = potd.getProduct();
 			reviews = productOfTheDay.getReviews();
@@ -85,7 +92,6 @@ public class GoToHomePage extends HttpServlet {
 		ctx.setVariable("reviews", reviews);
 		
 		templateEngine.process(path, ctx, response.getWriter());
-
 	}
 
 }

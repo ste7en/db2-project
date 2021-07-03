@@ -32,7 +32,10 @@ public class MarketingAnswer implements Serializable {
 	
 	public MarketingAnswer(User user, MarketingQuestion question, String answer) {
 		super();
-		this.id = new MarketingAnswerID(user.getId(), question.getId());
+		MarketingQuestionID questionID = question.getId();
+		if (questionID == null)
+			throw new RuntimeException("Question ID is null for question " + question.getText());
+		this.id = new MarketingAnswerID(user.getId(), questionID);
 		this.user = user;
 		this.answer = answer;
 	}

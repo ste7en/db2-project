@@ -1,9 +1,7 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.Date;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +15,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import model.StatisticalAnswer;
-import services.StatisticalAnswerService;
+import model.User;
 
 /**
  * Servlet implementation class GoToStatisticalQuestionnaire
@@ -29,12 +26,9 @@ public class GoToStatisticalQuestionnaire extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
-	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
-	private StatisticalAnswerService saService;
 	
 	public GoToStatisticalQuestionnaire() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {
@@ -43,46 +37,25 @@ public class GoToStatisticalQuestionnaire extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html"); 
-		
+		templateResolver.setSuffix(".html");
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("admin") == null) {
+		User user = (User) session.getAttribute("session-user");
+		// If the user is not logged in (not present in session) redirect to the login
+		if (session.isNew() || user == null) {
 			response.sendRedirect(loginpath);
 			return;
 		}
-		
-//		List<StatisticalAnswer> statisticalAnswers = new ArrayList<>();
-//		try {
-//		//	statisticalAnswers = saService.findAllStatisticalAnswers();
-//		} catch (Exception e) {
-//			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
-//			return;
-//		}
-		
-		
-		// If the user is not logged in (not present in session) redirect to the login
-		String path = "/WEB-INF/InspectionPage.html";
+
+		String path = "/WEB-INF/StatisticalQuestionnairePage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		
-		//ctx.setVariable("statisticalAnswers", statisticalAnswers);
 		
 		templateEngine.process(path, ctx, response.getWriter());
 
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-	
-	public void destroy() {}
-
-
 }

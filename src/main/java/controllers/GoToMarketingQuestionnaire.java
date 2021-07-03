@@ -59,8 +59,8 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 			return;
 		}
 		
-		Date d = new Date();
-		List<MarketingQuestion> marketingQuestions = mqService.findByDate(d);
+		Date sessionDate = (Date) session.getAttribute("session-date");
+		List<MarketingQuestion> marketingQuestions = mqService.findByDate(sessionDate);
 		
 		// Redirect to the Home page and add missions to the parameters	
 		String path = "/WEB-INF/MarketingQuestionnairePage.html";

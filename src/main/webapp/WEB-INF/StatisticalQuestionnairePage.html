@@ -8,18 +8,18 @@
 		<h1>Gamified Marketing Application</h1>
 		<h3>Statistical Questionnaire</h3>
 		
-		<form th:action="@{/SubmitStatisticalAnswer}" method="POST">	
+		<form th:action="@{/SubmitStatisticalQuestionnaire}" method="POST">	
 			<div>
-				<label for="f"></label><input type="radio" value="F" name="gender" id="f" >
+				<label for="f">Female</label><input type="radio" name="gender" id="f" value="F">
 				
-				<label for="m"></label><input type="radio" value="M" name="gender" id="m" ><br><br>
+				<label for="m">Male</label><input type="radio" name="gender" id="m" value="M"><br><br>
 		  
 				<label>Age</label><input type="number" name="age" size="3"><br><br>
 				<select name="experience">
 				        <option selected disabled>Experience level</option>
-				        <option>Low</option>
-				        <option>Medium</option>
-				        <option>High</option>
+				        <option value=1>Low</option>
+				        <option value=2>Medium</option>
+				        <option value=3>High</option>
 			    </select><br><br>
 			</div>
 			<input type="submit" th:value="Send" id="Send" name="Submit">

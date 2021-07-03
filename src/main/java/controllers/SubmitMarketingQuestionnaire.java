@@ -53,13 +53,12 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		HttpSession session = request.getSession();
-		Date today = new Date();
+		Date sessionDate = (Date) session.getAttribute("session-date");
 		User user = (User) session.getAttribute("session-user");
 
 		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		String loginpath = servletContext.getContextPath() + "/index.html";
 		if (session.isNew() || user == null) {
 			response.sendRedirect(loginpath);
 			return;
@@ -71,13 +70,14 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 		for(int i = 1; ;i++) {
 			String answer = request.getParameter(Integer.toString(i));
 			if (answer == null) break;
-			MarketingQuestion q = mqService.findMarketingQuestion(today, i);
+			MarketingQuestion q = mqService.findMarketingQuestion(sessionDate, i);
+			if (q == null)
+				throw new ServletException("Question q of session date " + sessionDate.toString() + " and number " + i + " does not exist.");
 			answers.add(new MarketingAnswer(user, q, answer));
 		}
-		ctx.setVariable("marketingAnswers", answers);
+		session.setAttribute("marketing-answers", answers);
 		
-		String path = getServletContext().getContextPath() + "/GoToStatisticalQuestionnaire";
-		
-		templateEngine.process(path, ctx, response.getWriter());
+		String path = servletContext.getContextPath() + "/GoToStatisticalQuestionnaire";
+		response.sendRedirect(path);
 	}
 }
