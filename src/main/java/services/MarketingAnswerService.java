@@ -42,5 +42,11 @@ public class MarketingAnswerService {
 		return query.getResultList();
 	}
 	
+	public List<MarketingAnswer> findByDate(Date d){
+		TypedQuery<MarketingAnswer> query= em.createNamedQuery("MarketingAnswer.findByDate", MarketingAnswer.class)
+				.setParameter(1, d);
+		return query.getResultList();
+		}
+	
 
 }

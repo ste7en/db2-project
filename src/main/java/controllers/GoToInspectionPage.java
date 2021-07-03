@@ -6,9 +6,13 @@
 package controllers;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -19,15 +23,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import model.User;
 import model.StatisticalAnswer;
 import model.MarketingAnswer;
-import model.MarketingQuestion;
 import services.MarketingAnswerService;
 import services.MarketingQuestionService;
 import services.StatisticalAnswerService;
@@ -65,6 +68,8 @@ public class GoToInspectionPage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		String date_of_questionnaire=null;
+		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("admin") == null) {
@@ -72,10 +77,36 @@ public class GoToInspectionPage extends HttpServlet {
 			return;
 		}
 		
+		try {
+			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
+			if ( date_of_questionnaire==null|| date_of_questionnaire.isEmpty()) {
+				throw new Exception("Missing or empty questionnaire to delete value");
+			}
+		} catch (Exception e) {
+			// for debugging only e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing questionnaire to delete value");
+			return;
+		}
+		
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+		Date date_to_insert=null;
+		try {
+			date_to_insert = format.parse(date_of_questionnaire);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Date date= new Date();
+		if(date_to_insert.after(date)) {
+			throw new RuntimeException("You cannot show data for a not yet created questionnaire");
+		}
+		
+		
 		//to modify to show answers sorted by users
 		List<StatisticalAnswer> statisticalAnswers = new ArrayList<>();
 		try {
-			statisticalAnswers = saService.findAllStatisticalAnswers();
+			statisticalAnswers = saService.findByDate(date_to_insert);
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
 			return;
@@ -83,7 +114,7 @@ public class GoToInspectionPage extends HttpServlet {
 		
 		List<MarketingAnswer> marketingAnswers= new ArrayList<>();
 		try {
-			marketingAnswers = maService.findAllMarketingAnswers();
+			marketingAnswers = maService.findByDate(date_to_insert);
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
 			return;

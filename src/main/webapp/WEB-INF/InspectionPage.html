@@ -5,7 +5,7 @@
 		<title>InspectionPage</title>
 		<form th:action="@{/GoToInspectionPage}" method="POST">
 		<label>Select a questionnaire date:</label>
-				<input type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
+				<input type="date" th:min="${today}" name="questionnaireDate" th:value="${date_of_questionnaire}"  placeholder="yyyy-mm-dd" required>
 				<input type="submit" value="Show" name="Show questionnaire data">
 		</form>
 		
@@ -23,7 +23,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="s: ${statisticalAnswers}">
-						<td th:text="${s.getKey().getUser()}"></td>
+						<td th:text="${s.getKey().getUser().getUsername()}"></td>
 						<td th:text="${s.getSex()}"></td>
 						<td th:text="${s.getAge()}"></td>
 						<td th:text="${s.getExperience()}"></td>
@@ -44,7 +44,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="m: ${marketingAnswers}">
-						<td th:text="${s.getKey().getUser()}"></td>
+						<td th:text="${s.getKey().getUser().getUsername()}"></td>
 						<td th:text="${s.getAnswer()}"></td>
 					</tr>
 				</tbody>

@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="marketing_answer")
 @NamedQuery(name="MarketingAnswer.findByUserIdAndDate", query="SELECT m FROM MarketingAnswer m WHERE m.user = ?1 and m.question = ?2")
+@NamedQuery(name="MarketingAnswer.findByDate", query="SELECT m from MarketingAnswer m WHERE m.date=?1")
 public class MarketingAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

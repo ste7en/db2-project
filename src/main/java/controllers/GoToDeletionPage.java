@@ -33,6 +33,7 @@ import services.UserService;
 import services.StatisticalAnswerService;
 import services.LeaderboardService;
 import services.MarketingQuestionService;
+import services.ProductOfTheDayService;
 
 /**
  * Servlet implementation class GoToDeletionPage
@@ -49,7 +50,9 @@ public class GoToDeletionPage extends HttpServlet {
 	private StatisticalAnswerService saService;
 	private UserService us;
 	private LeaderboardService ls;
-
+	private ProductOfTheDayService ps;
+	
+	
 	public GoToDeletionPage() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -115,12 +118,8 @@ public class GoToDeletionPage extends HttpServlet {
 			throw new RuntimeException("You cannot delete a questionnaire that has the current date or higher");
 		}
 		
-		List<MarketingQuestion> questionnaire= mqService.findByDate(date_to_insert);
-		if(questionnaire!=null) {
-			for(MarketingQuestion mq : questionnaire) {
-				questionnaire.remove(mq);
-			}
-		}	
+		ps.removeProductOfTheDay(date_to_insert);
+
 	}
 	
 	public void destroy() {}

@@ -33,8 +33,14 @@ public class ProductOfTheDayService {
 
 	public void removeProductOfTheDay(Product p) {
 		ProductOfTheDay pofd= findProductByProduct(p);
-		if(p!=null)
-			em.remove(p);
+		if(pofd!=null)
+			em.remove(pofd);
+	}
+	
+	public void removeProductOfTheDay(Date d) {
+		ProductOfTheDay pofd= findProductByDate(d);
+		if(pofd!=null)
+			em.remove(pofd);
 	}
 	
 	
