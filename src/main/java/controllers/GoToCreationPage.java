@@ -30,7 +30,7 @@ import model.Product;
 import model.ProductOfTheDay;
 import services.ProductService;
 import services.ProductOfTheDayService;
-import services.MarketingQuestionnaireService;
+import services.MarketingQuestionService;
 
 /**
  * Servlet implementation class GoToCreationPage
@@ -43,7 +43,7 @@ public class GoToCreationPage extends HttpServlet {
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
 	private ProductOfTheDayService pofs;
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionnaireService mqs;
+	private MarketingQuestionService mqs;
 	@EJB(name = "db2-project.src.main.java.services/ProductService")
 	private ProductService ps;
 	//the client(webServlet) interacts with a business object ->EJB

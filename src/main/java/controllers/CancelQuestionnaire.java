@@ -24,7 +24,7 @@ import model.MarketingQuestion;
 import model.Leaderboard;
 import services.UserService;
 import services.StatisticalAnswerService;
-import services.MarketingQuestionnaireService;
+import services.MarketingQuestionService;
 import services.LeaderboardService;
 
 /**

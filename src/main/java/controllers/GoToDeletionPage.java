@@ -32,7 +32,7 @@ import model.MarketingQuestion;
 import services.UserService;
 import services.StatisticalAnswerService;
 import services.LeaderboardService;
-import services.MarketingQuestionnaireService;
+import services.MarketingQuestionService;
 
 /**
  * Servlet implementation class GoToDeletionPage
@@ -44,7 +44,7 @@ public class GoToDeletionPage extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionnaireService mqService;
+	private MarketingQuestionService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
 	private StatisticalAnswerService saService;
 	private UserService us;

@@ -12,7 +12,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="marketing_question")
-@NamedQuery(name="MarketingQuestion.findAll", query="SELECT m FROM MarketingQuestion m")
+@NamedQueries({
+	@NamedQuery(name="MarketingQuestion.findAll", query="SELECT m FROM MarketingQuestion m"),
+	@NamedQuery(name="MarketingQuestion.findByDate", query="SELECT mq from MarketingQuestion mq WHERE mq.identifier.questionnaire_date = ?1")
+})
 public class MarketingQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

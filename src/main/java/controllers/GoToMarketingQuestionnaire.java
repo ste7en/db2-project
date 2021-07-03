@@ -19,8 +19,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.MarketingQuestion;
-import services.MarketingQuestionnaireService;
-import services.ProductOfTheDayService;
+import model.User;
+import services.MarketingQuestionService;
 
 /**
  * Servlet implementation class GoToMarketingQuestionnaire
@@ -32,8 +32,7 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionnaireService mqService;
-	private ProductOfTheDayService pService;
+	private MarketingQuestionService mqService;
 
 	public GoToMarketingQuestionnaire() {
 		super();
@@ -54,23 +53,21 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("session-user") == null) {
+		User user = (User) session.getAttribute("session-user");
+		if (session.isNew() || user == null) {
 			response.sendRedirect(loginpath);
 			return;
 		}
 		
-		Date d= new Date();
+		Date d = new Date();
 		List<MarketingQuestion> marketingQuestions = mqService.findByDate(d);
 		
 		// Redirect to the Home page and add missions to the parameters	
-		String path = "/WEB-INF/MarketingQuestionnaire.html";
+		String path = "/WEB-INF/MarketingQuestionnairePage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("marketingQuestions", marketingQuestions);
 		templateEngine.process(path, ctx, response.getWriter());
-		
 	}
-
-	public void destroy() {}
 
 }

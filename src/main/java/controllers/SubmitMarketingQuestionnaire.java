@@ -1,7 +1,9 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -17,8 +19,10 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import model.MarketingAnswer;
 import model.MarketingQuestion;
-import services.MarketingQuestionnaireService;
+import model.User;
+import services.MarketingQuestionService;
 
 /**
  * Servlet implementation class SubmitMarketingQuestionnaire
@@ -30,11 +34,10 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionnaireService mqService;
+	private MarketingQuestionService mqService;
 	
 	public SubmitMarketingQuestionnaire() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init() throws ServletException {
@@ -47,34 +50,34 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 		
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("admin") == null) {
+		Date today = new Date();
+		User user = (User) session.getAttribute("session-user");
+
+		// If the user is not logged in (not present in session) redirect to the login
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		if (session.isNew() || user == null) {
 			response.sendRedirect(loginpath);
 			return;
 		}
 		
-		//
+		List<MarketingAnswer> answers = new ArrayList<MarketingAnswer>();
 		
+		//creation of marketing answers
+		for(int i = 1; ;i++) {
+			String answer = request.getParameter(Integer.toString(i));
+			if (answer == null) break;
+			MarketingQuestion q = mqService.findMarketingQuestion(today, i);
+			answers.add(new MarketingAnswer(user, q, answer));
+		}
+		ctx.setVariable("marketingAnswers", answers);
 		
-		// If the user is not logged in (not present in session) redirect to the login
-		String path = "/WEB-INF/MarketingQuestionnairePage.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		String path = getServletContext().getContextPath() + "/GoToStatisticalQuestionnaire";
 		
 		templateEngine.process(path, ctx, response.getWriter());
-
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-	
-	public void destroy() {}
-
-
 }
