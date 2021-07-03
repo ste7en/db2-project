@@ -27,8 +27,8 @@ public class LeaderboardService {
 				.getResultList();
 	}
 	
-	public int totalScore(User u){
-		return em.createNamedQuery("Leaderboard.totalScore", Integer.class)
+	public long totalScore(User u){
+		return em.createNamedQuery("Leaderboard.totalScore", Long.class)
 				.setParameter(1, u)
 				.getSingleResult();
 	}
