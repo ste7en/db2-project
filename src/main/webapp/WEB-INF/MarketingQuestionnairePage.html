@@ -19,7 +19,7 @@
 				<tbody>
 					<tr th:each="q : ${marketingQuestions}">
 						<td th:text="${q.getText()}"></td>
-						<td><input type="text" th:id="${q.getNumber()}" name="answer" value="" placeholder="write your answer"></td>
+						<td><input type="text" th:name="${q.getNumber()}" value="" placeholder="write your answer"></td><br>
 					</tr>
 				</tbody>
 			</table>
