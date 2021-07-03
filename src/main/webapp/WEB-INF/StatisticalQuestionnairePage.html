@@ -8,37 +8,27 @@
 		<h1>Gamified Marketing Application</h1>
 		<h3>Statistical Questionnaire</h3>
 		
-<form th:action="@{/SubmitStatisticalAnswer}" method="POST">	
-			<table>
-				<thead>
-					<tr>
-						<th>Question</th>
-						<th>Answer</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-					<th><label for="m">Male</label><input type="radio" name="gender" id="male"></th>
-    
-				    <th><label for="f">Female</label><input type="radio" name="gender" id="female"></th>
-				    </tr>
-					
-					<tr>
-					<th><label>Age</label><input type="number" name="age" size="3"><th>
-					</tr>
-					
-					<tr>
-					<th><select name="experience">
+		<form th:action="@{/SubmitStatisticalAnswer}" method="POST">	
+			<div>
+				<label for="f"></label><input type="radio" name="gender" id="f" value="F">
+				
+				<label for="m"></label><input type="radio" name="gender" id="m" value="M"><br><br>
+		  
+				<label>Age</label><input type="number" name="age" size="3"><br><br>
+				<select name="experience">
 				        <option selected disabled>Experience level</option>
 				        <option>Low</option>
 				        <option>Medium</option>
 				        <option>High</option>
-			    	</select></th>
-			    	</tr>
-				</tbody>
-			</table>
-			
+			    </select><br><br>
+			</div>
 			<input type="submit" th:value="Send" id="Send" name="Submit">
+		</form>
+		<form th:action="@{/CancelQuestionnaire}" method="POST">	
+			<input type="submit" th:value="Cancel" id="cancel" name="cancel">
+		</form>
+		<form th:action="@{/GoToMarketingQuestionnaire}" method="GET">
+ 			<input type="button" value="Previous" name="Back">
 		</form>
 	</body>
 </html>
