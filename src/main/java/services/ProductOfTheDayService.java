@@ -25,9 +25,10 @@ public class ProductOfTheDayService {
 		return em.find(ProductOfTheDay.class, d);
 	}
 	
-	public void removeProductOfTheDay(Date d) {
+	public boolean removeProductOfTheDay(Date d) {
 		ProductOfTheDay pofd= findProductByDate(d);
-		if(pofd!=null)
-			em.remove(pofd);
+		if(pofd == null) return false;
+		em.remove(pofd);
+		return true;
 	}
 }

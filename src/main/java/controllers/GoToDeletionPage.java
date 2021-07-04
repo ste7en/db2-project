@@ -5,7 +5,6 @@ package controllers;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,14 +43,10 @@ public class GoToDeletionPage extends HttpServlet {
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
 	private ProductOfTheDayService pofdService;
 	private DateFormat dateFormat;
-	private String yesterday;
 	
 	public GoToDeletionPage() {
 		super();
-		Calendar date = Calendar.getInstance();
-		date.add(Calendar.DATE, -1);
 		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		this.yesterday = this.dateFormat.format(date.getTime());
 	}
 
 	public void init() throws ServletException {
@@ -77,42 +72,40 @@ public class GoToDeletionPage extends HttpServlet {
 		String path = "/WEB-INF/DeletionPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		Calendar date = Calendar.getInstance();
+		date.add(Calendar.DATE, -1);
+		String yesterday = this.dateFormat.format(date.getTime());
+
 		ctx.setVariable("minDate", yesterday);
+		ctx.setVariable("statusMsg", request.getAttribute("statusMsg"));
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String date_of_questionnaire=null;
+		String formattedDate;
+		Date date;
 		ServletContext servletContext = getServletContext();
 		
 		try {
-			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
-			if ( date_of_questionnaire==null|| date_of_questionnaire.isEmpty()) {
+			formattedDate = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
+			if (formattedDate == null|| formattedDate.isEmpty())
 				throw new Exception("Missing or empty questionnaire to delete value");
-			}
+			
+			date = dateFormat.parse(formattedDate);
+			
+			if(date.after(new Date()))
+				throw new RuntimeException("You cannot delete a questionnaire that has the current date or higher");
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing questionnaire to delete value");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
-		
-		//deletion of questionnaire data
-		Date date_to_insert = null;
-		try {
-			date_to_insert = dateFormat.parse(date_of_questionnaire);
-		} catch (ParseException e) {
-			// Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		Date date= new Date();
-		if(date_to_insert.after(date)) {
-			throw new RuntimeException("You cannot delete a questionnaire that has the current date or higher");
-		}
-		
-		pofdService.removeProductOfTheDay(date_to_insert);
-		String path = servletContext.getContextPath() + "/GoToDeletionPage";
-		response.sendRedirect(path);
+		if (pofdService.removeProductOfTheDay(date))	
+			request.setAttribute("statusMsg", formattedDate + " " + "questionnaire, its answers and user points have successfully been deleted.");
+		else
+			request.setAttribute("statusMsg", "ERROR: Couldn't find any questionnaire to delete.");
+		doGet(request, response);
+		return;
 	}
 }
