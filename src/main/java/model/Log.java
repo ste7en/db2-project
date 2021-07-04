@@ -2,25 +2,35 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.*;
 
 @Entity
+@IdClass(LogID.class)
 @Table(name="log")
-@NamedQuery(name="Log.findAll", query="SELECT l FROM Log l")
+@NamedQuery(name="Log.findAll", query="SELECT l FROM Log l ORDER BY l.timestamp ASC")
 public class Log implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Timestamp timestamp;
 	
-	@Column(name="user_id")
-	private int user_id;
+	@Id
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	@Column(name="event")
 	private String event;
 	
+	public Log() {}
+	
+	public Log(User u, String event) {
+		this.timestamp = new Timestamp(new Date().getTime());
+		this.event = event;
+		this.user = u;
+	}
 	
 	public Timestamp getTimestamp() {
 		return timestamp;
@@ -30,12 +40,12 @@ public class Log implements Serializable {
 		this.timestamp = timestamp;
 	}
 
-	public int getUser_id() {
-		return user_id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser_id(int user_id) {
-		this.user_id = user_id;
+	public void setUser(User u) {
+		this.user = u;
 	}
 
 	public String getEvent() {
@@ -52,7 +62,7 @@ public class Log implements Serializable {
 		int result = 1;
 		result = prime * result + ((event == null) ? 0 : event.hashCode());
 		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
-		result = prime * result + user_id;
+		result = prime * result + user.getId();
 		return result;
 	}
 
@@ -75,7 +85,7 @@ public class Log implements Serializable {
 				return false;
 		} else if (!timestamp.equals(other.timestamp))
 			return false;
-		if (user_id != other.user_id)
+		if (user != other.user)
 			return false;
 		return true;
 	}
