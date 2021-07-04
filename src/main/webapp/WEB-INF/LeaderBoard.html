@@ -3,6 +3,19 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>LeaderBoard</title>
+		<style>
+			table {
+			  font-family: arial, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+			
+			td, th {
+			  border: 1px solid #dddddd;
+			  text-align: left;
+			  padding: 8px;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Gamified Marketing Application</h1>
@@ -20,7 +33,7 @@
 						<td th:text="${l.getUser().getUsername()}"></td>
 						<td th:text="${l.getPoints()}"></td>
 						<td th:text="${leaderboardService.totalScore(l.getUser())}"></td>
-					</tr>
+				</tr>
 			</tbody>
 		</table>
 		<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>

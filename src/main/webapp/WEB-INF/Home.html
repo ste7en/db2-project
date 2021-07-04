@@ -4,6 +4,19 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Home</title>
+		<style>
+			table {
+			  font-family: arial, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+			
+			td, th {
+			  border: 1px solid #dddddd;
+			  text-align: left;
+			  padding: 8px;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Gamified Marketing Application</h1>
@@ -14,7 +27,7 @@
 		<div th:if="${product}">
 			<h3>Product of the day:</h3>    <!--unless there is no product of today-->
 			<img width="200px" th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
-			<p>Name of the product: </p><h4 th:text="${product.name}"></h4>
+			<p>Name of the product: <label th:text="${product.name}"></label></p>
 			<!-- Questionnaire of the day -->
 			<div th:if="${userHasAlreadyFilled}">
 				<p>You already filled today's questionnaire. Come back in the following days for new questionnaires!</p>
