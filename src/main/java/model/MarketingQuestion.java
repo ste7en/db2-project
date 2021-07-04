@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -29,7 +30,13 @@ public class MarketingQuestion implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="questionnaire_date", nullable=false, insertable=false, updatable=false)
 	private ProductOfTheDay productOfTheDay;
-
+	
+	@ElementCollection
+	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "questionnaire_date"))
+	@MapKeyJoinColumn(name = "user_id")
+	@Column(name = "answer")
+	private Map<User, String> answers;
+	
 	public MarketingQuestion() {}
 	
 	public MarketingQuestion(ProductOfTheDay p, int number, String question) {

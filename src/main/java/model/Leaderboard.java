@@ -28,6 +28,10 @@ public class Leaderboard implements Serializable {
 	@Column(name="points")
 	private int points;
 	
+	@ManyToOne
+	@JoinColumn(name = "leaderboard", referencedColumnName = "questionnaire_date")
+	private ProductOfTheDay productOfTheDay;
+	
 	public Leaderboard() {}
 
 	public User getUser() {

@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +43,22 @@ public class User implements Serializable {
 	@MapKeyJoinColumn(name = "product_id")
 	@Column(name = "text")
 	private Map<Product, Integer> products;
+	
+	//Not strictly necessary 
+	
+	@OneToMany(mappedBy = "user")
+	private List<StatisticalAnswer> statisticalAnswers;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Leaderboard> leaderboards;
+	
+	@OneToMany(mappedBy = "user")
+	private List<Log> logs;
+	
+	@ElementCollection
+	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "user_id"))
+	@MapKeyJoinColumn(name = "questionnaire_date")
+	private Map<MarketingQuestion, String> marketingQuestions;
 	
 	public User() {}
 	

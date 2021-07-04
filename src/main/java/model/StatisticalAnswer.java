@@ -35,6 +35,10 @@ public class StatisticalAnswer implements Serializable {
 	@Column(name="experience")
 	private Integer experience;
 	
+	@ManyToOne
+	@JoinColumn(name="statistical_answer", referencedColumnName = "questionnaire_date")
+	private ProductOfTheDay productOfTheDay;
+	
 	public StatisticalAnswer() {}
 	
 	public StatisticalAnswer(User u, Date d, Integer age, Character sex, Integer experience) {

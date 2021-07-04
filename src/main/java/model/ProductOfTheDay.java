@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
+
 import java.util.Date;
 
 
@@ -24,6 +26,15 @@ public class ProductOfTheDay implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="product_of_the_day", referencedColumnName = "product_id")
 	private Product product;
+	
+	@OneToMany(mappedBy = "productOfTheDay")
+	private List<MarketingQuestion> marketingQuestions;
+	
+	@OneToMany(mappedBy = "productOfTheDay")
+	private List<StatisticalAnswer> statisticalAnswers;
+	
+	@OneToMany(mappedBy = "productOfTheDay")
+	private List<Leaderboard> leaderboards;
 
 	public ProductOfTheDay() {}
 
