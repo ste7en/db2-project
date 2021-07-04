@@ -89,15 +89,11 @@ public class Product implements Serializable {
 	
 	public ProductOfTheDay addProductOfTheDay(ProductOfTheDay productOfTheDay) {
 		getProductOfTheDays().add(productOfTheDay);
-		productOfTheDay.setProduct(this);
-
 		return productOfTheDay;
 	}
 
 	public ProductOfTheDay removeProductOfTheDay(ProductOfTheDay productOfTheDay) {
 		getProductOfTheDays().remove(productOfTheDay);
-		productOfTheDay.setProduct(null);
-
 		return productOfTheDay;
 	}
 

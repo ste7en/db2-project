@@ -11,23 +11,34 @@ import java.util.Date;
  */
 @Entity
 @Table(name="product_of_the_day")
-@NamedQuery(name="ProductOfTheDay.findAll", query="SELECT p FROM ProductOfTheDay p")
+@NamedQueries({
+	@NamedQuery(name="ProductOfTheDay.findAll", query="SELECT p FROM ProductOfTheDay p")
+})
 public class ProductOfTheDay implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Temporal(TemporalType.DATE)
 	private Date date;
+	
+	@ManyToOne
+	@JoinColumn(name="product_of_the_day", referencedColumnName = "product_id")
+	private Product product;
 
 	public ProductOfTheDay() {}
+
+	public ProductOfTheDay(Date d, Product p) {
+		this.date = d;
+		this.product = p;
+	}
 
 	public Date getDate() {
 		return this.date;
 	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}	
+	
+	public Product getProduct() {
+		return this.product;
+	}
 
 	@Override
 	public int hashCode() {
@@ -55,17 +66,5 @@ public class ProductOfTheDay implements Serializable {
 		if (this.product != other.product)
 			return false;
 		return true;
-	}
-	
-	@ManyToOne
-	@JoinColumn(name="product_of_the_day", referencedColumnName = "product_id")
-	private Product product;
-	
-	public void setProduct(Product p) {
-		this.product=p;
-	}
-	
-	public Product getProduct() {
-		return this.product;
 	}
 }

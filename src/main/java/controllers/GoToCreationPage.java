@@ -5,7 +5,6 @@ package controllers;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +36,7 @@ import services.MarketingQuestionService;
 @WebServlet("/GoToCreationPage")
 public class GoToCreationPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String templatePath = "/WEB-INF/CreationPage.html";
 	private TemplateEngine templateEngine;
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
 	private ProductOfTheDayService pofs;
@@ -57,13 +57,14 @@ public class GoToCreationPage extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {		
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+			throws ServletException, IOException {
+		ServletContext servletContext = getServletContext();
+		String loginpath = servletContext.getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
+		// If the user is not logged in (not present in session) redirect to the login
 		if (session.isNew() || !(boolean)(session.getAttribute("admin"))) {
 			session.invalidate();
 			response.sendRedirect(loginpath);
@@ -74,54 +75,57 @@ public class GoToCreationPage extends HttpServlet {
 		Date date = new Date();
 		String today = dateFormat.format(date);
 		
-		// If the user is not logged in (not present in session) redirect to the login
-		String path = "/WEB-INF/CreationPage.html";
-		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("products", products);
 		ctx.setVariable("today", today);
-		//Check if a product/Questionnaire already exists for the selected date
+		ctx.setVariable("statusMsg", request.getAttribute("statusMsg"));
 		
-		templateEngine.process(path, ctx, response.getWriter());
+		templateEngine.process(this.templatePath, ctx, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Product p = ps.findProduct(Integer.parseInt(request.getParameter("product_id")));
-		String date_of_p=null;
+		int productId = Integer.parseInt(request.getParameter("product_id"));
+		Product product = ps.findProduct(productId);
+		String formattedDate;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date;
+		ProductOfTheDay productOfTheDay;
+		
 		try {
-			date_of_p = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
-			if ( date_of_p==null || date_of_p.isEmpty()) {
-				throw new Exception("Missing or empty product value");
-			}
+			formattedDate = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
+			if (formattedDate == null || formattedDate.isEmpty())
+				throw new ServletException("Missing or empty date value.");
+			if (product == null)
+				throw new RuntimeException("Product does not exist.");
+			date = format.parse(formattedDate);
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing product value");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+			response.sendRedirect("/GoToCreationPage");
 			return;
 		}
 		
-		//creation of ProductOfTheDay
-		DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-		Date date_to_insert=null;
-		try {
-			date_to_insert = format.parse(date_of_p);
-		} catch (ParseException e) {
-			// Auto-generated catch block
-			e.printStackTrace();
-		}
-		ProductOfTheDay poftd=null;
-		if(p!=null) {
-			poftd=pofs.createProductOfTheDay(p, date_to_insert);
+		if (pofs.findProductByDate(date) != null) {
+			request.setAttribute("statusMsg", "ERROR: A questionnaire already exists for the given date.");
+			doGet(request, response);
+			return;
 		}
 		
-		//creation of new marketing questions for the product just inserted
+		// Creation of ProductOfTheDay
+		productOfTheDay = pofs.createProductOfTheDay(product, date);
+		
+		// Creation of new marketing questions for the product just inserted
 		for(int i = 1; ;i++) {
 			String question = request.getParameter(Integer.toString(i));
 			if (question == null) break;
-			mqs.createMarketingQuestion(i, date_to_insert, question, poftd);
+			mqs.createMarketingQuestion(i, date, question, productOfTheDay);
 		}
-		response.sendRedirect(getServletContext().getContextPath() + "/GoToCreationPage");
+		
+		// Questionnaire created, redirecting the user to the creation page.
+		request.setAttribute("statusMsg", "Questionnaire successfully created!");
+		doGet(request, response);
+		return;
 	}
 	
 }

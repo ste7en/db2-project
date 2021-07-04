@@ -16,9 +16,7 @@ public class ProductOfTheDayService {
 	public ProductOfTheDayService() {}
 	
 	public ProductOfTheDay createProductOfTheDay(Product p, Date d) {
-		ProductOfTheDay pofd=new ProductOfTheDay();
-		pofd.setProduct(p);
-		pofd.setDate(d);
+		ProductOfTheDay pofd = new ProductOfTheDay(d, p);
 		em.persist(pofd);
 		return pofd;
 	}
