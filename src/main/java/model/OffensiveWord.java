@@ -10,7 +10,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="offensive_words")
-@NamedQuery(name="OffensiveWord.findAll", query="SELECT o FROM OffensiveWord o")
+@NamedQueries({
+	@NamedQuery(name="OffensiveWord.findAll", query="SELECT o FROM OffensiveWord o"),
+	@NamedQuery(name="OffensiveWord.findAllWords", query="SELECT o.word FROM OffensiveWord o")
+})
 public class OffensiveWord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -27,18 +30,14 @@ public class OffensiveWord implements Serializable {
 		return this.word;
 	}
 
-	public void setWord(String word) {
-		this.word = word;
-	}
-
 	public int getOccurrence() {
 		return this.occurrence;
 	}
-
-	public void setOccurrence(int occurrence) {
-		this.occurrence = occurrence;
+	
+	public void incrementOccurrence() {
+		this.occurrence += 1;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

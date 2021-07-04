@@ -68,7 +68,8 @@ public class GoToHomePage extends HttpServlet {
 		user = (User) session.getAttribute("session-user");
 		sessionDate = (Date) session.getAttribute("session-date");
 		
-		if (session.isNew() || user == null) {
+		if (session.isNew() || user == null || user.getBlocked()) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}

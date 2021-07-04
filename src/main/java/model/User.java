@@ -40,7 +40,6 @@ public class User implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumn(name = "product_id")
-	
 	@Column(name = "text")
 	private Map<Product, Integer> products;
 	

@@ -77,9 +77,12 @@ public class CheckLogin extends HttpServlet {
 
 		String path;
 		ServletContext servletContext = getServletContext();
-		if (user == null) {
+		if (user == null || user.getBlocked()) {
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("errorMsg", "Incorrect username or password");
+			if (user == null)
+				ctx.setVariable("errorMsg", "Incorrect username or password");
+			else if (user.getBlocked())
+				ctx.setVariable("errorMsg", "You have been blocked from the application.");
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {

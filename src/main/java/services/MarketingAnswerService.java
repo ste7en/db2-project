@@ -3,6 +3,7 @@ package services;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,8 @@ import model.User;
 public class MarketingAnswerService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
+	@EJB(name = "db2-project.src.main.java.services/OffensiveWordService")
+	private OffensiveWordService offensiveWordService;
 	
 	public MarketingAnswerService() {}
 	
@@ -26,7 +29,14 @@ public class MarketingAnswerService {
 	}
 	
 	public void saveMarketingAnswers(List<MarketingAnswer> answers) {
-		for (MarketingAnswer answer : answers) {					
+		List<String> offensiveWords = offensiveWordService.findAll();
+		for (MarketingAnswer answer : answers) {
+			offensiveWords.forEach(offensiveWord -> {
+				if (answer.getAnswer().toLowerCase().contains(offensiveWord)) {
+					em.find(User.class, answer.getUser().getId()).setBlocked(true);
+					offensiveWordService.incrementOffensiveWordOccurrence(offensiveWord);
+				}
+			});
 			em.persist(answer);
 		}
 	}

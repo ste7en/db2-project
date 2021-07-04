@@ -86,7 +86,6 @@ public class GoToDeletionPage extends HttpServlet {
 			throws ServletException, IOException {
 		String formattedDate;
 		Date date;
-		ServletContext servletContext = getServletContext();
 		
 		try {
 			formattedDate = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
