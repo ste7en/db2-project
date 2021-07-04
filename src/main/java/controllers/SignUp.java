@@ -48,7 +48,7 @@ public class SignUp extends HttpServlet {
 		String path = "/WEB-INF/SignUp.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(req, resp, servletContext, req.getLocale());
-		
+		ctx.setVariable("statusMsg", req.getAttribute("statusMsg"));
 		templateEngine.process(path, ctx, resp.getWriter());
 	}
 	
@@ -69,8 +69,11 @@ public class SignUp extends HttpServlet {
 				throw new Exception("Missing or empty credential value");
 			}
 			
-			if (usrService.checkByUserAndEmail(usrn, email))
-				throw new Exception("User already exists.");
+			if (usrService.checkByUserAndEmail(usrn, email)) {
+				request.setAttribute("statusMsg", "ERROR: These credential already belong to an existing user. Try with other credentials.");
+				doGet(request, response);
+				return;
+			}
 			else {
 				User user = usrService.registration(usrn, email, pwd);
 				request.getSession().setAttribute("session-user", user);
