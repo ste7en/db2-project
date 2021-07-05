@@ -4,7 +4,7 @@
 			<link href="CSS-STYLE/CreationPage.css" rel="stylesheet" type="text/css">
 		<meta charset="ISO-8859-1">
 		<style>
-		.login input[type=submit] {
+		.button {
   display: inline-block;
   border-radius: 4px;
   background-color:#5379fa;
@@ -13,21 +13,21 @@
   text-align: center;
   font-size: 15px;
   padding: 20px;
-  width: 300px;
+  width: 400px;
   height:50px;
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
 }
 
-.login input[type=submit]span {
+.button span {
   cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.5s;
 }
 
-.login input[type=submit]span:after {
+.button span:after {
   content: '\00bb';
   position: absolute;
   opacity: 0;
@@ -36,11 +36,11 @@
   transition: 0.5s;
 }
 
-.login input[type=submit]:hover span {
+.button:hover span {
   padding-right: 25px;
 }
 
-.login input[type=submit]:hover span:after {
+.button:hover span:after {
   opacity: 1;
   right: 0;
 }
@@ -89,7 +89,7 @@
 				<input type="submit" class="button" style="float:right" value="Create" name="Create Questionnaire">
 			</form>
 			<p th:text="${statusMsg}"></p>
-			<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
+			<a th:href="@{/GoToHomePage}"><button class="button" type="submit">Back Home</button></a>
 			
 			</div>
 	</body>
