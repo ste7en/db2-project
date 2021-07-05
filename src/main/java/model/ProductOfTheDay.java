@@ -28,12 +28,15 @@ public class ProductOfTheDay implements Serializable {
 	private Product product;
 	
 	@OneToMany(mappedBy = "productOfTheDay")
+	@JoinColumn(name = "questionnaire_date", updatable = false, insertable = false)
 	private List<MarketingQuestion> marketingQuestions;
 	
 	@OneToMany(mappedBy = "productOfTheDay")
+	@JoinColumn(name = "questionnaire_date", updatable = false, insertable = false)
 	private List<StatisticalAnswer> statisticalAnswers;
 	
 	@OneToMany(mappedBy = "productOfTheDay")
+	@JoinColumn(name = "questionnaire_date", updatable = false, insertable = false)
 	private List<Leaderboard> leaderboards;
 
 	public ProductOfTheDay() {}

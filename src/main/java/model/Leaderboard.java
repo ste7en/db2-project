@@ -21,7 +21,13 @@ public class Leaderboard implements Serializable {
 	@JoinColumn(name = "user")
 	private User user;
 	
+	/**
+	 * This maps the ManyToOne relationship with ProductOfTheDay in an ID
+	 */
 	@Id
+	@JoinTable(name = "product_of_the_day",
+				joinColumns = {@JoinColumn(name = "questionnaire_date")},
+				inverseJoinColumns = {@JoinColumn(name = "date")})
 	@Temporal(TemporalType.DATE)
 	private Date questionnaire_date;
 
@@ -29,7 +35,7 @@ public class Leaderboard implements Serializable {
 	private int points;
 	
 	@ManyToOne
-	@JoinColumn(name = "questionnaire_date", referencedColumnName = "date")
+	@JoinColumn(name = "questionnaire_date", referencedColumnName = "date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	
 	public Leaderboard() {}

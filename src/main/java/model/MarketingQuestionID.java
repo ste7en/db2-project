@@ -10,8 +10,14 @@ import java.util.Date;
 @Embeddable
 public class MarketingQuestionID implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	private int number;
+	/**
+	 * This maps the ManyToOne relationship with ProductOfTheDay in an ID
+	 */
+	@JoinTable(name = "product_of_the_day",
+			joinColumns = {@JoinColumn(name = "questionnaire_date")},
+			inverseJoinColumns = {@JoinColumn(name = "date")})
 	@Temporal(TemporalType.DATE)
 	private Date questionnaire_date;
 	

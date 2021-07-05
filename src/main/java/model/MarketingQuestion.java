@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -26,9 +27,9 @@ public class MarketingQuestion implements Serializable {
 	@Column(length=45)
 	private String text;
 
-	//bi-directional many-to-one association to ProductOfTheDay
+	//bidirectional many-to-one association to ProductOfTheDay
 	@ManyToOne
-	@JoinColumn(name="questionnaire_date", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="questionnaire_date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	
 	@ElementCollection
@@ -63,14 +64,6 @@ public class MarketingQuestion implements Serializable {
 	public Date getQuestionnaireDate() {
 		return this.identifier.getQuestionnaireDate();
 	}
-
-	public ProductOfTheDay getProductOfTheDay() {
-		return this.productOfTheDay;
-	}
-
-	public void setProductOfTheDay(ProductOfTheDay productOfTheDay) {
-		this.productOfTheDay = productOfTheDay;
-	}
 	
 	public int getNumber() {
 		return this.identifier.getNumber();
@@ -78,13 +71,7 @@ public class MarketingQuestion implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + this.getNumber();
-		result = prime * result + ((productOfTheDay == null) ? 0 : productOfTheDay.hashCode());
-		result = prime * result + ((this.getQuestionnaireDate() == null) ? 0 : this.getQuestionnaireDate().hashCode());
-		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		return result;
+		return Objects.hash(answers, identifier, text);
 	}
 
 	@Override
@@ -96,26 +83,7 @@ public class MarketingQuestion implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MarketingQuestion other = (MarketingQuestion) obj;
-		if (this.getNumber() != other.getNumber())
-			return false;
-		if (productOfTheDay == null) {
-			if (other.productOfTheDay != null)
-				return false;
-		} else if (!productOfTheDay.equals(other.productOfTheDay))
-			return false;
-		if (this.getQuestionnaireDate() == null) {
-			if (other.getQuestionnaireDate() != null)
-				return false;
-		} else if (!this.getQuestionnaireDate().equals(other.getQuestionnaireDate()))
-			return false;
-		if (text == null) {
-			if (other.text != null)
-				return false;
-		} else if (!text.equals(other.text))
-			return false;
-		return true;
+		return Objects.equals(answers, other.answers) && Objects.equals(identifier, other.identifier)
+				&& Objects.equals(text, other.text);
 	}
-	
-	
-
 }

@@ -16,8 +16,8 @@ public class MarketingAnswer implements Serializable {
     private MarketingAnswerID id;
 	
 	@MapsId("user_id")
-	@JoinColumn(name = "user_id")
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private User user;
     
     @MapsId("question")

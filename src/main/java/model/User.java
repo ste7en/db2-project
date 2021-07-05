@@ -44,7 +44,8 @@ public class User implements Serializable {
 	@Column(name = "text")
 	private Map<Product, String> productReviews;
 		
-	@OneToMany(mappedBy = "user")
+	@OneToMany
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
 	private List<StatisticalAnswer> statisticalAnswers;
 	
 	@OneToMany(mappedBy = "user")
