@@ -22,7 +22,6 @@ import model.MarketingAnswer;
 import model.StatisticalAnswer;
 import model.User;
 import services.LogService;
-import services.LogService.Events;
 import services.MarketingAnswerService;
 import services.StatisticalAnswerService;
 
@@ -85,8 +84,8 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		
 		StatisticalAnswer statisticalAnswer = new StatisticalAnswer(user, sessionDate, age, sex, experience);
 		
-		maService.saveMarketingAnswers(answers);
-		saService.saveStatisticalAnswer(statisticalAnswer);
+		marketingAnswerService.saveMarketingAnswers(answers);
+		statisticalAnswerService.saveStatisticalAnswer(statisticalAnswer);
 
 		String path = "/WEB-INF/ThanksPage.html";
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

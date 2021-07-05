@@ -115,11 +115,10 @@ public class GoToDeletionPage extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
-		if (pofdService.removeProductOfTheDay(date))	
+		if (productOfTheDayService.removeProductOfTheDay(date))	{
 			request.setAttribute("statusMsg", formattedDate + " " + "questionnaire, its answers and user points have successfully been deleted.");
 			logService.createInstantLog(user, Events.ADMIN_DELETED_QUESTIONNAIRE);
-		}
-		else
+		} else
 			request.setAttribute("statusMsg", "ERROR: Couldn't find any questionnaire to delete.");
 		
 		doGet(request, response);
