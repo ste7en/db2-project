@@ -24,15 +24,8 @@
 			</div>
 			<input type="submit" th:value="Send" id="Send" name="Submit">
 		</form>
-		<form th:action="@{/CancelQuestionnaire}" method="POST">	
-			<input type="submit" th:value="Cancel" id="cancel" name="cancel">
-		</form>
-		<form th:action="@{/GoToMarketingQuestionnaire}" method="GET">
- 			<input type="button" value="Previous" name="Back">
-		</form>
-		<form th:action="@{/GoToHomePage}" method="POST">	
-			<input type="submit" value="Back Home" id="Back" name="Back">
-		</form>
+		<a th:href="@{/CancelQuestionnaire}"><button type="submit">Cancel</button></a>
+		<button onclick="goBack()">Go Back</button>
 		<p th:text=" ${statusMsg}" style="color:#595959"></p>
 	</body>
 </html>

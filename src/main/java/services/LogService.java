@@ -20,11 +20,10 @@ public class LogService {
 		SIGN_UP("New user created."),
 		LOG_IN("User logged in."),
 		QUESTIONNAIRE_STARTED("Marketing questionnaire started."),
+		QUESTIONNAIRE_CANCELLED("Marketing questionnaire cancelled."),
 		MARKETING_ANSWERS_FILLED("Marketing answers filled."),
 		MARKETING_ANSWERS_SUBMITTED("Marketing answers submitted."),
-		MARKETING_QUESTIONNAIRE_CANCELLED("Marketing questionnaire cancelled."),
 		STATISTICAL_ANSWERS_SUBMITTED("Statistical answers filled and submitted."),
-		STATISTICAL_QUESTIONNAIRE_CANCELLED("Statistical questionnaire cancelled."),
 		USER_BLOCKED("User blocked for using a bad words."),
 		ADMIN_CREATED_QUESTIONNAIRE("Admin created a questionnaire with a new product of the day"),
 		ADMIN_DELETED_QUESTIONNAIRE("Admin deleted a questionnaire");
