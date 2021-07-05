@@ -47,13 +47,14 @@
 </style>
 		<script>
 			var counter = 1;
-			function addQuestion(type) {	
-				//Create an input type dyncreateElementamically.
-				var element = document("input");
+			function addQuestion(type) {
+				//Create an input type dynamically.
+				var element = document.createElement("input");
 				element.type = "text";
 				element.setAttribute("required", true);
 				element.setAttribute("name", ++counter);
 				element.style.display = "block";
+				element.style.width = "100%";
 				var question = document.getElementById("question");
 				//Append the element in page (in span).
 				question.appendChild(element);
