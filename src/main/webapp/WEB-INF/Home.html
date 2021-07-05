@@ -1,54 +1,105 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<link href="CSS-STYLE/Home.css" rel="stylesheet" type="text/css">
 		<meta charset="ISO-8859-1">
 		<title>Home</title>
 		<style>
 			table {
-			  font-family: arial, sans-serif;
+			  font-family: 'Exo', sans-serif;
 			  border-collapse: collapse;
 			  width: 100%;
 			}
-			
 			td, th {
 			  border: 1px solid #dddddd;
 			  text-align: left;
 			  padding: 8px;
 			}
-		</style>
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:#5379fa;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  padding: 20px;
+  width: 400px;
+  height:50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
 	</head>
-	<body>
-		<h1>Gamified Marketing Application</h1>
-        <div align="right">
-            <a href="Logout">Logout</a>
-        </div>
+	
+
+<body>
+	<div class="header">
+	<div>Gamified<span> Marketing </span>Application</div>
+	</div>
+	<div class="container">
 		<!-- Product of the day -->
-		<div th:if="${product}">
-			<h3>Product of the day:</h3>    <!--unless there is no product of today-->
-			<img width="200px" th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
+		<div class="productoftheday" th:if="${product}">
+			<h1>Product of the day:</h1>    <!--unless there is no product of today-->
+			<img width="500px" th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
 			<p>Name of the product: <label th:text="${product.name}"></label></p>
+			</div>
 			<!-- Questionnaire of the day -->
-			<div th:if="${userHasAlreadyFilled}">
+			<div class="questionnaire" th:if="${userHasAlreadyFilled}">
 				<p>You already filled today's questionnaire. Come back in the following days for new questionnaires!</p>
 			</div>
 			<div th:unless="${userHasAlreadyFilled}">
-				<p>Questionnaire: </p>
+				<h2>Questionnaire: </h2>
 				<a th:href="@{/GoToMarketingQuestionnaire}">
-					<button type="submit">Fill out the questionnaire of today's product</button>
+					<button class="button" type="submit">Fill out the questionnaire of today's product</button>
 				</a>
 			</div>
-	    </div>
 		<h3 th:unless="${product}">There is no product of the day! See you tomorrow :)</h3>
 	    
 		<!-- Leaderboard -->
 		<div>
 			<h3>Leaderboard:</h3>
-			<a th:href="@{/GoToLeaderboard}"><button type="button">Check your points</button></a>
-		</div>
-		<!-- Product reviews -->	
-		<div th:if="${product}">
-			<h3>Reviews of the product wrote by our users:</h3>
+			<a th:href="@{/GoToLeaderboard}"><button class="button" type="button">Check your points</button></a>
+		</div>	
+		<!-- Admin panel -->
+			<div th:if="${user.getAdmin}">
+				<p><b>Admin Dashboard</b></p>
+				<ul>
+				<li><a href="GoToCreationPage">Create a new Questionnaire</a></li>
+				<li><a href="GoToDeletionPage">Delete a past Questionnaire</a></li>
+				<li><a href="GoToInspectionPage">Inspection Page</a></li>
+				</ul>
+			</div>
+			
+			<!-- Product reviews -->	
+		<div class="reviews" th:if="${product}">
+		<h4>Rieviews of our customers:</h4>
 			<table>
 				<thead>
 					<tr>
@@ -64,16 +115,9 @@
 				</tbody>
 			</table>
 		</div>
-		<!-- Admin panel -->
-        <div>
-			<div th:if="${user.getAdmin}">
-				<p><b>Admin Dashboard</b></p>
-				<ul>
-				<li><a href="GoToCreationPage">Create a new Questionnaire</a></li>
-				<li><a href="GoToDeletionPage">Delete a past Questionnaire</a></li>
-				<li><a href="GoToInspectionPage">Inspection Page</a></li>
-				</ul>
-			</div>			
-		</div>
+		</div>	
 	</body>
+	<div align="right">
+            <a href="Logout">Logout</a>	
+            		</div>
 </html>

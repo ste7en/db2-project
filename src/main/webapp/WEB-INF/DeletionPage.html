@@ -2,18 +2,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="ISO-8859-1">
+		<link href="CSS-STYLE/DeletionPage.css" rel="stylesheet" type="text/css">
 		<title>DeletionPage</title>
+		
+		<style>
+		.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:#5379fa;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  padding: 20px;
+  width: 100px;
+  height:50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
 	</head>
 	
 	<body>
-		<h1>Gamified Marketing Application</h1>
+		<div class="header">
+	<div>Gamified<span> Marketing </span>Application</div>
+	</div>
+	<div class="container">
 		<h3>Delete a Questionnaire</h3>
 		<label>Select a questionnaire date to delete :</label>
 		<form th:action="@{/GoToDeletionPage}" method="POST">
-			<input type="date" th:max="${minDate}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
-			<input type="submit" value="Delete" name="Delete Questionnaire" >
+			<input type="date" style="width:100%" th:max="${minDate}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
+			<input type="submit" class="button" value="Delete" name="Delete Questionnaire" >
 		</form>
-		<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
+		<a th:href="@{/GoToHomePage}"><button class="button" type="submit">Back Home</button></a>
 		<p th:text=" ${statusMsg}" style="color:#595959"></p>
+		</div>
 	</body>
 </html>

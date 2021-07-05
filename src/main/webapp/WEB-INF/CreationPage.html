@@ -1,12 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+			<link href="CSS-STYLE/CreationPage.css" rel="stylesheet" type="text/css">
 		<meta charset="ISO-8859-1">
+		<style>
+		.login input[type=submit] {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:#5379fa;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  padding: 20px;
+  width: 300px;
+  height:50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.login input[type=submit]span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.login input[type=submit]span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.login input[type=submit]:hover span {
+  padding-right: 25px;
+}
+
+.login input[type=submit]:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
 		<script>
 			var counter = 1;
 			function addQuestion(type) {	
-				//Create an input type dynamically.
-				var element = document.createElement("input");
+				//Create an input type dyncreateElementamically.
+				var element = document("input");
 				element.type = "text";
 				element.setAttribute("required", true);
 				element.setAttribute("name", ++counter);
@@ -19,7 +62,10 @@
 		<title>CreationPage</title>
 	</head>
 	<body>
-			<h1>Gamified Marketing Application</h1>
+		<div class="header">
+	<div>Gamified<span> Marketing </span>Application</div>
+	</div>
+	<div class="container">
 			<h3>Set a new product of the day</h3>
 			<form th:action="@{/GoToCreationPage}" method="POST">
 				<p>
@@ -30,22 +76,22 @@
 				</p>
 				<p>
 					<label>Select a questionnaire date:</label>
-					<input type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
+					<input style="width:100%" type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
 				</p>
 				<p>Insert a new marketing question for the product</p>
-				<label>Write a question:</label>
 				
-				<input type="button" value="Add Question" onclick="addQuestion()"/>
-				<br>
 				<span id="question">
-					<input type="text" name=1 required />
+					<input style="width:100%" type="text" name=1 required />
 				</span>
 				<br>
-				<input type="submit" value="Create" name="Create Questionnaire">
+				<input type="button" class="button" value="Add Question" onclick="addQuestion()"/>
+				<br>
+				<input type="submit" class="button" style="float:right" value="Create" name="Create Questionnaire">
 			</form>
 			<p th:text="${statusMsg}"></p>
 			<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
-
+			
+			</div>
 	</body>
 </html>	
 		
