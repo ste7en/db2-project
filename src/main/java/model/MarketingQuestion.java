@@ -32,9 +32,13 @@ public class MarketingQuestion implements Serializable {
 	private ProductOfTheDay productOfTheDay;
 	
 	@ElementCollection
-	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "questionnaire_date"))
+	@CollectionTable(name = "marketing_answer", 
+					joinColumns = { @JoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date"), 
+									@JoinColumn(name = "questionnaire_number", referencedColumnName = "number")
+								}
+					)
 	@MapKeyJoinColumn(name = "user_id")
-	@Column(name = "answer")
+	@Column(name = "text")
 	private Map<User, String> answers;
 	
 	public MarketingQuestion() {}

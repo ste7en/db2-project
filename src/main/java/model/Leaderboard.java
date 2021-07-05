@@ -29,7 +29,7 @@ public class Leaderboard implements Serializable {
 	private int points;
 	
 	@ManyToOne
-	@JoinColumn(name = "leaderboard", referencedColumnName = "questionnaire_date")
+	@JoinColumn(name = "questionnaire_date", referencedColumnName = "date")
 	private ProductOfTheDay productOfTheDay;
 	
 	public Leaderboard() {}

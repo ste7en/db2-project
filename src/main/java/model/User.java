@@ -57,8 +57,11 @@ public class User implements Serializable {
 	
 	@ElementCollection
 	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "user_id"))
-	@MapKeyJoinColumn(name = "questionnaire_date")
-	private Map<MarketingQuestion, String> marketingQuestions;
+	@MapKeyJoinColumns({
+		@MapKeyJoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date"), 
+		@MapKeyJoinColumn(name = "questionnaire_number", referencedColumnName = "number")})
+	@Column(name = "text")
+	private Map<MarketingQuestion, String> marketingAnswers;
 	
 	public User() {}
 	
