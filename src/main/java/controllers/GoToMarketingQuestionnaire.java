@@ -20,6 +20,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.MarketingQuestion;
 import model.User;
+import services.LogService;
+import services.LogService.Events;
 import services.MarketingQuestionService;
 
 /**
@@ -33,7 +35,9 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 	private TemplateEngine templateEngine;
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
 	private MarketingQuestionService marketingQuestionService;
-
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
+	
 	public GoToMarketingQuestionnaire() {
 		super();
 	}
@@ -58,6 +62,8 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
+		
+		logService.createInstantLog(user, Events.QUESTIONNAIRE_STARTED);
 		
 		Date sessionDate = (Date) session.getAttribute("session-date");
 		List<MarketingQuestion> marketingQuestions = marketingQuestionService.findByDate(sessionDate);

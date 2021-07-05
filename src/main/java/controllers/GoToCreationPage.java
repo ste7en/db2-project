@@ -25,8 +25,11 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.Product;
 import model.ProductOfTheDay;
+import model.User;
 import services.ProductService;
 import services.ProductOfTheDayService;
+import services.LogService;
+import services.LogService.Events;
 import services.MarketingQuestionService;
 
 /**
@@ -45,6 +48,8 @@ public class GoToCreationPage extends HttpServlet {
 	private MarketingQuestionService marketingQuestionService;
 	@EJB(name = "db2-project.src.main.java.services/ProductService")
 	private ProductService productService;
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
 
 	public GoToCreationPage() {
 		super();
@@ -94,6 +99,17 @@ public class GoToCreationPage extends HttpServlet {
 		Date date;
 		ProductOfTheDay productOfTheDay;
 		
+		ServletContext servletContext = getServletContext();
+		String loginpath = servletContext.getContextPath() + "/index.html";
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("session-user");
+		// If the user is not logged in (not present in session) redirect to the login
+		if (session.isNew() || !user.getAdmin()) {
+			session.invalidate();
+			response.sendRedirect(loginpath);
+			return;
+		}
+		
 		try {
 			formattedDate = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
 			if (formattedDate == null || formattedDate.isEmpty())
@@ -122,6 +138,8 @@ public class GoToCreationPage extends HttpServlet {
 			if (question == null) break;
 			marketingQuestionService.createMarketingQuestion(i, date, question, productOfTheDay);
 		}
+		
+		logService.createInstantLog(user, Events.ADMIN_CREATED_QUESTIONNAIRE);
 		
 		// Questionnaire created, redirecting the user to the creation page.
 		request.setAttribute("statusMsg", "Questionnaire successfully created!");
