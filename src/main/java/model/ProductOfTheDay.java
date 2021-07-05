@@ -12,9 +12,9 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="product_of_the_day")
+@Table(name = "product_of_the_day")
 @NamedQueries({
-	@NamedQuery(name="ProductOfTheDay.findAll", query="SELECT p FROM ProductOfTheDay p")
+	@NamedQuery(name = "ProductOfTheDay.findAll", query = "SELECT p FROM ProductOfTheDay p")
 })
 public class ProductOfTheDay implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class ProductOfTheDay implements Serializable {
 	
 	@ManyToOne
 	(fetch = FetchType.EAGER)
-	@JoinColumn(name="product_of_the_day", referencedColumnName = "product_id")
+	@JoinColumn(name = "product_of_the_day", referencedColumnName = "product_id")
 	private Product product;
 	
 	@OneToMany
