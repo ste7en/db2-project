@@ -17,18 +17,20 @@ public class MarketingAnswer implements Serializable {
 	
 	@MapsId("user_id")
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
     
     @MapsId("question")
+    @ManyToOne
+	(fetch = FetchType.EAGER)
     @JoinColumns({
     	@JoinColumn(name = "questionnaire_number", referencedColumnName = "number"),
     	@JoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date")
     })
-    @ManyToOne
     private MarketingQuestion question;
 	
-	@Column(name="text")
+	@Column(name = "text")
 	private String answer;
 	
 	public MarketingAnswer() {}

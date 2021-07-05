@@ -7,11 +7,11 @@ import javax.persistence.*;
 
 @Entity
 @IdClass(StatisticalAnswerID.class)
-@Table(name="statistical_answer")
+@Table(name  ="statistical_answer")
 @NamedQueries({
-	@NamedQuery(name="StatisticalAnswer.findAll", query="SELECT sa FROM StatisticalAnswer sa"),
-	@NamedQuery(name="StatisticalAnswer.findByDate", query="SELECT sa FROM StatisticalAnswer sa WHERE sa.questionnaire_date = ?1"),
-	@NamedQuery(name="StatisticalAnswer.findByUserAndDate", query="SELECT sa FROM StatisticalAnswer sa WHERE sa.questionnaire_date = ?1 AND sa.user = ?2")
+	@NamedQuery(name = "StatisticalAnswer.findAll", query = "SELECT sa FROM StatisticalAnswer sa"),
+	@NamedQuery(name = "StatisticalAnswer.findByDate", query = "SELECT sa FROM StatisticalAnswer sa WHERE sa.questionnaire_date = ?1"),
+	@NamedQuery(name = "StatisticalAnswer.findByUserAndDate", query = "SELECT sa FROM StatisticalAnswer sa WHERE sa.questionnaire_date = ?1 AND sa.user = ?2")
 
 })
 public class StatisticalAnswer implements Serializable {
@@ -19,6 +19,7 @@ public class StatisticalAnswer implements Serializable {
 	
 	@Id
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
@@ -32,16 +33,17 @@ public class StatisticalAnswer implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date questionnaire_date;
 	
-	@Column(name="age")
+	@Column(name = "age")
 	private Integer age;
 	
-	@Column(name="sex")
+	@Column(name = "sex")
 	private Character sex;
 	
-	@Column(name="experience")
+	@Column(name = "experience")
 	private Integer experience;
 	
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name="questionnaire_date", referencedColumnName = "date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	

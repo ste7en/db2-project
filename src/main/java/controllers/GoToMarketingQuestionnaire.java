@@ -20,6 +20,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.MarketingQuestion;
 import model.User;
+import services.LogService;
+import services.LogService.Events;
 import services.MarketingQuestionService;
 
 /**
@@ -32,8 +34,10 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionService mqService;
-
+	private MarketingQuestionService marketingQuestionService;
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
+	
 	public GoToMarketingQuestionnaire() {
 		super();
 	}
@@ -59,8 +63,10 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 			return;
 		}
 		
+		logService.createInstantLog(user, Events.QUESTIONNAIRE_STARTED);
+		
 		Date sessionDate = (Date) session.getAttribute("session-date");
-		List<MarketingQuestion> marketingQuestions = mqService.findByDate(sessionDate);
+		List<MarketingQuestion> marketingQuestions = marketingQuestionService.findByDate(sessionDate);
 		
 		// Redirect to the Home page and add missions to the parameters	
 		String path = "/WEB-INF/MarketingQuestionnairePage.html";

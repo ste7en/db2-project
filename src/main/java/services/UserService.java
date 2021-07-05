@@ -27,10 +27,11 @@ public class UserService {
 		return u;
 	}
 	
-	public void removeUser(int user_id) {
+	public void blockUser(int user_id) {
 		User u = findUser(user_id);
 		if(u != null) {
-			em.remove(u);
+			u.setBlocked(true);
+			logService.createInstantLog(u, Events.USER_BLOCKED);
 		}
 	}
 	

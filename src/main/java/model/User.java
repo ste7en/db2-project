@@ -11,9 +11,9 @@ import java.util.Map;
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
-	@NamedQuery(name="User.checkCredentials", query="SELECT u FROM User u WHERE u.username = ?1 and u.password = ?2"),
-	@NamedQuery(name="User.checkByUserAndEmail", query="SELECT count(u) FROM User as u WHERE u.username = ?1 or u.email = ?2")	
+	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+	@NamedQuery(name = "User.checkCredentials", query = "SELECT u FROM User u WHERE u.username = ?1 and u.password = ?2"),
+	@NamedQuery(name = "User.checkByUserAndEmail", query = "SELECT count(u) FROM User as u WHERE u.username = ?1 or u.email = ?2")	
 })
 public class User implements Serializable {
 
@@ -23,38 +23,43 @@ public class User implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int user_id;
 
-	@Column(name="admin")
+	@Column(name = "admin")
 	private Boolean admin;
 	
-	@Column(name="blocked")
+	@Column(name = "blocked")
 	private Boolean blocked;
 	
-	@Column(name="email")
+	@Column(name = "email")
 	private String email;
 
-	@Column(name="password")
+	@Column(name = "password")
 	private String password;
 
-	@Column(name="username")
+	@Column(name = "username")
 	private String username;
 
 	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumn(name = "product_id")
 	@Column(name = "text")
 	private Map<Product, String> productReviews;
 		
 	@OneToMany
-	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false) //read-only
 	private List<StatisticalAnswer> statisticalAnswers;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Leaderboard> leaderboards;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Log> logs;
 	
 	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumns({
 		@MapKeyJoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date"), 

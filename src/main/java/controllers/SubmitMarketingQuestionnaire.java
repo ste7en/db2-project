@@ -21,6 +21,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import model.MarketingAnswer;
 import model.MarketingQuestion;
 import model.User;
+import services.LogService;
+import services.LogService.Events;
 import services.MarketingQuestionService;
 
 /**
@@ -33,7 +35,9 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionService mqService;
+	private MarketingQuestionService marketingQuestionService;
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
 	
 	public SubmitMarketingQuestionnaire() {
 		super();
@@ -69,12 +73,14 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 		for(int i = 1; ;i++) {
 			String answer = request.getParameter(Integer.toString(i));
 			if (answer == null) break;
-			MarketingQuestion q = mqService.findMarketingQuestion(sessionDate, i);
-			if (q == null)
+			MarketingQuestion mquestion = marketingQuestionService.findMarketingQuestion(sessionDate, i);
+			if (mquestion == null)
 				throw new ServletException("Question q of session date " + sessionDate.toString() + " and number " + i + " does not exist.");
-			answers.add(new MarketingAnswer(user, q, answer));
+			answers.add(new MarketingAnswer(user, mquestion, answer));
 		}
 		session.setAttribute("marketing-answers", answers);
+		
+		logService.createInstantLog(user, Events.MARKETING_ANSWERS_FILLED);
 		
 		String path = servletContext.getContextPath() + "/GoToStatisticalQuestionnaire";
 		response.sendRedirect(path);

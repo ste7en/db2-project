@@ -13,10 +13,10 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="marketing_question")
+@Table(name = "marketing_question")
 @NamedQueries({
-	@NamedQuery(name="MarketingQuestion.findAll", query="SELECT m FROM MarketingQuestion m"),
-	@NamedQuery(name="MarketingQuestion.findByDate", query="SELECT mq from MarketingQuestion mq WHERE mq.identifier.questionnaire_date = ?1")
+	@NamedQuery(name = "MarketingQuestion.findAll", query = "SELECT m FROM MarketingQuestion m"),
+	@NamedQuery(name = "MarketingQuestion.findByDate", query = "SELECT mq from MarketingQuestion mq WHERE mq.identifier.questionnaire_date = ?1")
 })
 public class MarketingQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,15 +24,17 @@ public class MarketingQuestion implements Serializable {
 	@EmbeddedId
 	private MarketingQuestionID identifier;
 	
-	@Column(length=45)
+	@Column(length = 45)
 	private String text;
 
 	//bidirectional many-to-one association to ProductOfTheDay
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name="questionnaire_date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	
 	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "marketing_answer", 
 					joinColumns = { @JoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date"), 
 									@JoinColumn(name = "questionnaire_number", referencedColumnName = "number")

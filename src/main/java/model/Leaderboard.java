@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Entity
 @IdClass(LeaderboardID.class)
 @Table(name="leaderboard")
-@NamedQueries ({ @NamedQuery(name="Leaderboard.findAll", query="SELECT l FROM Leaderboard L"),
-				@NamedQuery(name="Leaderboard.totalScore", query="SELECT sum(l.points) FROM Leaderboard l WHERE l.user = ?1"),
-				@NamedQuery(name="Leaderboard.findLeaderboardsByDate", query="SELECT l FROM Leaderboard l WHERE l.questionnaire_date = ?1 ORDER BY l.points DESC")
+@NamedQueries ({ @NamedQuery(name = "Leaderboard.findAll", query = "SELECT l FROM Leaderboard L"),
+				@NamedQuery(name = "Leaderboard.totalScore", query = "SELECT sum(l.points) FROM Leaderboard l WHERE l.user = ?1"),
+				@NamedQuery(name = "Leaderboard.findLeaderboardsByDate", query = "SELECT l FROM Leaderboard l WHERE l.questionnaire_date = ?1 ORDER BY l.points DESC")
 })
 
 public class Leaderboard implements Serializable {
@@ -18,6 +18,7 @@ public class Leaderboard implements Serializable {
 
 	@Id
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user")
 	private User user;
 	
@@ -31,10 +32,11 @@ public class Leaderboard implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date questionnaire_date;
 
-	@Column(name="points")
+	@Column(name = "points")
 	private int points;
 	
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "questionnaire_date", referencedColumnName = "date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	
