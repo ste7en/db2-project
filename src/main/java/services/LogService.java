@@ -19,6 +19,7 @@ public class LogService {
 	public enum Events {
 		SIGN_UP("New user created."),
 		LOG_IN("User logged in."),
+		LOG_OUT("User logged out."),
 		QUESTIONNAIRE_STARTED("Marketing questionnaire started."),
 		QUESTIONNAIRE_CANCELLED("Marketing questionnaire cancelled."),
 		MARKETING_ANSWERS_FILLED("Marketing answers filled."),
