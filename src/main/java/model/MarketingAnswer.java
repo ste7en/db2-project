@@ -28,10 +28,9 @@ public class MarketingAnswer implements Serializable {
     	@JoinColumn(name = "questionnaire_number", referencedColumnName = "number"),
     	@JoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date")
     })
-    
     private MarketingQuestion question;
 	
-	@Column(name="text")
+	@Column(name = "text")
 	private String answer;
 	
 	public MarketingAnswer() {}

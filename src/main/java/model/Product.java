@@ -12,23 +12,23 @@ import java.util.Base64;
  * 
  */
 @Entity
-@Table(name="product")
-@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+@Table(name = "product")
+@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int product_id;
 
 	@Lob
-	@Column(name="image")
+	@Column(name = "image")
 	private byte[] image;
 
-	@Column(name="name")
+	@Column(name = "name")
 	private String name;
 
-	@Column(name="price")
+	@Column(name = "price")
 	private float price;
 
 	//bi-directional many-to-one association to ProductOfTheDay

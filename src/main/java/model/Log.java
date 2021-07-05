@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @IdClass(LogID.class)
-@Table(name="log")
-@NamedQuery(name="Log.findAll", query="SELECT l FROM Log l ORDER BY l.timestamp ASC")
+@Table(name = "log")
+@NamedQuery(name = "Log.findAll", query = "SELECT l FROM Log l ORDER BY l.timestamp ASC")
 public class Log implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -19,10 +19,10 @@ public class Log implements Serializable {
 	@Id
 	@ManyToOne
 	(fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@Column(name="event")
+	@Column(name = "event")
 	private String event;
 	
 	public Log() {}
