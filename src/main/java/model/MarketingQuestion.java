@@ -29,10 +29,12 @@ public class MarketingQuestion implements Serializable {
 
 	//bidirectional many-to-one association to ProductOfTheDay
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name="questionnaire_date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	
 	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "marketing_answer", 
 					joinColumns = { @JoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date"), 
 									@JoinColumn(name = "questionnaire_number", referencedColumnName = "number")

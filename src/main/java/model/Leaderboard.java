@@ -18,6 +18,7 @@ public class Leaderboard implements Serializable {
 
 	@Id
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user")
 	private User user;
 	
@@ -35,6 +36,7 @@ public class Leaderboard implements Serializable {
 	private int points;
 	
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "questionnaire_date", referencedColumnName = "date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	

@@ -18,6 +18,7 @@ public class Log implements Serializable {
 	
 	@Id
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id")
 	private User user;
 	

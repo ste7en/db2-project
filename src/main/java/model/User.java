@@ -39,22 +39,27 @@ public class User implements Serializable {
 	private String username;
 
 	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumn(name = "product_id")
 	@Column(name = "text")
 	private Map<Product, String> productReviews;
 		
 	@OneToMany
-	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false) //read-only
 	private List<StatisticalAnswer> statisticalAnswers;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Leaderboard> leaderboards;
 	
-	@OneToMany(mappedBy = "user")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Log> logs;
 	
 	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumns({
 		@MapKeyJoinColumn(name = "questionnaire_date", referencedColumnName = "questionnaire_date"), 

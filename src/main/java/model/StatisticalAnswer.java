@@ -19,6 +19,7 @@ public class StatisticalAnswer implements Serializable {
 	
 	@Id
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
@@ -42,6 +43,7 @@ public class StatisticalAnswer implements Serializable {
 	private Integer experience;
 	
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name="questionnaire_date", referencedColumnName = "date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	

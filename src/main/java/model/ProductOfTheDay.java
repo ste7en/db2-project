@@ -24,18 +24,22 @@ public class ProductOfTheDay implements Serializable {
 	private Date date;
 	
 	@ManyToOne
+	(fetch = FetchType.EAGER)
 	@JoinColumn(name="product_of_the_day", referencedColumnName = "product_id")
 	private Product product;
 	
-	@OneToMany(mappedBy = "productOfTheDay")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "productOfTheDay")
 	@JoinColumn(name = "questionnaire_date", updatable = false, insertable = false)
 	private List<MarketingQuestion> marketingQuestions;
 	
-	@OneToMany(mappedBy = "productOfTheDay")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "productOfTheDay")
 	@JoinColumn(name = "questionnaire_date", updatable = false, insertable = false)
 	private List<StatisticalAnswer> statisticalAnswers;
 	
-	@OneToMany(mappedBy = "productOfTheDay")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "productOfTheDay")
 	@JoinColumn(name = "questionnaire_date", updatable = false, insertable = false)
 	private List<Leaderboard> leaderboards;
 

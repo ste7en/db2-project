@@ -32,10 +32,12 @@ public class Product implements Serializable {
 	private float price;
 
 	//bi-directional many-to-one association to ProductOfTheDay
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+	@OneToMany
+	(fetch = FetchType.LAZY, mappedBy = "product")
 	private List<ProductOfTheDay> productOfTheDays;
 	
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection
+	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product_id"))
 	@MapKeyJoinColumn(name = "user_id")
 	@Column(name = "text")
