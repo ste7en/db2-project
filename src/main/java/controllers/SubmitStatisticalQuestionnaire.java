@@ -34,9 +34,9 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
-	private StatisticalAnswerService saService;
+	private StatisticalAnswerService statisticalAnswerService;
 	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
-	private MarketingAnswerService maService;
+	private MarketingAnswerService marketingAnswerService;
 	
 	public SubmitStatisticalQuestionnaire() {
 		super();
@@ -81,8 +81,8 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		
 		StatisticalAnswer statisticalAnswer = new StatisticalAnswer(user, sessionDate, age, sex, experience);
 		
-		maService.saveMarketingAnswers(answers);
-		saService.saveStatisticalAnswer(statisticalAnswer);
+		marketingAnswerService.saveMarketingAnswers(answers);
+		statisticalAnswerService.saveStatisticalAnswer(statisticalAnswer);
 
 		String path = "/WEB-INF/ThanksPage.html";
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

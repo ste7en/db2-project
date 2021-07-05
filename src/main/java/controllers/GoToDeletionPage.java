@@ -37,11 +37,11 @@ public class GoToDeletionPage extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionService mqService;
+	private MarketingQuestionService marketingQuestionService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
-	private StatisticalAnswerService saService;
+	private StatisticalAnswerService statisticalAnswerService;
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
-	private ProductOfTheDayService pofdService;
+	private ProductOfTheDayService productOfTheDayService;
 	private DateFormat dateFormat;
 	
 	public GoToDeletionPage() {
@@ -89,7 +89,7 @@ public class GoToDeletionPage extends HttpServlet {
 		
 		try {
 			formattedDate = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
-			if (formattedDate == null|| formattedDate.isEmpty())
+			if (formattedDate == null || formattedDate.isEmpty())
 				throw new Exception("Missing or empty questionnaire to delete value");
 			
 			date = dateFormat.parse(formattedDate);
@@ -100,10 +100,12 @@ public class GoToDeletionPage extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
-		if (pofdService.removeProductOfTheDay(date))	
+		
+		if (productOfTheDayService.removeProductOfTheDay(date))	
 			request.setAttribute("statusMsg", formattedDate + " " + "questionnaire, its answers and user points have successfully been deleted.");
 		else
 			request.setAttribute("statusMsg", "ERROR: Couldn't find any questionnaire to delete.");
+		
 		doGet(request, response);
 		return;
 	}

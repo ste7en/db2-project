@@ -35,11 +35,11 @@ public class GoToHomePage extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
-	private ProductOfTheDayService potdService;
+	private ProductOfTheDayService productOfTheDayService;
 	@EJB(name = "db2-project.src.main.java.services/ProductService")
-	private ProductService pService;
+	private ProductService productService;
 	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
-	private MarketingAnswerService maService;
+	private MarketingAnswerService marketingAnswerService;
 
 	public GoToHomePage() {
 		super();
@@ -81,7 +81,7 @@ public class GoToHomePage extends HttpServlet {
 			session.setAttribute("session-date", sessionDate);
 		}
 		
-		ProductOfTheDay potd = potdService.findProductByDate(sessionDate);
+		ProductOfTheDay potd = productOfTheDayService.findProductByDate(sessionDate);
 		if (potd != null) {
 			productOfTheDay = potd.getProduct();
 			reviews = productOfTheDay.getReviews();
@@ -94,7 +94,7 @@ public class GoToHomePage extends HttpServlet {
 		ctx.setVariable("user", user);
 		ctx.setVariable("product", productOfTheDay);
 		ctx.setVariable("reviews", reviews);
-		ctx.setVariable("userHasAlreadyFilled", maService.checkIfExists(user, sessionDate));
+		ctx.setVariable("userHasAlreadyFilled", marketingAnswerService.checkIfExists(user, sessionDate));
 		
 		templateEngine.process(path, ctx, response.getWriter());
 	}

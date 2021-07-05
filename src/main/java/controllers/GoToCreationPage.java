@@ -38,13 +38,13 @@ public class GoToCreationPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String templatePath = "/WEB-INF/CreationPage.html";
 	private TemplateEngine templateEngine;
-	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
-	private ProductOfTheDayService pofs;
-	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionService mqs;
-	@EJB(name = "db2-project.src.main.java.services/ProductService")
-	private ProductService ps;
 	//the client(webServlet) interacts with a business object ->EJB
+	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
+	private ProductOfTheDayService productOfTheDayService;
+	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
+	private MarketingQuestionService marketingQuestionService;
+	@EJB(name = "db2-project.src.main.java.services/ProductService")
+	private ProductService productService;
 
 	public GoToCreationPage() {
 		super();
@@ -70,7 +70,8 @@ public class GoToCreationPage extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-		List<Product> products = ps.findAllProducts();
+		
+		List<Product> products = productService.findAllProducts();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String today = dateFormat.format(date);
@@ -87,7 +88,7 @@ public class GoToCreationPage extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int productId = Integer.parseInt(request.getParameter("product_id"));
-		Product product = ps.findProduct(productId);
+		Product product = productService.findProduct(productId);
 		String formattedDate;
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date date;
@@ -106,20 +107,20 @@ public class GoToCreationPage extends HttpServlet {
 			return;
 		}
 		
-		if (pofs.findProductByDate(date) != null) {
+		if (productOfTheDayService.findProductByDate(date) != null) {
 			request.setAttribute("statusMsg", "ERROR: A questionnaire already exists for the given date.");
 			doGet(request, response);
 			return;
 		}
 		
 		// Creation of ProductOfTheDay
-		productOfTheDay = pofs.createProductOfTheDay(product, date);
+		productOfTheDay = productOfTheDayService.createProductOfTheDay(product, date);
 		
 		// Creation of new marketing questions for the product just inserted
 		for(int i = 1; ;i++) {
 			String question = request.getParameter(Integer.toString(i));
 			if (question == null) break;
-			mqs.createMarketingQuestion(i, date, question, productOfTheDay);
+			marketingQuestionService.createMarketingQuestion(i, date, question, productOfTheDay);
 		}
 		
 		// Questionnaire created, redirecting the user to the creation page.

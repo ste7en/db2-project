@@ -31,8 +31,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.StatisticalAnswer;
 import model.MarketingAnswer;
+import model.ProductOfTheDay;
 import services.MarketingAnswerService;
-import services.MarketingQuestionService;
+import services.ProductOfTheDayService;
 import services.StatisticalAnswerService;
 
 /**
@@ -44,12 +45,12 @@ public class GoToInspectionPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
-	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
-	private MarketingQuestionService mqService;
 	@EJB(name = "db2-project.src.main.java.services/StatisticalAnswerService")
-	private StatisticalAnswerService saService;
+	private StatisticalAnswerService statisticalAnswerService;
 	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
-	private MarketingAnswerService maService;
+	private MarketingAnswerService marketingAnswerService;
+	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
+	private ProductOfTheDayService productOfTheDayService;
 	DateFormat dateFormat;
 	Date date;
 	String today;
@@ -89,9 +90,14 @@ public class GoToInspectionPage extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String date_of_questionnaire=null;
 		
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		String path = "/WEB-INF/InspectionPage.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		String dateOfQuestionnaire=null;
+		
+		String loginpath = servletContext.getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("admin") == null) {
 			response.sendRedirect(loginpath);
@@ -99,8 +105,8 @@ public class GoToInspectionPage extends HttpServlet {
 		}
 		
 		try {
-			date_of_questionnaire= StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
-			if ( date_of_questionnaire==null|| date_of_questionnaire.isEmpty()) {
+			dateOfQuestionnaire = StringEscapeUtils.escapeJava(request.getParameter("questionnaireDate"));
+			if (dateOfQuestionnaire == null || dateOfQuestionnaire.isEmpty()) {
 				throw new Exception("Missing or empty questionnaire to delete value");
 			}
 		} catch (Exception e) {
@@ -109,40 +115,32 @@ public class GoToInspectionPage extends HttpServlet {
 			return;
 		}
 		
-		DateFormat format=new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-		Date date_to_insert=null;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+		Date dateToInsert = null;
+		
 		try {
-			date_to_insert = format.parse(date_of_questionnaire);
+			dateToInsert = format.parse(dateOfQuestionnaire);
 		} catch (ParseException e) {
 			// Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		Date date= new Date();
-		if(date_to_insert.after(date)) {
-			throw new RuntimeException("You cannot show data for a not yet created questionnaire");
+		Date date = new Date();
+		
+		if(dateToInsert.after(date)) {
+			ctx.setVariable("statusMsg", "ERROR: You cannot inspect a questionnaire of a future date");
 		}
 		
-		//to modify to show answers sorted by users
-		List<StatisticalAnswer> statisticalAnswers = new ArrayList<>();
-		try {
-			statisticalAnswers = saService.findByDate(date_to_insert);
-		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
-			return;
-		}
+		List<StatisticalAnswer> statisticalAnswers = null;
+		List<MarketingAnswer> marketingAnswers = null;
+		ProductOfTheDay productOfTheDay = productOfTheDayService.findProductByDate(dateToInsert);
 		
-		List<MarketingAnswer> marketingAnswers= new ArrayList<>();
-		try {
-			marketingAnswers = maService.findByDate(date_to_insert);
-		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "");
-			return;
+		if(productOfTheDay == null) {
+			ctx.setVariable("statusMsg", "ERROR: We're sorry, there is no product of the day for the selected day.");
+		} else {
+			statisticalAnswers = statisticalAnswerService.findByDate(dateToInsert);
+			marketingAnswers = marketingAnswerService.findByDate(dateToInsert);
 		}
-		
-		String path = "/WEB-INF/InspectionPage.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		ctx.setVariable("statisticalAnswers", statisticalAnswers);
 		ctx.setVariable("marketingAnswers", marketingAnswers);

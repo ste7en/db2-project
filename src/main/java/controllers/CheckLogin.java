@@ -28,7 +28,7 @@ public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "db2-project.src.main.java.services/UserService")
-	private UserService usrService;
+	private UserService userService;
 
 	public CheckLogin() {
 		super();
@@ -46,14 +46,14 @@ public class CheckLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// obtain and escape params
-		String usrn = null;
-		String pwd = null;
+		String username = null;
+		String password = null;
 		Date sessionDate = new Date();
 		HttpSession session = request.getSession();
 		try {
-			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
-			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
-			if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()) {
+			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
+			password = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
+			if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
 			}
 
@@ -65,7 +65,7 @@ public class CheckLogin extends HttpServlet {
 		User user;
 		try {
 			// query db to authenticate for user
-			user = usrService.checkCredentials(usrn, pwd);
+			user = userService.checkCredentials(username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");

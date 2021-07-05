@@ -32,7 +32,7 @@ public class GoToLeaderboard extends HttpServlet {
 	private TemplateEngine templateEngine;
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/LeaderboardService")
-	private LeaderboardService lService;
+	private LeaderboardService leaderboardService;
 
 	public GoToLeaderboard() {
 		super();
@@ -44,9 +44,7 @@ public class GoToLeaderboard extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-		
-		
+		templateResolver.setSuffix(".html");		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -63,7 +61,7 @@ public class GoToLeaderboard extends HttpServlet {
 	
 		List<Leaderboard> leaderboards = new ArrayList<>();
 		try {
-			leaderboards = lService.findLeaderboardsByDate(date);
+			leaderboards = leaderboardService.findLeaderboardsByDate(date);
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing Leaderbord for this day!");
 			return;
@@ -75,7 +73,7 @@ public class GoToLeaderboard extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("leaderboards", leaderboards);
-		ctx.setVariable("leaderboardService", lService);
+		ctx.setVariable("leaderboardService", leaderboardService);
 		templateEngine.process(path, ctx, response.getWriter());
 
 	}

@@ -28,7 +28,7 @@ public class SignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "db2-project.src.main.java.services/UserService")
-	private UserService usrService;
+	private UserService userService;
 
 	public SignUp() {
 		super();
@@ -56,26 +56,26 @@ public class SignUp extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// obtain and escape params
-		String usrn = null;
-		String pwd = null;
+		String username = null;
+		String password = null;
 		String email = null;
 		
 		try {
-			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
-			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
+			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
+			password = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
 			email = StringEscapeUtils.escapeJava(request.getParameter("email"));
 			
-			if (usrn == null || pwd == null || email == null || usrn.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
+			if (username == null || password == null || email == null || username.isEmpty() || password.isEmpty() || email.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
 			}
 			
-			if (usrService.checkByUserAndEmail(usrn, email)) {
+			if (userService.checkByUserAndEmail(username, email)) {
 				request.setAttribute("statusMsg", "ERROR: These credential already belong to an existing user. Try with other credentials.");
 				doGet(request, response);
 				return;
 			}
 			else {
-				User user = usrService.registration(usrn, email, pwd);
+				User user = userService.registration(username, email, password);
 				request.getSession().setAttribute("session-user", user);
 				String path = getServletContext().getContextPath() + "/GoToHomePage";
 				response.sendRedirect(path);
