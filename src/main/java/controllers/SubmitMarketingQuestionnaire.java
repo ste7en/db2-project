@@ -21,6 +21,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import model.MarketingAnswer;
 import model.MarketingQuestion;
 import model.User;
+import services.LogService;
+import services.LogService.Events;
 import services.MarketingQuestionService;
 
 /**
@@ -34,6 +36,8 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/MarketingQuestionnaireService")
 	private MarketingQuestionService marketingQuestionService;
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
 	
 	public SubmitMarketingQuestionnaire() {
 		super();
@@ -75,6 +79,8 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 			answers.add(new MarketingAnswer(user, mquestion, answer));
 		}
 		session.setAttribute("marketing-answers", answers);
+		
+		logService.createInstantLog(user, Events.MARKETING_ANSWERS_FILLED);
 		
 		String path = servletContext.getContextPath() + "/GoToStatisticalQuestionnaire";
 		response.sendRedirect(path);

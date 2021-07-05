@@ -21,6 +21,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import model.MarketingAnswer;
 import model.StatisticalAnswer;
 import model.User;
+import services.LogService;
+import services.LogService.Events;
 import services.MarketingAnswerService;
 import services.StatisticalAnswerService;
 
@@ -37,6 +39,8 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 	private StatisticalAnswerService statisticalAnswerService;
 	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
 	private MarketingAnswerService marketingAnswerService;
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
 	
 	public SubmitStatisticalQuestionnaire() {
 		super();
@@ -81,13 +85,12 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		
 		StatisticalAnswer statisticalAnswer = new StatisticalAnswer(user, sessionDate, age, sex, experience);
 		
-		marketingAnswerService.saveMarketingAnswers(answers);
-		statisticalAnswerService.saveStatisticalAnswer(statisticalAnswer);
+		maService.saveMarketingAnswers(answers);
+		saService.saveStatisticalAnswer(statisticalAnswer);
 
 		String path = "/WEB-INF/ThanksPage.html";
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		templateEngine.process(path, ctx, response.getWriter());
-
 	}
 }

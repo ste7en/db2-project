@@ -25,8 +25,8 @@ public class LogService {
 		MARKETING_ANSWERS_SUBMITTED("Marketing answers submitted."),
 		STATISTICAL_ANSWERS_SUBMITTED("Statistical answers filled and submitted."),
 		USER_BLOCKED("User blocked for using a bad words."),
-		ADMIN_CREATED_QUESTIONNAIRE("Admin created a questionnaire with a new product of the day"),
-		ADMIN_DELETED_QUESTIONNAIRE("Admin deleted a questionnaire");
+		ADMIN_CREATED_QUESTIONNAIRE("Admin created a questionnaire with a new product of the day."),
+		ADMIN_DELETED_QUESTIONNAIRE("Admin deleted a questionnaire.");
 		
         private String message;
 

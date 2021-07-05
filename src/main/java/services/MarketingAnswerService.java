@@ -19,6 +19,8 @@ public class MarketingAnswerService {
 	protected EntityManager em;
 	@EJB(name = "db2-project.src.main.java.services/OffensiveWordService")
 	private OffensiveWordService offensiveWordService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 	
 	public MarketingAnswerService() {}
 	
@@ -33,7 +35,7 @@ public class MarketingAnswerService {
 		for (MarketingAnswer answer : answers) {
 			offensiveWords.forEach(offensiveWord -> {
 				if (answer.getAnswer().toLowerCase().contains(offensiveWord)) {
-					em.find(User.class, answer.getUser().getId()).setBlocked(true);
+					userService.blockUser(answer.getUser().getId());
 					offensiveWordService.incrementOffensiveWordOccurrence(offensiveWord);
 				}
 			});
