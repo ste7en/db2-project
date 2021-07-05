@@ -42,10 +42,8 @@ public class User implements Serializable {
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumn(name = "product_id")
 	@Column(name = "text")
-	private Map<Product, Integer> products;
-	
-	//Not strictly necessary 
-	
+	private Map<Product, String> productReviews;
+		
 	@OneToMany(mappedBy = "user")
 	private List<StatisticalAnswer> statisticalAnswers;
 	
