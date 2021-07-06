@@ -118,16 +118,14 @@ footer {
 		</div>
 			
 		</div>	
-		<footer>
+		<footer th:if="${user.getAdmin}">
 	<!-- Admin panel -->
-			<div th:if="${user.getAdmin}">
 				<p><b>Admin Dashboard</b></p>
 				<ul>
 				<li><a href="GoToCreationPage">Create a new Questionnaire</a></li>
 				<li><a href="GoToDeletionPage">Delete a past Questionnaire</a></li>
 				<li><a href="GoToInspectionPage">Inspection Page</a></li>
 				</ul>
-			</div>
 	</footer>
 	</body>
 	
