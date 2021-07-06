@@ -3,6 +3,7 @@ package services;
 import java.util.Date;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,8 @@ import model.User;
 public class StatisticalAnswerService {
 	@PersistenceContext(unitName = "db2-alparone-ferrara-formicola")
 	protected EntityManager em;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 	
 	public StatisticalAnswerService() {}
 	
@@ -26,7 +29,9 @@ public class StatisticalAnswerService {
 	}
 	
 	public void saveStatisticalAnswer(StatisticalAnswer answer) {
-		em.persist(answer);
+		final User u = userService.findUser(answer.getUser().getId());
+		if (!u.getBlocked())
+			em.persist(answer);
 	}
 	
 	public StatisticalAnswer findStatisticalAnswer(int user_id) {

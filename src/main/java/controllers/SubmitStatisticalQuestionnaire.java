@@ -21,9 +21,9 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import model.MarketingAnswer;
 import model.StatisticalAnswer;
 import model.User;
-import services.LogService;
 import services.MarketingAnswerService;
 import services.StatisticalAnswerService;
+import services.UserService;
 
 /**
  * Servlet implementation class SubmitStatisticalQuestionnaire
@@ -38,8 +38,8 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 	private StatisticalAnswerService statisticalAnswerService;
 	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
 	private MarketingAnswerService marketingAnswerService;
-	@EJB(name = "db2-project.src.main.java.services/LogService")
-	private LogService logService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 	
 	public SubmitStatisticalQuestionnaire() {
 		super();
@@ -61,7 +61,8 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 
 		Date sessionDate = (Date) session.getAttribute("session-date");
-		User user = (User) session.getAttribute("session-user");
+		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
+		
 		@SuppressWarnings("unchecked")
 		List<MarketingAnswer> answers = (List<MarketingAnswer>) session.getAttribute("marketing-answers");
 

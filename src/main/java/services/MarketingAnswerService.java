@@ -32,14 +32,16 @@ public class MarketingAnswerService {
 	
 	public void saveMarketingAnswers(List<MarketingAnswer> answers) {
 		List<String> offensiveWords = offensiveWordService.findAll();
+		final User u = userService.findUser(answers.get(0).getUser().getId());
 		for (MarketingAnswer answer : answers) {
 			offensiveWords.forEach(offensiveWord -> {
 				if (answer.getAnswer().toLowerCase().contains(offensiveWord)) {
-					userService.blockUser(answer.getUser().getId());
+					u.setBlocked(true);
 					offensiveWordService.incrementOffensiveWordOccurrence(offensiveWord);
 				}
 			});
-			em.persist(answer);
+			if (!u.getBlocked())
+				em.persist(answer);
 		}
 	}
 	

@@ -24,6 +24,7 @@ import model.User;
 import services.MarketingAnswerService;
 import services.ProductOfTheDayService;
 import services.ProductService;
+import services.UserService;
 
 /**
  * Servlet implementation class GoToHomePage
@@ -40,6 +41,8 @@ public class GoToHomePage extends HttpServlet {
 	private ProductService productService;
 	@EJB(name = "db2-project.src.main.java.services/MarketingAnswerService")
 	private MarketingAnswerService marketingAnswerService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 
 	public GoToHomePage() {
 		super();
@@ -65,7 +68,8 @@ public class GoToHomePage extends HttpServlet {
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		user = (User) session.getAttribute("session-user");
+
+		user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
 		sessionDate = (Date) session.getAttribute("session-date");
 		
 		if (session.isNew() || user == null || user.getBlocked()) {

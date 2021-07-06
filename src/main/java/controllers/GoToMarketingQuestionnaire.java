@@ -58,7 +58,7 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("session-user");
-		if (session.isNew() || user == null) {
+		if (session.isNew() || user == null || user.getBlocked()) {
 			response.sendRedirect(loginpath);
 			return;
 		}

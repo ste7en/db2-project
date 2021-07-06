@@ -77,6 +77,7 @@ public class CheckLogin extends HttpServlet {
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
 			session.setAttribute("session-user", user);
+			session.setAttribute("session-user-id", user.getId());
 			session.setAttribute("admin", user.getAdmin());
 			session.setAttribute("session-date", sessionDate);
 			path = servletContext.getContextPath() + "/GoToHomePage";
