@@ -12,8 +12,8 @@
   color: white;
   text-align: center;
   font-size: 15px;
-  padding: 20px;
-  width: 400px;
+  padding: 10px;
+  width: 150px;
   height:50px;
   transition: all 0.5s;
   cursor: pointer;
@@ -77,12 +77,12 @@
 				</p>
 				<p>
 					<label>Select a questionnaire date:</label>
-					<input style="width:100%" type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
+					<input style="width:25%" type="date" th:min="${today}" name="questionnaireDate" placeholder="yyyy-mm-dd" required>
 				</p>
 				<p>Insert a new marketing question for the product</p>
 				
 				<span id="question">
-					<input style="width:100%" type="text" name=1 required />
+					<input style="width:50%" type="text" name=1 required />
 				</span>
 				<br>
 				<input type="button" class="button" value="Add Question" onclick="addQuestion()"/>

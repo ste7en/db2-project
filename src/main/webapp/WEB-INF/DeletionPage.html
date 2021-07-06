@@ -13,9 +13,9 @@
   border: none;
   color: white;
   text-align: center;
-  font-size: 15px;
+  font-size: 15x;
   padding: 20px;
-  width: 100px;
+  width: 150px;
   height:50px;
   transition: all 0.5s;
   cursor: pointer;
@@ -57,10 +57,10 @@
 		<h3>Delete a Questionnaire</h3>
 		<label>Select a questionnaire date to delete :</label>
 		<form th:action="@{/GoToDeletionPage}" method="POST">
-			<input type="date" style="width:100%" th:max="${minDate}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
+			<input type="date" style="width:25%" th:max="${minDate}" name="questionnaireDate"  th:value="${date_of_questionnaire}"placeholder="yyyy-mm-dd" required>
 			<input type="submit" class="button" value="Delete" name="Delete Questionnaire" >
 		</form>
-		<a th:href="@{/GoToHomePage}"><button class="button" type="submit">Back Home</button></a>
+		<a th:href="@{/GoToHomePage}"><button class="button" style="float:right" type="submit">Back Home</button></a>
 		<p th:text=" ${statusMsg}" style="color:#595959"></p>
 		</div>
 	</body>
