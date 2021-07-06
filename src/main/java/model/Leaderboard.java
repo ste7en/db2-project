@@ -5,10 +5,16 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+/**
+ * Model class describing a Leaderboard entry as it is implemented
+ * in the database schema. It uses an `@IdClass`annotation to refer
+ * to its primary composite key. 
+ * @see LeaderboardID for further documentation.
+ */
 @Entity
 @IdClass(LeaderboardID.class)
 @Table(name="leaderboard")
-@NamedQueries ({ @NamedQuery(name = "Leaderboard.findAll", query = "SELECT l FROM Leaderboard L"),
+@NamedQueries ({
 				@NamedQuery(name = "Leaderboard.totalScore", query = "SELECT sum(l.points) FROM Leaderboard l WHERE l.user = ?1"),
 				@NamedQuery(name = "Leaderboard.findLeaderboardsByDate", query = "SELECT l FROM Leaderboard l WHERE l.questionnaire_date = ?1 ORDER BY l.points DESC")
 })
@@ -16,6 +22,9 @@ import javax.persistence.*;
 public class Leaderboard implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * This maps the ManyToOne relationship with User as a composite ID
+	 */
 	@Id
 	@ManyToOne
 	(fetch = FetchType.EAGER)
@@ -23,7 +32,7 @@ public class Leaderboard implements Serializable {
 	private User user;
 	
 	/**
-	 * This maps the ManyToOne relationship with ProductOfTheDay in an ID
+	 * This maps the ManyToOne relationship with ProductOfTheDay as a composite ID
 	 */
 	@Id
 	@JoinTable(name = "product_of_the_day",
@@ -35,6 +44,11 @@ public class Leaderboard implements Serializable {
 	@Column(name = "points")
 	private int points;
 	
+	/**
+	 * Not necessary because redundant, but implemented as bidirectional relationship.
+	 * Its primary key (date) is, indeed, needed because it is part of the 
+	 * composite key of this entity.
+	 */
 	@ManyToOne
 	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "questionnaire_date", referencedColumnName = "date", updatable = false, insertable = false)

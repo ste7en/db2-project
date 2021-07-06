@@ -8,8 +8,8 @@ import java.util.Base64;
 
 
 /**
- * The persistent class for the product database table.
- * 
+ * Model class describing a Product entity as it is implemented
+ * in the database schema.
  */
 @Entity
 @Table(name = "product")
@@ -31,11 +31,19 @@ public class Product implements Serializable {
 	@Column(name = "price")
 	private float price;
 
-	//bi-directional many-to-one association to ProductOfTheDay
+	/**
+	 * Not necessary but implemented as bidirectional read-only relationship.
+	 * The lines `updatable = false, insertable = false` enable it to be read-only.
+	 */
 	@OneToMany
-	(fetch = FetchType.LAZY, mappedBy = "product")
+	(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_of_the_day", insertable = false, updatable = false)
 	private List<ProductOfTheDay> productOfTheDays;
 	
+	/**
+	 * ManyToMany relationship allowing to retrieve, for each user, their
+	 * reviews about the product described by this entity.
+	 */
 	@ElementCollection
 	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "product_id"))
@@ -43,11 +51,15 @@ public class Product implements Serializable {
 	@Column(name = "text")
 	private Map<User, String> reviews;
 	
+	public Product() {}
+	
+	/**
+	 * Getters and setters
+	 */
+	
 	public Map<User,String> getReviews(){
 		return this.reviews;
 	}
-	
-	public Product() {}
 
 	public int getProduct_id() {
 		return this.product_id;

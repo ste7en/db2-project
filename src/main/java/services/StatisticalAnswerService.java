@@ -21,32 +21,15 @@ public class StatisticalAnswerService {
 	
 	public StatisticalAnswerService() {}
 	
-	public StatisticalAnswer createStatisticalAnswer(int user_id, Date d, int age, char sex, int experience) {
-		User u = new UserService().findUser(user_id);
-		StatisticalAnswer sa = new StatisticalAnswer(u, d, age, sex, experience);
-		em.persist(sa);
-		return sa;
-	}
-	
+	/**
+	 * Saves the StatisticalAnswer instance if and only if
+	 * the user who filled the answer is not blocked.
+	 * @param answer
+	 */
 	public void saveStatisticalAnswer(StatisticalAnswer answer) {
 		final User u = userService.findUser(answer.getUser().getId());
 		if (!u.getBlocked())
 			em.persist(answer);
-	}
-	
-	public StatisticalAnswer findStatisticalAnswer(int user_id) {
-		return em.find(StatisticalAnswer.class, user_id);
-	}
-
-	public void removeProduct(int user_id) {
-		StatisticalAnswer sa=findStatisticalAnswer(user_id);
-		if(sa!=null)
-			em.remove(sa);
-	}
-	
-	public List<StatisticalAnswer> findAllStatisticalAnswers(){
-		TypedQuery<StatisticalAnswer> query = em.createNamedQuery("StatisticalAnswer.findAll", StatisticalAnswer.class);
-		return query.getResultList();
 	}
 	
 	public List<StatisticalAnswer> findByDate(Date d) {

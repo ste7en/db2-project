@@ -15,10 +15,22 @@ public class OffensiveWordService {
 	
 	public OffensiveWordService() {}
 	
+	/**
+	 * Service method to retrieve an OffensiveWord from the database
+	 * using the EntityManager and entity's primary key (word)
+	 * @param word
+	 * @return the OffensiveWord managed entity
+	 */
 	public OffensiveWord findOffensiveWord(String word) {
 		return em.find(OffensiveWord.class, word);
 	}
 	
+	/**
+	 * Increments the occurrence of an offensive word when encountered
+	 * during the check of the text of a MarketingAnswer.
+	 * @see MarketingAnswerService
+	 * @param word
+	 */
 	public void incrementOffensiveWordOccurrence(String word) {
 		em.find(OffensiveWord.class, word).incrementOccurrence();
 	}

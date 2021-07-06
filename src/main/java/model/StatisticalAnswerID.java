@@ -3,7 +3,16 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-
+/**
+ * Model class describing the composite key used
+ * to identify a StatisticalAnswer entity. 
+ *
+ * It encapsulates the IDs corresponding to the foreign keys of
+ * tables user (int) and product_of_the_day (Date) and is used
+ * in combination with the JEE annotation `@IdClass`.
+ * 
+ * For further usages @see StatisticalAnswer class.
+ */
 public class StatisticalAnswerID implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -22,13 +31,9 @@ public class StatisticalAnswerID implements Serializable{
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof StatisticalAnswerID))
 			return false;
 		StatisticalAnswerID other = (StatisticalAnswerID) obj;
 		return Objects.equals(questionnaire_date, other.questionnaire_date) && user == other.user;
 	}
-
-	
 }

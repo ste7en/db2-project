@@ -3,6 +3,12 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+/**
+ * Model class describing a MarketingAnswer as it is implemented
+ * in the database schema. It uses an `@EmbeddedId`annotation to refer
+ * to its primary (foreign) composite key. 
+ * @see MarketingAnswerID for further documentation.
+ */
 @Entity
 @Table(name="marketing_answer")
 @NamedQueries({
@@ -12,15 +18,35 @@ import javax.persistence.*;
 public class MarketingAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 	Differently from the `@IdClass` annotation,
+	 * 	the composite key fields (questionnaire_date, 
+	 *  questionnaire_number, user_id) of 
+	 *  this entity are entirely encapsulated in a 
+	 *  single attribute of type @see MarketingAnswerID.
+	 * 
+	 *  A JPQL query must refer to the identifier when 
+	 *  querying for marketing questions.
+	 */
 	@EmbeddedId
     private MarketingAnswerID id;
 	
+	/**
+	 * Not necessary because redundant, but implemented as bidirectional relationship.
+	 * Its primary key (user_id), indeed, is needed because it is part of the composite key of
+	 * this entity.
+	 */
 	@MapsId("user_id")
 	@ManyToOne
 	(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
     
+	/**
+	 * Not necessary because redundant, but implemented as bidirectional relationship.
+	 * Its primary key (date, number) is, indeed, needed because it is part of the 
+	 * composite key of this entity.
+	 */
     @MapsId("question")
     @ManyToOne
 	(fetch = FetchType.EAGER)
@@ -54,7 +80,7 @@ public class MarketingAnswer implements Serializable {
 		return this.user;
 	}
 	
-	public MarketingQuestion getQuestion() {
-		return this.question;
+	public int getNumber() {
+		return this.id.getQuestion().getNumber();
 	}
 }

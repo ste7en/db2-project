@@ -5,6 +5,16 @@ import java.util.Objects;
 
 import javax.persistence.*;
 
+/**
+ * Model class describing the composite key used
+ * to identify a MarketingAnswer entity. 
+ *
+ * It encapsulates the IDs corresponding to the foreign keys of
+ * tables MarketingQuestion (Date, number) and User (int), used
+ * in combination with the JEE annotation `@EmbeddedId`.
+ * 
+ * For further usages @see MarketingAnswer class.
+ */
 @Embeddable
 public class MarketingAnswerID implements Serializable {
 	private static final long serialVersionUID = 1L;

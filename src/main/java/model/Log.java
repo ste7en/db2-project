@@ -6,18 +6,23 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+/**
+ * Model class describing a Log entry as it is implemented
+ * in the database schema. It uses an `@IdClass`annotation to refer
+ * to its primary composite key. @see LogID for further documentation.
+ */
 @Entity
 @IdClass(LogID.class)
 @Table(name = "log")
-@NamedQueries({
-	@NamedQuery(name = "Log.findAll", query = "SELECT l FROM Log l ORDER BY l.timestamp ASC")
-	})
 public class Log implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	private Timestamp timestamp;
 	
+	/**
+	 * This maps the ManyToOne relationship with User as a composite ID
+	 */
 	@Id
 	@ManyToOne
 	(fetch = FetchType.EAGER)

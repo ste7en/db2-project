@@ -7,13 +7,24 @@ import javax.persistence.*;
 
 import java.util.Date;
 
+/**
+ * Model class describing the composite key used
+ * to identify a MarketingQuestion entity. 
+ *
+ * It encapsulates the IDs corresponding to the foreign keys of
+ * table product_of_the_day (Date) and the key number (int), used
+ * in combination with the JEE annotation `@EmbeddedId`.
+ * 
+ * For further usages @see MarketingQuestion class.
+ */
 @Embeddable
 public class MarketingQuestionID implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private int number;
 	/**
-	 * This maps the ManyToOne relationship with ProductOfTheDay in an ID
+	 * This maps the ManyToOne relationship with 
+	 * ProductOfTheDay's date as a composite ID
 	 */
 	@JoinTable(name = "product_of_the_day",
 			joinColumns = {@JoinColumn(name = "questionnaire_date")},
@@ -46,13 +57,9 @@ public class MarketingQuestionID implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof MarketingQuestionID))
 			return false;
 		MarketingQuestionID other = (MarketingQuestionID) obj;
 		return number == other.number && Objects.equals(questionnaire_date, other.questionnaire_date);
 	}
-	
-	
 }

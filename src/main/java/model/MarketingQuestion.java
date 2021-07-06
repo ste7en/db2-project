@@ -9,30 +9,48 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the marketing_question database table.
- * 
+ * Model class describing a MarketingQuestion as it is implemented
+ * in the database schema. It uses an `@EmbeddedId`annotation to refer
+ * to its primary (foreign) composite key. 
+ * @see MarketingQuestionID for further documentation.
  */
 @Entity
 @Table(name = "marketing_question")
 @NamedQueries({
-	@NamedQuery(name = "MarketingQuestion.findAll", query = "SELECT m FROM MarketingQuestion m"),
 	@NamedQuery(name = "MarketingQuestion.findByDate", query = "SELECT mq from MarketingQuestion mq WHERE mq.identifier.questionnaire_date = ?1")
 })
 public class MarketingQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 	Differently from the `@IdClass` annotation,
+	 * 	the composite key fields (date, number) of 
+	 *  this entity are entirely encapsulated in a 
+	 *  single attribute of type @see MarketingQuestionID.
+	 * 
+	 *  A JPQL query must refer to the identifier when 
+	 *  querying for marketing questions.
+	 */
 	@EmbeddedId
 	private MarketingQuestionID identifier;
 	
 	@Column(length = 100)
 	private String text;
 
-	//bidirectional many-to-one association to ProductOfTheDay
+	/**
+	 * Not necessary because redundant, but implemented as bidirectional relationship.
+	 * Its primary key (date), indeed, is needed because it is part of the composite key of
+	 * this entity, implemented as EmbeddedId with an Embeddable entity.
+	 */
 	@ManyToOne
 	(fetch = FetchType.EAGER)
 	@JoinColumn(name="questionnaire_date", updatable = false, insertable = false)
 	private ProductOfTheDay productOfTheDay;
 	
+	/**
+	 * Not necessary because the mapping of this relationship has already been implemented
+	 * in the entity @see MarketingAnswer, but it has been added as bidirectional relationship.
+	 */
 	@ElementCollection
 	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "marketing_answer", 

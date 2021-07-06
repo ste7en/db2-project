@@ -1,12 +1,9 @@
 package services;
 
-import java.util.Collection;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import model.User;
 import services.LogService.Events;
@@ -20,6 +17,13 @@ public class UserService {
 	
 	public UserService() {}
 	
+	/**
+	 * Service method used to register a new user
+	 * @param username
+	 * @param email
+	 * @param password
+	 * @return the new created user instance
+	 */
 	public User registration(String username, String email, String password) {		
 		User u = new User(username, email, password);
 		em.persist(u);
@@ -27,6 +31,10 @@ public class UserService {
 		return u;
 	}
 	
+	/**
+	 * Service method to block a user 
+	 * @param user_id
+	 */
 	public void blockUser(int user_id) {
 		User u = findUser(user_id);
 		if(u != null) {
@@ -35,15 +43,22 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * Service method to retrieve a user from the database
+	 * using the EntityManager and User's primary key
+	 * @param user_id
+	 * @return a User entity identified by the user_id ID
+	 */
 	public User findUser(int user_id) {
 		return em.find(User.class, user_id);
 	}
 	
-	public Collection<User> findAllUsers(){
-		TypedQuery<User> query= em.createQuery("SELECT u from USER u", User.class);
-		return query.getResultList();
-	}
-	
+	/**
+	 * Checks whether a user with a specific username or email exists
+	 * @param username
+	 * @param email
+	 * @return true if the user exists, false otherwise
+	 */
 	public Boolean checkByUserAndEmail(String username, String email) {
 		return em.createNamedQuery("User.checkByUserAndEmail", Long.class)
 			.setParameter(1, username)
@@ -52,6 +67,12 @@ public class UserService {
 			.intValue() != 0;
 	}
 	
+	/**
+	 * Service method to implement the login
+	 * @param usrn
+	 * @param pwd
+	 * @return the existing User if exists, null otherwise
+	 */
 	public User checkCredentials(String usrn, String pwd) {
 		User u;
 		try {

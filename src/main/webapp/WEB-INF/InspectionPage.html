@@ -110,7 +110,7 @@
 				<tbody>
 					<tr th:each="m: ${marketingAnswers}">
 						<td th:text="${m.getUser().getUsername()}"></td>
-						<td th:text="${m.getQuestion().getNumber()}"></td>
+						<td th:text="${m.getNumber()}"></td>
 						<td th:text="${m.getAnswer()}"></td>
 					</tr>
 				</tbody>
