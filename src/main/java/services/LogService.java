@@ -16,6 +16,9 @@ public class LogService {
 	
 	public LogService() {}
 	
+	/**
+	 * Strings corresponding to a specific event to be logged 
+	 */
 	public enum Events {
 		SIGN_UP("New user created."),
 		LOG_IN("User logged in."),
@@ -36,15 +39,24 @@ public class LogService {
         String value() { return message; }
 	}
 	
+	/**
+	 * Service method used by other services to create a log entry
+	 * corresponding to a specific event.
+	 * @param u User
+	 * @param event
+	 */
 	public void createInstantLog(User u, Events event) {
 		Log l = new Log(u, event.value());
 		em.persist(l);
 	}
 	
-	public List<Log> findAllLogs() {
-		return em.createNamedQuery("Log.findAll", Log.class).getResultList();
-	}
-	
+	/**
+	 * Service method to retrieve all the log entries belonging to a specific date.
+	 * It users the `createNativeQuery` of the EntityManager to exploit the usage of
+	 * SQL function date() to retrieve only the date of a timestamp.
+	 * @param d Date
+	 * @return a list of log entries
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Log> findByDate(Date d) {
 		return em.createNativeQuery("SELECT * FROM Log WHERE date(timestamp) LIKE ?1 ORDER BY timestamp ASC", Log.class)
