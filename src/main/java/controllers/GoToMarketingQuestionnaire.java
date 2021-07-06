@@ -23,6 +23,7 @@ import model.User;
 import services.LogService;
 import services.LogService.Events;
 import services.MarketingQuestionService;
+import services.UserService;
 
 /**
  * Servlet implementation class GoToMarketingQuestionnaire
@@ -37,6 +38,8 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 	private MarketingQuestionService marketingQuestionService;
 	@EJB(name = "db2-project.src.main.java.services/LogService")
 	private LogService logService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 	
 	public GoToMarketingQuestionnaire() {
 		super();
@@ -57,7 +60,7 @@ public class GoToMarketingQuestionnaire extends HttpServlet {
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("session-user");
+		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
 		if (session.isNew() || user == null || user.getBlocked()) {
 			response.sendRedirect(loginpath);
 			return;

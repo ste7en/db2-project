@@ -76,7 +76,7 @@ public class SignUp extends HttpServlet {
 			}
 			else {
 				User user = userService.registration(username, email, password);
-				request.getSession().setAttribute("session-user", user);
+				request.getSession().setAttribute("session-user-id", user.getId());
 				String path = getServletContext().getContextPath() + "/GoToHomePage";
 				response.sendRedirect(path);
 			}

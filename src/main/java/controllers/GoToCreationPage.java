@@ -27,6 +27,7 @@ import model.Product;
 import model.ProductOfTheDay;
 import model.User;
 import services.ProductService;
+import services.UserService;
 import services.ProductOfTheDayService;
 import services.LogService;
 import services.LogService.Events;
@@ -50,6 +51,8 @@ public class GoToCreationPage extends HttpServlet {
 	private ProductService productService;
 	@EJB(name = "db2-project.src.main.java.services/LogService")
 	private LogService logService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 
 	public GoToCreationPage() {
 		super();
@@ -102,7 +105,7 @@ public class GoToCreationPage extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		String loginpath = servletContext.getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("session-user");
+		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
 		// If the user is not logged in (not present in session) redirect to the login
 		if (session.isNew() || !user.getAdmin()) {
 			session.invalidate();

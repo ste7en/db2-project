@@ -25,6 +25,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.User;
 import services.StatisticalAnswerService;
+import services.UserService;
 import services.LogService;
 import services.LogService.Events;
 import services.MarketingQuestionService;
@@ -47,6 +48,8 @@ public class GoToDeletionPage extends HttpServlet {
 	private ProductOfTheDayService productOfTheDayService;
 	@EJB(name = "db2-project.src.main.java.services/LogService")
 	private LogService logService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 	private DateFormat dateFormat;
 	
 	public GoToDeletionPage() {
@@ -94,7 +97,7 @@ public class GoToDeletionPage extends HttpServlet {
 		
 		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
-		User user = (User)session.getAttribute("session-user");
+		User user = (User)userService.findUser((int)session.getAttribute("session-user-id"));
 		// If the user is not logged in (not present in session) redirect to the login
 		if (session.isNew() || !user.getAdmin()) {
 			session.invalidate();

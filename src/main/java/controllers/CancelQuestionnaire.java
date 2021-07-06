@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import model.User;
 import services.LogService;
+import services.UserService;
 import services.LogService.Events;
 
 /**
@@ -23,6 +24,8 @@ public class CancelQuestionnaire extends HttpServlet {
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/LogService")
 	private LogService logService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 
 	public CancelQuestionnaire() {
 		super();
@@ -31,7 +34,7 @@ public class CancelQuestionnaire extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("session-user");
+		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
 
 		if (user != null) {
 			logService.createInstantLog(user, Events.QUESTIONNAIRE_CANCELLED);
