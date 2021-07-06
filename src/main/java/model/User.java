@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * The persistent class for the user database table.
- * 
+ * The persistent class for the User database table.
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 	@NamedQuery(name = "User.checkCredentials", query = "SELECT u FROM User u WHERE u.username = ?1 and u.password = ?2"),
 	@NamedQuery(name = "User.checkByUserAndEmail", query = "SELECT count(u) FROM User as u WHERE u.username = ?1 or u.email = ?2")	
 })
@@ -38,26 +37,43 @@ public class User implements Serializable {
 	@Column(name = "username")
 	private String username;
 
+	/**
+	 * Not necessary but implemented as bidirectional relationship.
+	 */
 	@ElementCollection
 	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "review", joinColumns = @JoinColumn(name = "user_id"))
 	@MapKeyJoinColumn(name = "product_id")
 	@Column(name = "text")
 	private Map<Product, String> productReviews;
-		
+	
+	/**
+	 * Not necessary but implemented as bidirectional relationship.
+	 */
 	@OneToMany
 	(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", insertable = false, updatable = false) //read-only
 	private List<StatisticalAnswer> statisticalAnswers;
 	
+	/**
+	 * Not necessary but implemented as bidirectional relationship.
+	 */
 	@OneToMany
-	(fetch = FetchType.LAZY, mappedBy = "user")
+	(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user", insertable = false, updatable = false) //read-only
 	private List<Leaderboard> leaderboards;
 	
+	/**
+	 * Not necessary but implemented as bidirectional relationship.
+	 */
 	@OneToMany
-	(fetch = FetchType.LAZY, mappedBy = "user")
+	(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user", insertable = false, updatable = false) //read-only
 	private List<Log> logs;
 	
+	/**
+	 * Not necessary but implemented as bidirectional relationship.
+	 */
 	@ElementCollection
 	(fetch = FetchType.LAZY)
 	@CollectionTable(name = "marketing_answer", joinColumns = @JoinColumn(name = "user_id"))
@@ -77,6 +93,10 @@ public class User implements Serializable {
 		this.blocked = false;
 	}
 
+	/**
+	 * Getters and setters
+	 */
+	
 	public int getId() {
 		return this.user_id;
 	}
@@ -124,52 +144,25 @@ public class User implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + admin.hashCode();
-		result = prime * result + blocked.hashCode();
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + user_id;
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		return result;
+		return Objects.hash(admin, blocked, email, leaderboards, logs, marketingAnswers, password, productReviews,
+				statisticalAnswers, user_id, username);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof User))
 			return false;
 		User other = (User) obj;
-		if (admin != other.admin)
-			return false;
-		if (blocked != other.blocked)
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (user_id != other.user_id)
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
+		return Objects.equals(admin, other.admin) && Objects.equals(blocked, other.blocked)
+				&& Objects.equals(email, other.email) && Objects.equals(leaderboards, other.leaderboards)
+				&& Objects.equals(logs, other.logs) && Objects.equals(marketingAnswers, other.marketingAnswers)
+				&& Objects.equals(password, other.password) && Objects.equals(productReviews, other.productReviews)
+				&& Objects.equals(statisticalAnswers, other.statisticalAnswers) && user_id == other.user_id
+				&& Objects.equals(username, other.username);
 	}
-
-
 }
