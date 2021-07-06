@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 
 import model.Log;
 import model.User;
@@ -46,11 +45,10 @@ public class LogService {
 		return em.createNamedQuery("Log.findAll", Log.class).getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Log> findByDate(Date d) {
-		return em.createQuery("SELECT l FROM Log l "
-				+ "				WHERE date(l.timestamp) = ?1 "
-				+ "				ORDER BY l.timestamp ASC", Log.class)
-				.setParameter(1, d)
+		return em.createNativeQuery("SELECT * FROM Log WHERE date(timestamp) LIKE ?1 ORDER BY timestamp ASC", Log.class)
+				.setParameter(1, d, TemporalType.DATE)
 				.getResultList();
 	}
 }

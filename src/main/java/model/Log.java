@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "log")
 @NamedQueries({
 	@NamedQuery(name = "Log.findAll", query = "SELECT l FROM Log l ORDER BY l.timestamp ASC")
-})
+	})
 public class Log implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
