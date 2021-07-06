@@ -1,5 +1,6 @@
 package services;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -43,5 +44,13 @@ public class LogService {
 	
 	public List<Log> findAllLogs() {
 		return em.createNamedQuery("Log.findAll", Log.class).getResultList();
+	}
+	
+	public List<Log> findByDate(Date d) {
+		return em.createQuery("SELECT l FROM Log l "
+				+ "				WHERE date(l.timestamp) = ?1 "
+				+ "				ORDER BY l.timestamp ASC", Log.class)
+				.setParameter(1, d)
+				.getResultList();
 	}
 }

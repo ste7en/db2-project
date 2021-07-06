@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,8 +29,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.StatisticalAnswer;
+import model.Log;
 import model.MarketingAnswer;
 import model.ProductOfTheDay;
+import services.LogService;
 import services.MarketingAnswerService;
 import services.ProductOfTheDayService;
 import services.StatisticalAnswerService;
@@ -51,6 +52,9 @@ public class GoToInspectionPage extends HttpServlet {
 	private MarketingAnswerService marketingAnswerService;
 	@EJB(name = "db2-project.src.main.java.services/ProductOfTheDayService")
 	private ProductOfTheDayService productOfTheDayService;
+	@EJB(name = "db2-project.src.main.java.services/LogService")
+	private LogService logService;
+	
 	DateFormat dateFormat;
 	Date date;
 	String today;
@@ -58,8 +62,6 @@ public class GoToInspectionPage extends HttpServlet {
 	public GoToInspectionPage() {
 		super();
 		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		this.date = new Date();
-		this.today = dateFormat.format(date);
 	}
 
 	public void init() throws ServletException {
@@ -79,7 +81,10 @@ public class GoToInspectionPage extends HttpServlet {
 			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
-		}	
+		}
+		
+		this.date = new Date();
+		this.today = dateFormat.format(date);
 		
 		String path = "/WEB-INF/InspectionPage.html";
 		ServletContext servletContext = getServletContext();
@@ -96,6 +101,14 @@ public class GoToInspectionPage extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		String dateOfQuestionnaire=null;
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
+		Date dateToInsert = null;
+		List<StatisticalAnswer> statisticalAnswers = null;
+		List<MarketingAnswer> marketingAnswers = null;
+		List<Log> logs;
+		
+		this.date = new Date();
+		this.today = dateFormat.format(date);
 		
 		String loginpath = servletContext.getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
@@ -115,9 +128,6 @@ public class GoToInspectionPage extends HttpServlet {
 			return;
 		}
 		
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
-		Date dateToInsert = null;
-		
 		try {
 			dateToInsert = format.parse(dateOfQuestionnaire);
 		} catch (ParseException e) {
@@ -131,8 +141,7 @@ public class GoToInspectionPage extends HttpServlet {
 			ctx.setVariable("statusMsg", "ERROR: You cannot inspect a questionnaire of a future date");
 		}
 		
-		List<StatisticalAnswer> statisticalAnswers = null;
-		List<MarketingAnswer> marketingAnswers = null;
+		
 		ProductOfTheDay productOfTheDay = productOfTheDayService.findProductByDate(dateToInsert);
 		
 		if(productOfTheDay == null) {
@@ -142,11 +151,13 @@ public class GoToInspectionPage extends HttpServlet {
 			marketingAnswers = marketingAnswerService.findByDate(dateToInsert);
 		}
 		
+		logs = logService.findByDate(dateToInsert);
+		
 		ctx.setVariable("statisticalAnswers", statisticalAnswers);
 		ctx.setVariable("marketingAnswers", marketingAnswers);
 		ctx.setVariable("today", today);
+		ctx.setVariable("logs", logs);
 
 		templateEngine.process(path, ctx, response.getWriter());
 	}
-
 }
