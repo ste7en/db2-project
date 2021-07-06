@@ -4,6 +4,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * Model class describing the composite key used
+ * to identify a Log entity. 
+ *
+ * It encapsulates the IDs corresponding to the foreign keys of
+ * table user (int) and the primary key timestamp (Timestamp) and is used
+ * in combination with the JEE annotation `@IdClass`.
+ * 
+ * For further usages @see Log class.
+ */
 public class LogID implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
