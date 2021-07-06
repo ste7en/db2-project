@@ -1,6 +1,8 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 import javax.persistence.*;
 
 
@@ -11,7 +13,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "offensive_words")
 @NamedQueries({
-	@NamedQuery(name = "OffensiveWord.findAll", query = "SELECT o FROM OffensiveWord o"),
 	@NamedQuery(name = "OffensiveWord.findAllWords", query = "SELECT o.word FROM OffensiveWord o")
 })
 public class OffensiveWord implements Serializable {
@@ -37,35 +38,19 @@ public class OffensiveWord implements Serializable {
 	public void incrementOccurrence() {
 		this.occurrence += 1;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + occurrence;
-		result = prime * result + ((word == null) ? 0 : word.hashCode());
-		return result;
+		return Objects.hash(occurrence, word);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof OffensiveWord))
 			return false;
 		OffensiveWord other = (OffensiveWord) obj;
-		if (occurrence != other.occurrence)
-			return false;
-		if (word == null) {
-			if (other.word != null)
-				return false;
-		} else if (!word.equals(other.word))
-			return false;
-		return true;
+		return occurrence == other.occurrence && Objects.equals(word, other.word);
 	}
-	
-	
-
 }
