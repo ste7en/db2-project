@@ -44,11 +44,6 @@ public class StatisticalAnswerService {
 			em.remove(sa);
 	}
 	
-	public List<StatisticalAnswer> findAllStatisticalAnswers(){
-		TypedQuery<StatisticalAnswer> query = em.createNamedQuery("StatisticalAnswer.findAll", StatisticalAnswer.class);
-		return query.getResultList();
-	}
-	
 	public List<StatisticalAnswer> findByDate(Date d) {
 		TypedQuery<StatisticalAnswer> query = em.createNamedQuery("StatisticalAnswer.findByDate", StatisticalAnswer.class).setParameter(1, d);
 		return query.getResultList();
