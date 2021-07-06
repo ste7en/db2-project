@@ -67,7 +67,7 @@ public class User implements Serializable {
 	 */
 	@OneToMany
 	(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user", insertable = false, updatable = false) //read-only
+	@JoinColumn(name = "user_id", insertable = false, updatable = false) //read-only
 	private List<Log> logs;
 	
 	/**
