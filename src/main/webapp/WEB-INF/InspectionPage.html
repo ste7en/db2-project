@@ -98,7 +98,7 @@
 		
 		<h3>Marketing Answers</h3>
 		<div th:if="${marketingAnswers}">
-			<h4>Statistical answers given by our users:</h4>
+			<h4>Marketing answers given by our users:</h4>
 			<table>
 				<thead>
 					<tr>
@@ -112,6 +112,27 @@
 						<td th:text="${m.getUser().getUsername()}"></td>
 						<td th:text="${m.getQuestion().getNumber()}"></td>
 						<td th:text="${m.getAnswer()}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<h3>Logs</h3>
+		<div th:if="${logs}">
+			<h4>Logs of our users:</h4>
+			<table>
+				<thead>
+					<tr>
+						<th>Username</th>
+						<th>Event</th>
+						<th>Timestamp</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="l: ${logs}">
+						<td th:text="${l.getUser().getUsername()}"></td>
+						<td th:text="${l.getEvent()}"></td>
+						<td th:text="${l.getTimestamp()}"></td>
 					</tr>
 				</tbody>
 			</table>
