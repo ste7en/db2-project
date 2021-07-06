@@ -58,6 +58,7 @@ public class UserService {
 			u = em.createNamedQuery("User.checkCredentials", User.class)
 					.setParameter(1, usrn)
 					.setParameter(2, pwd)
+					.setHint("javax.persistence.cache.storeMode", "REFRESH")
 					.getSingleResult();
 		} catch (Exception e) {
 			return null;
