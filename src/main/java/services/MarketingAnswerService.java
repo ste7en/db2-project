@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import model.MarketingAnswer;
-import model.MarketingQuestion;
 import model.User;
 
 @Stateless
@@ -24,12 +23,13 @@ public class MarketingAnswerService {
 	
 	public MarketingAnswerService() {}
 	
-	public MarketingAnswer createMarketingAnswer(User user, MarketingQuestion question, String answer) {
-		MarketingAnswer ma= new MarketingAnswer(user,question,answer);
-		em.persist(ma);
-		return ma;
-	}
-	
+	/**
+	 * Service method to save the marketing questions at the end of each
+	 * questionnaire ( @see SubmitStatisticalQuestionnaire ) using a 
+	 * bulk insertion. For each answer it performs
+	 * a check on the text to ban users who inserted offensive words.
+	 * @param answers
+	 */
 	public void saveMarketingAnswers(List<MarketingAnswer> answers) {
 		List<String> offensiveWords = offensiveWordService.findAll();
 		final User u = userService.findUser(answers.get(0).getUser().getId());
@@ -45,11 +45,13 @@ public class MarketingAnswerService {
 		}
 	}
 	
-	public List<MarketingAnswer> findAllMarketingAnswers(){
-		TypedQuery<MarketingAnswer> query= em.createQuery("SELECT ma from MarketingAnswer ma", MarketingAnswer.class);
-		return query.getResultList();
-	}
-	
+	/**
+	 * Service method to check the marketing answers belonging 
+	 * to a specific user and filled in a specific date
+	 * @param u User
+	 * @param d Date
+	 * @return a list of MarketingAnswer
+	 */
 	public List<MarketingAnswer> findByUserAndDate(User u, Date d){
 		TypedQuery<MarketingAnswer> query= em.createNamedQuery("MarketingAnswer.findByUserIdAndDate", MarketingAnswer.class)
 				.setParameter(1, u).setParameter(2, d);
@@ -62,6 +64,13 @@ public class MarketingAnswerService {
 		return query.getResultList();
 	}
 	
+	/**
+	 * Service method used in the HomePage to check if the logged user
+	 * already filled in the questionnaire of the day
+	 * @param u User
+	 * @param d Date
+	 * @return true if the User u already filled in the questionnaire, false otherwise
+	 */
 	public boolean checkIfExists(User u, Date d) {
 		return !findByUserAndDate(u, d).isEmpty();
 	}
