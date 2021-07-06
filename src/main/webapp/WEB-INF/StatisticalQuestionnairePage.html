@@ -70,8 +70,8 @@
 			</div>
 			<input type="submit" class="button" th:value="Send" id="Send" name="Submit">
 		</form>
-		<a th:href="@{/CancelQuestionnaire}"><button type="submit">Cancel</button></a>
-		<button onclick="window.history.back();">Go Back</button>
+		<a th:href="@{/CancelQuestionnaire}"><button class="button" type="submit">Cancel</button></a>
+		<button class="button" style="float:right" onclick="window.history.back();">Go Back</button>
 		<p th:text=" ${statusMsg}" style="color:#595959"></p>
 		</div>
 	</body>

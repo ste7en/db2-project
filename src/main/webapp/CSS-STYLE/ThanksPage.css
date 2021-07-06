@@ -1,1 +1,28 @@
-@charset "ISO-8859-1";
+@import url(https://fonts.googleapis.com/css?family=Exo:100,200,400);
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
+
+.header {
+  background-color: black;
+  padding: 20px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+	font-family: 'Exo', sans-serif;
+	font-size: 35px;
+	font-weight: 200;
+}
+
+.header div span{
+	color: #5379fa !important;
+}
+body{
+	background-image: url(https://images.unsplash.com/photo-1564352969906-8b7f46ba4b8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80);
+	background-repeat: no-repeat;
+	background-attachment: fixed; 
+ 	background-size: 100% 100%;
+	
+}
+
+.container{
+	margin:0;
+	font-family: 'Exo', sans-serif;
+}

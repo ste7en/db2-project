@@ -2,12 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="ISO-8859-1">
+		<link href="CSS-STYLE/ThanksPage.css" rel="stylesheet" type="text/css">
 		<title>ThanksPage</title>
+		
+			<style>
+		.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color:#5379fa;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: 150px;
+  height:50px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
 	</head>
 	<body>
-		<h1>Gamified Marketing Application</h1>
+	<div class="header">
+		<div>Gamified<span> Marketing </span>Application</div>
+		
+		<div class="container">
 		<h3>Thank you for answering the questionnaire!</h3>
 		
-		<a th:href="@{/GoToHomePage}"><button type="submit">Back Home</button></a>
+		<a th:href="@{/GoToHomePage}"><button class="button" type="submit">Back Home</button></a>
+		</div>
+		</div>
 	</body>
 </html>
