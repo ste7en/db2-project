@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The persistent class for the User database table.
@@ -146,10 +145,17 @@ public class User implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(admin, blocked, email, leaderboards, logs, marketingAnswers, password, productReviews,
-				statisticalAnswers, user_id, username);
-	}
+	 public int hashCode() {
+	  final int prime = 31;
+	  int result = 1;
+	  result = prime * result + admin.hashCode();
+	  result = prime * result + blocked.hashCode();
+	  result = prime * result + ((email == null) ? 0 : email.hashCode());
+	  result = prime * result + ((password == null) ? 0 : password.hashCode());
+	  result = prime * result + user_id;
+	  result = prime * result + ((username == null) ? 0 : username.hashCode());
+	  return result;
+	 }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -158,11 +164,58 @@ public class User implements Serializable {
 		if (!(obj instanceof User))
 			return false;
 		User other = (User) obj;
-		return Objects.equals(admin, other.admin) && Objects.equals(blocked, other.blocked)
-				&& Objects.equals(email, other.email) && Objects.equals(leaderboards, other.leaderboards)
-				&& Objects.equals(logs, other.logs) && Objects.equals(marketingAnswers, other.marketingAnswers)
-				&& Objects.equals(password, other.password) && Objects.equals(productReviews, other.productReviews)
-				&& Objects.equals(statisticalAnswers, other.statisticalAnswers) && user_id == other.user_id
-				&& Objects.equals(username, other.username);
+		if (admin == null) {
+			if (other.admin != null)
+				return false;
+		} else if (!admin.equals(other.admin))
+			return false;
+		if (blocked == null) {
+			if (other.blocked != null)
+				return false;
+		} else if (!blocked.equals(other.blocked))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (leaderboards == null) {
+			if (other.leaderboards != null)
+				return false;
+		} else if (!leaderboards.equals(other.leaderboards))
+			return false;
+		if (logs == null) {
+			if (other.logs != null)
+				return false;
+		} else if (!logs.equals(other.logs))
+			return false;
+		if (marketingAnswers == null) {
+			if (other.marketingAnswers != null)
+				return false;
+		} else if (!marketingAnswers.equals(other.marketingAnswers))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (productReviews == null) {
+			if (other.productReviews != null)
+				return false;
+		} else if (!productReviews.equals(other.productReviews))
+			return false;
+		if (statisticalAnswers == null) {
+			if (other.statisticalAnswers != null)
+				return false;
+		} else if (!statisticalAnswers.equals(other.statisticalAnswers))
+			return false;
+		if (user_id != other.user_id)
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 }
