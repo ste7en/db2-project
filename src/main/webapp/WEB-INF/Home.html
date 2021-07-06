@@ -55,13 +55,23 @@
   opacity: 1;
   right: 0;
 }
+
+footer {
+    background-color: #669999;
+    padding: 24px;
+    color: white;
+    margin-top: 400px;
+}
 </style>
 	</head>
 	
 
 <body>
 	<div class="header">
-	<div>Gamified<span> Marketing </span>Application</div>
+		<div>Gamified<span> Marketing </span>Application</div>
+		<div align="right">
+	    	<a href="Logout">Logout</a>	
+	    </div>
 	</div>
 	<div class="container">
 		<!-- Product of the day -->
@@ -87,16 +97,7 @@
 			<h3>Leaderboard:</h3>
 			<a th:href="@{/GoToLeaderboard}"><button class="button" type="button">Check your points</button></a>
 		</div>	
-		<!-- Admin panel -->
-			<div th:if="${user.getAdmin}">
-				<p><b>Admin Dashboard</b></p>
-				<ul>
-				<li><a href="GoToCreationPage">Create a new Questionnaire</a></li>
-				<li><a href="GoToDeletionPage">Delete a past Questionnaire</a></li>
-				<li><a href="GoToInspectionPage">Inspection Page</a></li>
-				</ul>
-			</div>
-			
+		
 			<!-- Product reviews -->	
 		<div class="reviews" th:if="${product}">
 		<h4>Rieviews of our customers:</h4>
@@ -115,9 +116,21 @@
 				</tbody>
 			</table>
 		</div>
+			
 		</div>	
+		<footer>
+	<!-- Admin panel -->
+			<div th:if="${user.getAdmin}">
+				<p><b>Admin Dashboard</b></p>
+				<ul>
+				<li><a href="GoToCreationPage">Create a new Questionnaire</a></li>
+				<li><a href="GoToDeletionPage">Delete a past Questionnaire</a></li>
+				<li><a href="GoToInspectionPage">Inspection Page</a></li>
+				</ul>
+			</div>
+	</footer>
 	</body>
-	<div align="right">
-            <a href="Logout">Logout</a>	
-            		</div>
+	
+            	
+			
 </html>
