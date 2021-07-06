@@ -24,7 +24,7 @@ public class MarketingQuestion implements Serializable {
 	@EmbeddedId
 	private MarketingQuestionID identifier;
 	
-	@Column(length = 45)
+	@Column(length = 100)
 	private String text;
 
 	//bidirectional many-to-one association to ProductOfTheDay
