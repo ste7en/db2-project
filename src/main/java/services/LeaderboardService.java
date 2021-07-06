@@ -24,12 +24,14 @@ public class LeaderboardService {
 	public List<Leaderboard> findLeaderboardsByDate(Date d) {		
 		return em.createNamedQuery("Leaderboard.findLeaderboardsByDate", Leaderboard.class)
 				.setParameter(1, d)
+				.setHint("javax.persistence.cache.storeMode", "REFRESH")
 				.getResultList();
 	}
 	
 	public long totalScore(User u){
 		return em.createNamedQuery("Leaderboard.totalScore", Long.class)
 				.setParameter(1, u)
+				.setHint("javax.persistence.cache.storeMode", "REFRESH")
 				.getSingleResult();
 	}
 
