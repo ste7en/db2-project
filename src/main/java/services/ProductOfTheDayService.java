@@ -3,6 +3,7 @@ package services;
 import java.util.Date;
 
 import javax.ejb.Stateless;
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import model.Product;
@@ -33,6 +34,7 @@ public class ProductOfTheDayService {
 	 * @return the product of the day
 	 */
 	public ProductOfTheDay findProductByDate(Date d) {
+		em.setProperty("retrieveMode", CacheRetrieveMode.BYPASS);
 		return em.find(ProductOfTheDay.class, d);
 	}
 	
@@ -42,7 +44,7 @@ public class ProductOfTheDayService {
 	 * @return true if the product of the day exists, false otherwise
 	 */
 	public boolean removeProductOfTheDay(Date d) {
-		ProductOfTheDay pofd= findProductByDate(d);
+		ProductOfTheDay pofd = findProductByDate(d);
 		if(pofd == null) return false;
 		em.remove(pofd);
 		return true;
