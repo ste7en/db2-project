@@ -48,37 +48,27 @@ public class CheckLogin extends HttpServlet {
 		// obtain and escape params
 		String username = null;
 		String password = null;
+		String path;
 		Date sessionDate = new Date();
 		HttpSession session = request.getSession();
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
 		try {
 			username = StringEscapeUtils.escapeJava(request.getParameter("username"));
-			password = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
+			password = StringEscapeUtils.escapeJava(request.getParameter("password"));
 			if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-				throw new Exception("Missing or empty credential value");
+				throw new Exception("Missing or empty credential values.");
 			}
-
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
-		User user;
-		try {
-			// query db to authenticate for user
-			user = userService.checkCredentials(username, password);
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
-			return;
-		}
+		User user =  userService.checkCredentials(username, password);
 
 		// If the user exists, add info to the session and go to home page, otherwise
 		// show login page with error message
-
-		String path;
-		ServletContext servletContext = getServletContext();
 		if (user == null || user.getBlocked()) {
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			if (user == null)
 				ctx.setVariable("errorMsg", "Incorrect username or password");
 			else if (user.getBlocked())

@@ -53,9 +53,15 @@ public class UserService {
 	}
 	
 	public User checkCredentials(String usrn, String pwd) {
-		User u = em.createNamedQuery("User.checkCredentials", User.class)
-					.setParameter(1, usrn).setParameter(2, pwd)
+		User u;
+		try {
+			u = em.createNamedQuery("User.checkCredentials", User.class)
+					.setParameter(1, usrn)
+					.setParameter(2, pwd)
 					.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 		if (u != null)
 			logService.createInstantLog(u, Events.LOG_IN);
 		return u;

@@ -76,7 +76,7 @@ public class GoToHomePage extends HttpServlet {
 		
 		// If the user returns to the home page after logging in a check on the session 
 		// date is performed to set it to the new date in case of the get is performed a day after
-		if (sessionDate.getDay() != new Date().getDay()) {
+		if (sessionDate == null || sessionDate.getDay() != new Date().getDay()) {
 			sessionDate = new Date();
 			session.setAttribute("session-date", sessionDate);
 		}
