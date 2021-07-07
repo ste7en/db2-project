@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 
 import model.MarketingAnswer;
 import model.User;
+import services.LogService.Events;
 
 @Stateless
 public class MarketingAnswerService {
@@ -20,6 +21,8 @@ public class MarketingAnswerService {
 	private OffensiveWordService offensiveWordService;
 	@EJB(name = "db2-project.src.main.java.services/UserService")
 	private UserService userService;
+	@EJB(name = "LogService")
+	private LogService logService;
 	
 	public MarketingAnswerService() {}
 	
@@ -33,16 +36,20 @@ public class MarketingAnswerService {
 	public void saveMarketingAnswers(List<MarketingAnswer> answers) {
 		List<String> offensiveWords = offensiveWordService.findAll();
 		final User u = userService.findUser(answers.get(0).getUser().getId());
+		// Performing a first check on answers if not containing offensive words
 		for (MarketingAnswer answer : answers) {
 			offensiveWords.forEach(offensiveWord -> {
 				if (answer.getAnswer().toLowerCase().contains(offensiveWord)) {
 					u.setBlocked(true);
+					logService.createInstantLog(u, Events.USER_BLOCKED);
 					offensiveWordService.incrementOffensiveWordOccurrence(offensiveWord);
 				}
 			});
-			if (!u.getBlocked())
-				em.persist(answer);
 		}
+		// Bulk insert of the answers into DB
+		// granted by the persistence context
+		if (!u.getBlocked())
+			answers.forEach(answer -> em.persist(answer));
 	}
 	
 	/**
