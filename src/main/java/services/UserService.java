@@ -32,18 +32,6 @@ public class UserService {
 	}
 	
 	/**
-	 * Service method to block a user 
-	 * @param user_id
-	 */
-	public void blockUser(int user_id) {
-		User u = findUser(user_id);
-		if(u != null) {
-			u.setBlocked(true);
-			logService.createInstantLog(u, Events.USER_BLOCKED);
-		}
-	}
-	
-	/**
 	 * Service method to retrieve a user from the database
 	 * using the EntityManager and User's primary key
 	 * @param user_id
@@ -84,7 +72,7 @@ public class UserService {
 		} catch (Exception e) {
 			return null;
 		}
-		if (u != null)
+		if (u != null && !u.getBlocked())
 			logService.createInstantLog(u, Events.LOG_IN);
 		return u;
 	}
