@@ -20,7 +20,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.Leaderboard;
+import model.User;
 import services.LeaderboardService;
+import services.UserService;
 
 /**
  * Servlet implementation class GoToLeaderBoard
@@ -33,6 +35,8 @@ public class GoToLeaderboard extends HttpServlet {
 	//the client(webServlet) interacts with a business object ->EJB
 	@EJB(name = "db2-project.src.main.java.services/LeaderboardService")
 	private LeaderboardService leaderboardService;
+	@EJB(name = "db2-project.src.main.java.services/UserService")
+	private UserService userService;
 
 	public GoToLeaderboard() {
 		super();
@@ -49,16 +53,20 @@ public class GoToLeaderboard extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		Date date = new Date();  
-		
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("admin") == null) {
+
+		Date date = new Date();  
+		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
+
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		
+		if (session.isNew() || user == null || user.getBlocked()) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}
-	
+		
 		List<Leaderboard> leaderboards = new ArrayList<>();
 		try {
 			leaderboards = leaderboardService.findLeaderboardsByDate(date);
