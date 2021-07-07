@@ -81,6 +81,8 @@ public class GoToDeletionPage extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
+		// Getting yesterday's date to forbid the deletion of a questionnaire
+		// corresponding to the current date (see project specifications)
 		Calendar date = Calendar.getInstance();
 		date.add(Calendar.DATE, -1);
 		String yesterday = this.dateFormat.format(date.getTime());
@@ -118,6 +120,8 @@ public class GoToDeletionPage extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 			return;
 		}
+		// By deleting a relationship of product of the day between a product and a date
+		// the whole questionnaires and their answers get deleted by a cascade
 		if (productOfTheDayService.removeProductOfTheDay(date))	{
 			request.setAttribute("statusMsg", formattedDate + " " + "questionnaire, its answers and user points have successfully been deleted.");
 			logService.createInstantLog(user, Events.ADMIN_DELETED_QUESTIONNAIRE);

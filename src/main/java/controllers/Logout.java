@@ -31,10 +31,10 @@ public class Logout extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
-		if (session != null || user == null) {
+		if (session != null) {
+			User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
+			if (user != null) logService.createInstantLog(user, Events.LOG_OUT);
 			session.invalidate();
-			logService.createInstantLog(user, Events.LOG_OUT);
 		}
 		String path = getServletContext().getContextPath() + "/index.html";
 		response.sendRedirect(path);

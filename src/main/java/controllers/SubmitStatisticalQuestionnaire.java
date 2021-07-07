@@ -51,8 +51,7 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html"); 
-		
+		templateResolver.setSuffix(".html");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -63,12 +62,14 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		Date sessionDate = (Date) session.getAttribute("session-date");
 		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
 		
+		// Retrieving the list of marketing answers saved in the client's session
 		@SuppressWarnings("unchecked")
 		List<MarketingAnswer> answers = (List<MarketingAnswer>) session.getAttribute("marketing-answers");
 
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = servletContext.getContextPath() + "/index.html";
 		if (session.isNew() || user == null) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		} else if (answers == null) {
@@ -85,6 +86,7 @@ public class SubmitStatisticalQuestionnaire extends HttpServlet {
 		
 		StatisticalAnswer statisticalAnswer = new StatisticalAnswer(user, sessionDate, age, sex, experience);
 		
+		// Calling business components to save the answers to the questionnaires
 		marketingAnswerService.saveMarketingAnswers(answers);
 		statisticalAnswerService.saveStatisticalAnswer(statisticalAnswer);
 

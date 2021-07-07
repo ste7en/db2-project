@@ -100,7 +100,7 @@ public class GoToInspectionPage extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		String dateOfQuestionnaire=null;
+		String dateOfQuestionnaire = null;
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALIAN);
 		Date dateToInsert = null;
 		List<StatisticalAnswer> statisticalAnswers = null;
@@ -123,7 +123,6 @@ public class GoToInspectionPage extends HttpServlet {
 				throw new Exception("Missing or empty questionnaire to delete value");
 			}
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing questionnaire to delete value");
 			return;
 		}
@@ -131,16 +130,12 @@ public class GoToInspectionPage extends HttpServlet {
 		try {
 			dateToInsert = format.parse(dateOfQuestionnaire);
 		} catch (ParseException e) {
-			// Auto-generated catch block
-			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
-		
-		Date date = new Date();
-		
-		if(dateToInsert.after(date)) {
+				
+		if(dateToInsert.after(this.date)) {
 			ctx.setVariable("statusMsg", "ERROR: You cannot inspect a questionnaire of a future date");
 		}
-		
 		
 		ProductOfTheDay productOfTheDay = productOfTheDayService.findProductByDate(dateToInsert);
 		

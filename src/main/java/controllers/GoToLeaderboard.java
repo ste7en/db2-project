@@ -20,7 +20,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import model.Leaderboard;
-import model.User;
 import services.LeaderboardService;
 import services.UserService;
 
@@ -55,18 +54,16 @@ public class GoToLeaderboard extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-
-		Date date = new Date();  
-		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
-
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		Date date = (Date) session.getAttribute("session-date");  
 		
-		if (session.isNew() || user == null || user.getBlocked()) {
+		// If the user is not logged in (not present in session) redirect to the login
+		String loginpath = getServletContext().getContextPath() + "/index.html";
+		if (session.isNew() || session.getAttribute("session-user-id") == null) {
 			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}
-		
+
 		List<Leaderboard> leaderboards = new ArrayList<>();
 		try {
 			leaderboards = leaderboardService.findLeaderboardsByDate(date);
@@ -75,8 +72,6 @@ public class GoToLeaderboard extends HttpServlet {
 			return;
 		}
 		
-		
-		// If the user is not logged in (not present in session) redirect to the login
 		String path = "/WEB-INF/LeaderBoard.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -85,12 +80,4 @@ public class GoToLeaderboard extends HttpServlet {
 		templateEngine.process(path, ctx, response.getWriter());
 
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-	
-	public void destroy() {}
-
 }

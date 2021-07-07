@@ -60,12 +60,14 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 			throws ServletException, IOException {
 		ServletContext servletContext = getServletContext();
 		HttpSession session = request.getSession();
+		
 		Date sessionDate = (Date) session.getAttribute("session-date");
 		User user = (User) userService.findUser((int)session.getAttribute("session-user-id"));
 
 		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = servletContext.getContextPath() + "/index.html";
 		if (session.isNew() || user == null) {
+			session.invalidate();
 			response.sendRedirect(loginpath);
 			return;
 		}
@@ -81,6 +83,7 @@ public class SubmitMarketingQuestionnaire extends HttpServlet {
 				throw new ServletException("Question q of session date " + sessionDate.toString() + " and number " + i + " does not exist.");
 			answers.add(new MarketingAnswer(user, mquestion, answer));
 		}
+		// adds to the client session a list of marketing answers
 		session.setAttribute("marketing-answers", answers);
 		
 		logService.createInstantLog(user, Events.MARKETING_ANSWERS_FILLED);
