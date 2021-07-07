@@ -80,9 +80,8 @@ footer {
 			<!--unless there is no product of today-->
 			<img width="500px"
 				th:src="@{'data:image/png;base64,' + ${product.getImage()}}" />
-			<p>
-				Name of the product: <label th:text="${product.name}"></label>
-			</p>
+			<p>Name of the product: <label th:text="${product.name}"></label></p>
+			<p>Price of the product: <label th:text="${product.price}"></label>  euro</p>
 			<!-- Questionnaire of the day -->
 			<div class="questionnaire" th:if="${userHasAlreadyFilled}">
 				<p>You already filled today's questionnaire. Come back in the
