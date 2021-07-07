@@ -1,29 +1,32 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="ISO-8859-1">
-		<title>Sign Up</title>
-		<link href="CSS-STYLE/SignUp.css" rel="stylesheet" type="text/css">
-	</head>
-	<body>
+<head>
+<meta charset="ISO-8859-1">
+<title>Sign Up</title>
+<link href="CSS-STYLE/SignUp.css" rel="stylesheet" type="text/css">
+</head>
+<body>
 	<div class="header">
-			<div>Gamified<span> Marketing</span> Application</div>
+		<div>
+			Gamified<span> Marketing</span> Application
 		</div>
+	</div>
 	<div class="body">
-	<div class="grad">
-		<div class="registration">
-			<form action="SignUp" method="post">
-				 <input type="text" name="username" placeholder="Username" size="20" required autofocus/><br>
-			 
-		  		 <input type="email" name="email" placeholder="Email" size="20" required><br>
-			  	
-			  	 <input type="password" name="pwd" placeholder="Password" value="" size="20" required><br>
-			  
-			  	<button class="formControls" type="submit" name="method" value="Sign up">Submit</button>
-			</form>
+		<div class="grad">
+			<div class="registration">
+				<form action="SignUp" method="post">
+					<input type="text" name="username" placeholder="Username" size="20"
+						required autofocus /><br> <input type="email" name="email"
+						placeholder="Email" size="20" required><br> <input
+						type="password" name="pwd" placeholder="Password" value=""
+						size="20" required><br>
+
+					<button class="formControls" type="submit" name="method"
+						value="Sign up">Submit</button>
+				</form>
+				<p th:text=" ${statusMsg}" style="color: red"></p>
+			</div>
 		</div>
-		<p th:text=" ${statusMsg}" style="color:#595959"></p>
-		</div>
-		</div>
-	</body>
+	</div>
+</body>
 </html>
